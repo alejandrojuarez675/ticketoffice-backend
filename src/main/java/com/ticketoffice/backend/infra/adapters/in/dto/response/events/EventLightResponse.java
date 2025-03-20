@@ -1,6 +1,6 @@
-package com.ticketoffice.backend.infra.adapters.in.dto.shared;
+package com.ticketoffice.backend.infra.adapters.in.dto.response.events;
 
-public record EventLightDTO(
+public record EventLightResponse(
         String id,
         String name,
         String date,

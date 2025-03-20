@@ -1,10 +1,10 @@
 package com.ticketoffice.backend.infra.adapters.in.dto.response;
 
-import com.ticketoffice.backend.infra.adapters.in.dto.shared.EventLightDTO;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventLightResponse;
 import java.util.List;
 
 public record SearchResponse(
-        List<EventLightDTO> events,
+        List<EventLightResponse> events,
         Boolean hasEventsInYourCity
 ) {
 }
