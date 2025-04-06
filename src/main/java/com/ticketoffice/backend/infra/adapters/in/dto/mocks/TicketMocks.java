@@ -1,5 +1,8 @@
 package com.ticketoffice.backend.infra.adapters.in.dto.mocks;
 
+import com.ticketoffice.backend.infra.adapters.in.dto.response.checkout.AvailableTicketListResponse;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.checkout.AvailableTicketResponse;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.checkout.BuyTicketResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.tickets.TicketLightResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.tickets.TicketListResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.tickets.TicketResponse;
@@ -26,4 +29,23 @@ public class TicketMocks {
     );
 
     public static TicketListResponse ticketListResponse = new TicketListResponse(List.of(ticketLightResponse));
+
+    public static BuyTicketResponse buyTicketResponse = new BuyTicketResponse(
+            true,
+            "1234-4352fed-dfgsdsf4-fwsadfdg-23423f"
+    );
+
+    public static final AvailableTicketListResponse availableTicketListResponse = new AvailableTicketListResponse(
+            List.of(
+                    new AvailableTicketResponse(
+                            "1",
+                            "eventId",
+                            "eventName",
+                            12.0,
+                            "ticketName",
+                            15
+                    )
+            ),
+            "information"
+    );
 }

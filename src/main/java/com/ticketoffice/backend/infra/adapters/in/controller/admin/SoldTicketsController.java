@@ -1,4 +1,4 @@
-package com.ticketoffice.backend.infra.adapters.in.controller;
+package com.ticketoffice.backend.infra.adapters.in.controller.admin;
 
 import com.ticketoffice.backend.infra.adapters.in.dto.mocks.TicketMocks;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.TicketCrudRequest;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SoldTicketsController {
 
     @GetMapping()
-    @Operation(description = "Endpoint to get all Tickets for the logged in user", tags = {"crud-sold-tickets"})
+    @Operation(description = "Endpoint to get all Tickets for the logged in user", tags = {"admin-sold-tickets"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tickets retrieved successfully"),
     })
@@ -37,7 +37,7 @@ public class SoldTicketsController {
     @Operation(
             description = "Endpoint to get a specific Ticket by its ID for the logged in user",
             summary = "Get all the information of an Ticket by ID",
-            tags = {"crud-sold-tickets"},
+            tags = {"admin-sold-tickets"},
             parameters = {@Parameter(name = "id", description = "The ID of the Ticket to be retrieved", required = true)}
     )
     @ApiResponses(value = {
@@ -49,7 +49,7 @@ public class SoldTicketsController {
     }
 
     @PostMapping()
-    @Operation(description = "Endpoint to create a new Ticket. You have to be logged as ADMIN to create an Ticket.", tags = {"crud-sold-tickets"})
+    @Operation(description = "Endpoint to create a new Ticket. You have to be logged as ADMIN to create an Ticket.", tags = {"admin-sold-tickets"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Ticket created successfully"),
     })
@@ -60,7 +60,7 @@ public class SoldTicketsController {
     @PutMapping("/{id}")
     @Operation(
             description = "Endpoint to update an Ticket. You have to be logged as ADMIN to update an Ticket.",
-            tags = {"crud-sold-tickets"},
+            tags = {"admin-sold-tickets"},
             parameters = {@Parameter(name = "id", description = "The ID of the Ticket to be retrieved", required = true)}
     )
     public ResponseEntity<TicketLightResponse> putTickets(@PathVariable Long id, @RequestBody TicketCrudRequest Ticket) {
@@ -70,7 +70,7 @@ public class SoldTicketsController {
     @DeleteMapping("/{id}")
     @Operation(
             description = "Endpoint to delete an Ticket. You have to be logged as ADMIN to delete an Ticket.",
-            tags = {"crud-sold-tickets"},
+            tags = {"admin-sold-tickets"},
             parameters = {@Parameter(name = "id", description = "The ID of the Ticket to be retrieved", required = true)}
     )
     public ResponseEntity<Void> deleteTicket(@PathVariable Long id) {

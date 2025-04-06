@@ -1,4 +1,4 @@
-package com.ticketoffice.backend.infra.adapters.in.controller;
+package com.ticketoffice.backend.infra.adapters.in.controller.admin;
 
 import com.ticketoffice.backend.infra.adapters.in.dto.mocks.EventMocks;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.EventCrudRequest;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class EventsController {
 
     @GetMapping()
-    @Operation(description = "Endpoint to get all events for the logged in user", tags = {"crud-events"})
+    @Operation(description = "Endpoint to get all events for the logged in user", tags = {"admin-events"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Events retrieved successfully"),
     })
@@ -37,7 +37,7 @@ public class EventsController {
     @Operation(
             description = "Endpoint to get a specific event by its ID for the logged in user",
             summary = "Get all the information of an event by ID",
-            tags = {"crud-events"},
+            tags = {"admin-events"},
             parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)}
     )
     @ApiResponses(value = {
@@ -49,7 +49,7 @@ public class EventsController {
     }
 
     @PostMapping()
-    @Operation(description = "Endpoint to create a new event. You have to be logged as ADMIN to create an event.", tags = {"crud-events"})
+    @Operation(description = "Endpoint to create a new event. You have to be logged as ADMIN to create an event.", tags = {"admin-events"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Event created successfully"),
     })
@@ -60,7 +60,7 @@ public class EventsController {
     @PutMapping("/{id}")
     @Operation(
             description = "Endpoint to update an event. You have to be logged as ADMIN to update an event.",
-            tags = {"crud-events"},
+            tags = {"admin-events"},
             parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)}
     )
     public ResponseEntity<EventLightResponse> putEvents(@PathVariable Long id, @RequestBody EventCrudRequest event) {
@@ -70,7 +70,7 @@ public class EventsController {
     @DeleteMapping("/{id}")
     @Operation(
             description = "Endpoint to delete an event. You have to be logged as ADMIN to delete an event.",
-            tags = {"crud-events"},
+            tags = {"admin-events"},
             parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)}
     )
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {

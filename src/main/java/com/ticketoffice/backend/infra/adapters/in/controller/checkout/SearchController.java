@@ -1,4 +1,4 @@
-package com.ticketoffice.backend.infra.adapters.in.controller;
+package com.ticketoffice.backend.infra.adapters.in.controller.checkout;
 
 import com.ticketoffice.backend.infra.adapters.in.dto.response.SearchResponse;
 import io.swagger.v3.oas.annotations.Operation;

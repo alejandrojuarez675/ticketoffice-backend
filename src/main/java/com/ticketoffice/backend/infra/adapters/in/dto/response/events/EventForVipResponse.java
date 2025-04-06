@@ -11,6 +11,7 @@ public record EventForVipResponse(
         String category,
         String organizer,
         String information,
-        SocialMediasResponse socialMedias
+        SocialMediasResponse socialMedias,
+        Boolean hasTicketStock
 ) {
 }

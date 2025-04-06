@@ -67,7 +67,8 @@ public class EventMocks {
             "Category 1",
             "Organizer 1",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            socialMediasResponse
+            socialMediasResponse,
+            true
     );
 
     public static EventListItemDTO eventListItemDTO = new EventListItemDTO(

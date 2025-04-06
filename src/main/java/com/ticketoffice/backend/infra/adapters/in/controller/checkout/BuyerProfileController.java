@@ -1,4 +1,4 @@
-package com.ticketoffice.backend.infra.adapters.in.controller;
+package com.ticketoffice.backend.infra.adapters.in.controller.checkout;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

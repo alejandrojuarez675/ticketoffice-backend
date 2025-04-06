@@ -1,4 +1,4 @@
-package com.ticketoffice.backend.infra.adapters.in.controller;
+package com.ticketoffice.backend.infra.adapters.in.controller.checkout;
 
 import com.ticketoffice.backend.infra.adapters.in.dto.mocks.EventMocks;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventForVipResponse;
