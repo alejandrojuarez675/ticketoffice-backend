@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
@@ -24,7 +25,13 @@ public class SearchController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Search performed successfully"),
     })
-    public ResponseEntity<SearchResponse> search() {
+    public ResponseEntity<SearchResponse> search(
+            @RequestParam String city,
+            @RequestParam(required = false, defaultValue = "") String query,
+            @RequestParam(required = false, defaultValue = "all") String category,
+            @RequestParam(required = false, defaultValue = "9") Integer pageSize,
+            @RequestParam(required = false, defaultValue = "1") Integer pageNumber
+    ) {
         return ResponseEntity.ok(new SearchResponse(List.of(), true));
     }
 }
