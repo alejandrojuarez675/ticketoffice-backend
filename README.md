@@ -1,3 +1,12 @@
+# Ticket Office Backend
+## Como levantar la app localmente
+Ejecutar los siguientes comandos en la terminal
+
+```bash
+./gradlew clean build
+./gradlew bootRun
+```
+
 ## Como crear la documentación
 
 Para crear la documentación, se debe ejecutar el siguiente comando para levantar la aplicación:

@@ -33,11 +33,7 @@ public record EventForVipResponse(
 
         @Schema(
                 description = "The additional info of the event",
-                examples = {
-                        "Prohibido el ingreso de menores de edad",
-                        "No se permite el ingreso de alimentos y bebidas",
-                        "No se permite el ingreso de cámaras fotográficas"
-                }
+                example = "[\"Prohibido el ingreso de menores de edad\", \"No se permite el ingreso de alimentos y bebidas\", \"No se permite el ingreso de cámaras fotográficas\"]"
         )
         List<String> additionalInfo,
 
