@@ -1,8 +1,10 @@
 package com.ticketoffice.backend.infra.adapters.in.controller.checkout;
 
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventDetailPageResponse;
+import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.adapters.in.exception.NotFoundException;
 import com.ticketoffice.backend.infra.adapters.in.handlers.EventDetailPageHandler;
+import com.ticketoffice.backend.infra.adapters.in.utils.IdValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -41,12 +43,24 @@ public class EventDetailPageController {
                     content = { @Content(mediaType = "application/json", schema = @Schema( implementation = EventDetailPageResponse.class) ) }
             ),
             @ApiResponse(
+                    responseCode = "400",
+                    description = "Event id is not valid",
+                    content = {
+                            @Content(mediaType = "application/json", examples = {@ExampleObject(value = """
+                                    {
+                                      "code": "bad_found",
+                                      "message": "Event id is not valid"
+                                    }
+                            """)})
+                    }
+            ),
+            @ApiResponse(
                     responseCode = "404",
                     description = "Event not found",
                     content = {
                             @Content(mediaType = "application/json", examples = {@ExampleObject(value = """
                                     {
-                                      "code": "event_not_found",
+                                      "code": "not_found",
                                       "message": "Event not found"
                                     }
                             """)})
@@ -55,7 +69,8 @@ public class EventDetailPageController {
     })
     public ResponseEntity<EventDetailPageResponse> getEvent(
             @PathVariable String id
-    ) throws NotFoundException {
+    ) throws NotFoundException, BadRequestException {
+        IdValidator.validateIdFromParams(id, "Event id", true);
         EventDetailPageResponse event = eventDetailPageHandler.getEvent(id);
         return new ResponseEntity<>(event, HttpStatus.OK);
     }
