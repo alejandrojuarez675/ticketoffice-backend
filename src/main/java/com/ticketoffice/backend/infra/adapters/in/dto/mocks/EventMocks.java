@@ -1,6 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.dto.mocks;
 
-import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventForVipResponse;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventDetailPageResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventListResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventLightResponse;
@@ -63,7 +63,7 @@ public class EventMocks {
 
     public final static String LSDF = "https://facebook.com/event1";
 
-    public static final EventForVipResponse eventForVipResponse = new EventForVipResponse(
+    public static final EventDetailPageResponse EVENT_DETAIL_PAGE_RESPONSE = new EventDetailPageResponse(
             "cbb46e0f-1014-41f9-bf63-ba1203197ce8",
             "Concierto de Trueno",
             LocalDateTime.of(2025, 6, 7, 19, 0),

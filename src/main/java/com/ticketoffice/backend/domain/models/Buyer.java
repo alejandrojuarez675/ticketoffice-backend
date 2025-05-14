@@ -1,4 +1,6 @@
 package com.ticketoffice.backend.domain.models;
 
-public record Buyer() {
+public record Buyer(
+        String id
+) {
 }
