@@ -1,8 +1,9 @@
 package com.ticketoffice.backend.domain.models;
 
-public record Image(
+public record Organizer(
         String id,
+        String name,
         String url,
-        String alt
+        Image logo
 ) {
 }

@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record EventForVipResponse(
+public record EventDetailPageResponse(
 
         @Schema(description = "The ID of the event", example = "cbb46e0f-1014-41f9-bf63-ba1203197ce8")
         String id,

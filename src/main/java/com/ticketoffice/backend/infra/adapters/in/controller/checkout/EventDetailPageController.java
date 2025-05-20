@@ -1,7 +1,10 @@
 package com.ticketoffice.backend.infra.adapters.in.controller.checkout;
 
-import com.ticketoffice.backend.infra.adapters.in.dto.mocks.EventMocks;
-import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventForVipResponse;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventDetailPageResponse;
+import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
+import com.ticketoffice.backend.infra.adapters.in.exception.NotFoundException;
+import com.ticketoffice.backend.infra.adapters.in.handlers.EventDetailPageHandler;
+import com.ticketoffice.backend.infra.adapters.in.utils.IdValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,7 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api/v1/event")
-public class VipController {
+public class EventDetailPageController {
+
+    final private EventDetailPageHandler eventDetailPageHandler;
+
+    public EventDetailPageController(EventDetailPageHandler eventDetailPageHandler) {
+        this.eventDetailPageHandler = eventDetailPageHandler;
+    }
 
     @GetMapping("/{id}")
     @Operation(
@@ -31,7 +40,19 @@ public class VipController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Event retrieved successfully",
-                    content = { @Content(mediaType = "application/json", schema = @Schema( implementation = EventForVipResponse.class) ) }
+                    content = { @Content(mediaType = "application/json", schema = @Schema( implementation = EventDetailPageResponse.class) ) }
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Event id is not valid",
+                    content = {
+                            @Content(mediaType = "application/json", examples = {@ExampleObject(value = """
+                                    {
+                                      "code": "bad_found",
+                                      "message": "Event id is not valid"
+                                    }
+                            """)})
+                    }
             ),
             @ApiResponse(
                     responseCode = "404",
@@ -39,15 +60,19 @@ public class VipController {
                     content = {
                             @Content(mediaType = "application/json", examples = {@ExampleObject(value = """
                                     {
-                                      "code": "event_not_found",
+                                      "code": "not_found",
                                       "message": "Event not found"
                                     }
                             """)})
                     }
             ),
     })
-    public ResponseEntity<EventForVipResponse> getEvent(@PathVariable String id) {
-        return new ResponseEntity<>(EventMocks.eventForVipResponse, HttpStatus.OK);
+    public ResponseEntity<EventDetailPageResponse> getEvent(
+            @PathVariable String id
+    ) throws NotFoundException, BadRequestException {
+        IdValidator.validateIdFromParams(id, "Event id", true);
+        EventDetailPageResponse event = eventDetailPageHandler.getEvent(id);
+        return new ResponseEntity<>(event, HttpStatus.OK);
     }
 
 }
