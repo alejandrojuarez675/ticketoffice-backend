@@ -1,6 +1,7 @@
 package com.ticketoffice.backend.infra.adapters.out.db.repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -9,6 +10,12 @@ public class InMemoryRepository<T> {
 
     @SuppressWarnings("rawtypes")
     protected static final Map<String, Object> data = new HashMap();
+
+    public List<T> findAll() {
+        return data.values().stream()
+                .map(obj -> (T) obj)
+                .toList();
+    }
 
     public Optional<T> getById(String id) {
         return Optional.ofNullable((T) data.get(id));

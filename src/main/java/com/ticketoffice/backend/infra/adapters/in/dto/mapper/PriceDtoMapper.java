@@ -14,4 +14,14 @@ public class PriceDtoMapper {
                 price.isFree()
         );
     }
+
+    public static TicketPrice getFromPriceDTO(PriceDTO priceDTO) {
+        return new TicketPrice(
+                priceDTO.id(),
+                priceDTO.value(),
+                priceDTO.currency(),
+                priceDTO.type(),
+                priceDTO.isFree()
+        );
+    }
 }

@@ -10,7 +10,7 @@ public class OrganizerDtoMapper {
                 organizer.id(),
                 organizer.name(),
                 organizer.url(),
-                ImageDtoMapper.getFromImage(organizer.logo())
+                organizer.logo() != null ? ImageDtoMapper.getFromImage(organizer.logo()) : null
         );
     }
 }

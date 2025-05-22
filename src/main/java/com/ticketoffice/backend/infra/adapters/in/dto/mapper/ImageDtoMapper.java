@@ -11,4 +11,12 @@ public class ImageDtoMapper {
                 image.alt()
         );
     }
+
+    public static Image getFromImageDTO(ImageDTO imageDTO) {
+        return new Image(
+                null,
+                imageDTO.url(),
+                imageDTO.alt()
+        );
+    }
 }

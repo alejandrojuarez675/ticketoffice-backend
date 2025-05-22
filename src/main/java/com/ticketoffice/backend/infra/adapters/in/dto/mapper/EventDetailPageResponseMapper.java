@@ -2,6 +2,7 @@ package com.ticketoffice.backend.infra.adapters.in.dto.mapper;
 
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventDetailPageResponse;
+import java.util.List;
 
 public class EventDetailPageResponseMapper {
 
@@ -11,8 +12,8 @@ public class EventDetailPageResponseMapper {
                 event.title(),
                 event.date(),
                 LocationDtoMapper.getFromLocation(event.location()),
-                ImageDtoMapper.getFromImage(event.image()),
-                event.prices().stream().map(PriceDtoMapper::getFromPrice).toList(),
+                event.image() != null ? ImageDtoMapper.getFromImage(event.image()) : null,
+                event.prices() != null ? event.prices().stream().map(PriceDtoMapper::getFromPrice).toList() : List.of(),
                 event.description(),
                 event.additionalInfo(),
                 OrganizerDtoMapper.getFromOrganizer(event.organizer())
