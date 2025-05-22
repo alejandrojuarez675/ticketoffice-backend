@@ -2,11 +2,16 @@ package com.ticketoffice.backend.infra.adapters.in.controller.admin;
 
 import com.ticketoffice.backend.infra.adapters.in.dto.mocks.EventMocks;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.EventCrudRequest;
+import com.ticketoffice.backend.infra.adapters.in.dto.request.validators.EventCrudRequestValidator;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventListResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventLightResponse;
+import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
+import com.ticketoffice.backend.infra.adapters.in.handlers.EventCrudHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
@@ -21,40 +26,52 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
-@RequestMapping("/v1/events")
+@RequestMapping("/api/v1/events")
 public class EventsController {
+
+    private final EventCrudHandler eventCrudHandler;
+
+    public EventsController(EventCrudHandler eventCrudHandler) {
+        this.eventCrudHandler = eventCrudHandler;
+    }
 
     @GetMapping()
     @Operation(description = "Endpoint to get all events for the logged in user", tags = {"admin-events"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Events retrieved successfully"),
     })
-    public EventListResponse getEvents() {
-        return EventMocks.eventListResponse;
-    }
-
-    @GetMapping("/{id}")
-    @Operation(
-            description = "Endpoint to get a specific event by its ID for the logged in user",
-            summary = "Get all the information of an event by ID",
-            tags = {"admin-events"},
-            parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)}
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Event retrieved successfully"),
-            @ApiResponse(responseCode = "404", description = "Event not found"),
-    })
-    public ResponseEntity<EventResponse> getEvent(@PathVariable Long id) {
-        return new ResponseEntity<>(EventMocks.eventResponse, HttpStatus.OK);
+    public ResponseEntity<EventListResponse> getEvents() {
+        return ResponseEntity.ok(new EventListResponse(eventCrudHandler.findAll()));
     }
 
     @PostMapping()
-    @Operation(description = "Endpoint to create a new event. You have to be logged as ADMIN to create an event.", tags = {"admin-events"})
+    @Operation(
+            description = "Endpoint to create a new event. You have to be logged as ADMIN to create an event.",
+            summary = "Create a new event",
+            tags = {"admin-events", "MVP"},
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody()
+    )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Event created successfully"),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Event is not valid",
+                    content = {
+                            @Content(mediaType = "application/json", examples = {@ExampleObject(value = """
+                                    {
+                                      "code": "bad_error",
+                                      "message": "Event name is too large"
+                                    }
+                            """)})
+                    }
+            ),
     })
-    public ResponseEntity<EventLightResponse> postEvents(@RequestBody EventCrudRequest event) {
-        return new ResponseEntity<>(EventMocks.eventLightDTO, HttpStatus.CREATED);
+    public ResponseEntity<Void> postEvents(
+            @RequestBody EventCrudRequest event
+    ) throws BadRequestException {
+        new EventCrudRequestValidator().validate(event);
+        eventCrudHandler.create(event);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")

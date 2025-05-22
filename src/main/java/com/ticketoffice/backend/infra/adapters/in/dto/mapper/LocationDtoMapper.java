@@ -12,4 +12,13 @@ public class LocationDtoMapper {
                 location.city()
         );
     }
+
+    public static Location getFromLocationDTO(LocationDTO locationDTO) {
+        return new Location(
+                null,
+                locationDTO.name(),
+                locationDTO.address(),
+                locationDTO.city()
+        );
+    }
 }
