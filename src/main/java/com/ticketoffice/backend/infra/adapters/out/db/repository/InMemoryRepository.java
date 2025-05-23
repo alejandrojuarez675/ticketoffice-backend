@@ -18,11 +18,12 @@ public class InMemoryRepository<T> {
     }
 
     public Optional<T> getById(String id) {
-        return Optional.ofNullable((T) data.get(id));
+        Object o = data.get(id);
+        T obj = (T) o;
+        return Optional.ofNullable(obj);
     }
 
-    public Optional<T> save(T obj) {
-        String id = UUID.randomUUID().toString();
+    public Optional<T> save(T obj, String id) {;
         data.put(id, obj);
 
         return getById(id);

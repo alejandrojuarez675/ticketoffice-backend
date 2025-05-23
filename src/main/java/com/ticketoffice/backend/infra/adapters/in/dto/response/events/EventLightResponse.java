@@ -1,13 +1,14 @@
 package com.ticketoffice.backend.infra.adapters.in.dto.response.events;
 
+import java.time.LocalDateTime;
+
 public record EventLightResponse(
         String id,
         String name,
-        String date,
+        LocalDateTime date,
         String location,
-        String city,
-        String category,
         String bannerUrl,
-        Double price
+        Double price,
+        String currency
 ) {
 }

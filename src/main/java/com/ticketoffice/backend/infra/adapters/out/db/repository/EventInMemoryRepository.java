@@ -8,6 +8,8 @@ import com.ticketoffice.backend.domain.models.TicketPrice;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -65,5 +67,11 @@ public class EventInMemoryRepository extends InMemoryRepository<Event> implement
                         )
                 )
         );
+    }
+
+    @Override
+    public Optional<Event> save(Event event) {
+        String id = Optional.ofNullable(event.id()).orElse(UUID.randomUUID().toString());
+        return super.save(event, id);
     }
 }
