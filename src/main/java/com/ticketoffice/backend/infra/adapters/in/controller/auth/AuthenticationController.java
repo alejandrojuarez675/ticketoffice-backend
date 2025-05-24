@@ -3,6 +3,7 @@ package com.ticketoffice.backend.infra.adapters.in.controller.auth;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.UserLoginRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.UserSignupRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.LoginResponse;
+import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.adapters.in.handlers.AuthenticationHandler;
 import com.ticketoffice.backend.infra.auth.JwtService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +29,7 @@ public class AuthenticationController {
             tags = {"public-endpoints", "MVP", "Authentication"}
     )
     @PostMapping("/signup")
-    public ResponseEntity<LoginResponse> register(@RequestBody UserSignupRequest registerUserDto) {
+    public ResponseEntity<LoginResponse> register(@RequestBody UserSignupRequest registerUserDto) throws BadRequestException {
         LoginResponse registeredUser = authenticationHandler.signup(registerUserDto);
         return ResponseEntity.ok(registeredUser);
     }

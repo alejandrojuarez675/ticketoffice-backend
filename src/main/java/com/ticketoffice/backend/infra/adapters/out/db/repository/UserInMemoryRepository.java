@@ -11,12 +11,18 @@ public class UserInMemoryRepository extends InMemoryRepository<User> implements 
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return Optional.empty();
+        return findAll()
+                .stream()
+                .filter(u -> u.getEmail().equals(email))
+                .findAny();
     }
 
     @Override
     public Optional<User> findByUsername(String username) {
-        return Optional.empty();
+        return findAll()
+                .stream()
+                .filter(u -> u.getUsername().equals(username))
+                .findAny();
     }
 
     @Override

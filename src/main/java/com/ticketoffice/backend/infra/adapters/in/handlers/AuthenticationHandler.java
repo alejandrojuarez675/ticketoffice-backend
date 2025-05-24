@@ -7,6 +7,7 @@ import com.ticketoffice.backend.infra.adapters.in.dto.request.UserLoginRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.UserSignupRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.LoginResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.UserSignupResponse;
+import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.auth.JwtService;
 import java.util.List;
 import java.util.UUID;
@@ -35,7 +36,13 @@ public class AuthenticationHandler {
         this.jwtService = jwtService;
     }
 
-    public LoginResponse signup(UserSignupRequest input) {
+    public LoginResponse signup(UserSignupRequest input) throws BadRequestException {
+
+        User userOnDB = userRepository.findByUsername(input.username()).orElse(null);
+        if (userOnDB != null) {
+            throw new BadRequestException("Username already exists");
+        }
+
         User user = new User(
                 UUID.randomUUID().toString(),
                 input.username(),
