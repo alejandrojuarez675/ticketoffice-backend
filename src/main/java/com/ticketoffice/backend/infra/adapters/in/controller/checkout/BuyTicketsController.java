@@ -5,6 +5,7 @@ import com.ticketoffice.backend.infra.adapters.in.dto.request.BuyTicketsRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.checkout.AvailableTicketListResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.checkout.BuyTicketResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,10 @@ public class BuyTicketsController {
             summary = "Get the buy tickets page",
             description = "This endpoint is used to get the buy tickets page.\n" +
                     "This endpoint should be called when the user charge the page.",
-            tags = {"public-endpoints"}
+            tags = {"public-endpoints"},
+            security = {
+                    @SecurityRequirement(name = "bearerAuth")
+            }
     )
     public ResponseEntity<AvailableTicketListResponse> getBuyTickets() {
         return ResponseEntity.ok(TicketMocks.availableTicketListResponse);
@@ -31,7 +35,10 @@ public class BuyTicketsController {
     @Operation(
             summary = "Buy tickets for an event",
             description = "Endpoint to buy tickets for an event. You have to be logged in as buyer to buy tickets.",
-            tags = {"public-endpoints"}
+            tags = {"public-endpoints"},
+            security = {
+                    @SecurityRequirement(name = "bearerAuth")
+            }
     )
     public ResponseEntity<BuyTicketResponse> buyTickets(
             @RequestBody BuyTicketsRequest buyTicketsRequest

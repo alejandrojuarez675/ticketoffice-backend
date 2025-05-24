@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,7 +37,13 @@ public class EventsController {
     }
 
     @GetMapping()
-    @Operation(description = "Endpoint to get all events for the logged in user", tags = {"admin-events"})
+    @Operation(
+            description = "Endpoint to get all events for the logged in user",
+            tags = {"admin-events"},
+            security = {
+                    @SecurityRequirement(name = "bearerAuth")
+            }
+    )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Events retrieved successfully"),
     })
@@ -49,7 +56,10 @@ public class EventsController {
             description = "Endpoint to create a new event. You have to be logged as ADMIN to create an event.",
             summary = "Create a new event",
             tags = {"admin-events", "MVP"},
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody()
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(),
+            security = {
+                    @SecurityRequirement(name = "bearerAuth")
+            }
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Event created successfully"),
@@ -78,7 +88,10 @@ public class EventsController {
     @Operation(
             description = "Endpoint to update an event. You have to be logged as ADMIN to update an event.",
             tags = {"admin-events"},
-            parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)}
+            parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)},
+            security = {
+                    @SecurityRequirement(name = "bearerAuth")
+            }
     )
     public ResponseEntity<EventLightResponse> putEvents(@PathVariable Long id, @RequestBody EventCrudRequest event) {
         return new ResponseEntity<>(EventMocks.eventLightDTO, HttpStatus.OK);
@@ -88,7 +101,10 @@ public class EventsController {
     @Operation(
             description = "Endpoint to delete an event. You have to be logged as ADMIN to delete an event.",
             tags = {"admin-events"},
-            parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)}
+            parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)},
+            security = {
+                    @SecurityRequirement(name = "bearerAuth")
+            }
     )
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
         return new ResponseEntity<>(HttpStatus.OK);
