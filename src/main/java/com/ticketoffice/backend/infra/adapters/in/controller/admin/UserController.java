@@ -26,7 +26,7 @@ public class UserController {
             description = "Endpoint to retrieve the currently authenticated user",
             tags = {"MVP", "User Management"},
             security = {
-                    @SecurityRequirement(name = "bearerAuth")
+                    @SecurityRequirement(name = "Authorization")
             }
     )
     @GetMapping("/me")

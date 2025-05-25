@@ -2,12 +2,18 @@ package com.ticketoffice.backend.infra.adapters.out.db.repository;
 
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.UserRepository;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserInMemoryRepository extends InMemoryRepository<User> implements UserRepository {
+public class UserInMemoryRepository implements InMemoryRepository<User>, UserRepository {
+
+    private static final Map<String, User> data = new HashMap<>();
 
     @Override
     public Optional<User> findByEmail(String email) {
@@ -30,6 +36,36 @@ public class UserInMemoryRepository extends InMemoryRepository<User> implements 
         if (user.getId() == null || user.getId().isEmpty()) {
             user.setId(UUID.randomUUID().toString());
         }
-        return super.save(user, user.getId());
+        return save(user, user.getId());
+    }
+
+    @Override
+    public List<User> findAll() {
+        return new ArrayList<>(data.values());
+    }
+
+    @Override
+    public Optional<User> getById(String id) {
+        return Optional.ofNullable(data.get(id));
+    }
+
+    @Override
+    public Optional<User> save(User obj, String id) {
+        data.put(id, obj);
+        return getById(id);
+    }
+
+    @Override
+    public Optional<User> update(String id, User obj) {
+        if (data.containsKey(id)) {
+            data.put(id, obj);
+            return getById(id);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public void delete(String id) {
+        data.remove(id);
     }
 }

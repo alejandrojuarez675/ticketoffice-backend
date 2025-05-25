@@ -7,13 +7,18 @@ import com.ticketoffice.backend.domain.models.Organizer;
 import com.ticketoffice.backend.domain.models.TicketPrice;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class EventInMemoryRepository extends InMemoryRepository<Event> implements EventRepository {
+public class EventInMemoryRepository implements InMemoryRepository<Event>, EventRepository {
+
+    private static final Map<String, Event> data = new HashMap<>();
 
     private EventInMemoryRepository() {
         data.put(
@@ -72,6 +77,36 @@ public class EventInMemoryRepository extends InMemoryRepository<Event> implement
     @Override
     public Optional<Event> save(Event event) {
         String id = Optional.ofNullable(event.id()).orElse(UUID.randomUUID().toString());
-        return super.save(event, id);
+        return save(event, id);
+    }
+
+    @Override
+    public List<Event> findAll() {
+        return new ArrayList<>(data.values());
+    }
+
+    @Override
+    public Optional<Event> getById(String id) {
+        return Optional.ofNullable(data.get(id));
+    }
+
+    @Override
+    public Optional<Event> save(Event obj, String id) {
+        data.put(id, obj);
+        return getById(id);
+    }
+
+    @Override
+    public Optional<Event> update(String id, Event obj) {
+        if (data.containsKey(id)) {
+            data.put(id, obj);
+            return getById(id);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public void delete(String id) {
+        data.remove(id);
     }
 }

@@ -6,7 +6,6 @@ import com.ticketoffice.backend.domain.ports.UserRepository;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.UserLoginRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.UserSignupRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.LoginResponse;
-import com.ticketoffice.backend.infra.adapters.in.dto.response.UserSignupResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.auth.JwtService;
 import java.util.List;
