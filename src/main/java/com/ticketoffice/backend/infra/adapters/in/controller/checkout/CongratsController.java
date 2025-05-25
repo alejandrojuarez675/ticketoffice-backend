@@ -23,7 +23,7 @@ public class CongratsController {
             summary = "Get the congrats page",
             tags = {"public-endpoints"},
             security = {
-                    @SecurityRequirement(name = "bearerAuth")
+                    @SecurityRequirement(name = "Authorization")
             }
     )
     @ApiResponses(value = {

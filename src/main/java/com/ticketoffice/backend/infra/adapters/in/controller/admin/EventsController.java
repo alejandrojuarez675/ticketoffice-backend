@@ -4,7 +4,6 @@ import com.ticketoffice.backend.infra.adapters.in.dto.mocks.EventMocks;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.EventCrudRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.validators.EventCrudRequestValidator;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventListResponse;
-import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventLightResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.adapters.in.handlers.EventCrudHandler;
@@ -41,7 +40,7 @@ public class EventsController {
             description = "Endpoint to get all events for the logged in user",
             tags = {"admin-events"},
             security = {
-                    @SecurityRequirement(name = "bearerAuth")
+                    @SecurityRequirement(name = "Authorization")
             }
     )
     @ApiResponses(value = {
@@ -58,7 +57,7 @@ public class EventsController {
             tags = {"admin-events", "MVP"},
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(),
             security = {
-                    @SecurityRequirement(name = "bearerAuth")
+                    @SecurityRequirement(name = "Authorization")
             }
     )
     @ApiResponses(value = {
@@ -90,7 +89,7 @@ public class EventsController {
             tags = {"admin-events"},
             parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)},
             security = {
-                    @SecurityRequirement(name = "bearerAuth")
+                    @SecurityRequirement(name = "Authorization")
             }
     )
     public ResponseEntity<EventLightResponse> putEvents(@PathVariable Long id, @RequestBody EventCrudRequest event) {
@@ -103,7 +102,7 @@ public class EventsController {
             tags = {"admin-events"},
             parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)},
             security = {
-                    @SecurityRequirement(name = "bearerAuth")
+                    @SecurityRequirement(name = "Authorization")
             }
     )
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {

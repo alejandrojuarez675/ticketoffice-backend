@@ -30,7 +30,7 @@ public class SoldTicketsController {
             description = "Endpoint to get all Tickets for the logged in user",
             tags = {"admin-sold-tickets"},
             security = {
-                    @SecurityRequirement(name = "bearerAuth")
+                    @SecurityRequirement(name = "Authorization")
             }
     )
     @ApiResponses(value = {
@@ -47,7 +47,7 @@ public class SoldTicketsController {
             tags = {"admin-sold-tickets"},
             parameters = {@Parameter(name = "id", description = "The ID of the Ticket to be retrieved", required = true)},
             security = {
-                    @SecurityRequirement(name = "bearerAuth")
+                    @SecurityRequirement(name = "Authorization")
             }
     )
     @ApiResponses(value = {
@@ -63,7 +63,7 @@ public class SoldTicketsController {
             description = "Endpoint to create a new Ticket. You have to be logged as ADMIN to create an Ticket.",
             tags = {"admin-sold-tickets"},
             security = {
-                    @SecurityRequirement(name = "bearerAuth")
+                    @SecurityRequirement(name = "Authorization")
             }
     )
     @ApiResponses(value = {
@@ -79,7 +79,7 @@ public class SoldTicketsController {
             tags = {"admin-sold-tickets"},
             parameters = {@Parameter(name = "id", description = "The ID of the Ticket to be retrieved", required = true)},
             security = {
-                    @SecurityRequirement(name = "bearerAuth")
+                    @SecurityRequirement(name = "Authorization")
             }
     )
     public ResponseEntity<TicketLightResponse> putTickets(@PathVariable Long id, @RequestBody TicketCrudRequest Ticket) {
@@ -92,7 +92,7 @@ public class SoldTicketsController {
             tags = {"admin-sold-tickets"},
             parameters = {@Parameter(name = "id", description = "The ID of the Ticket to be retrieved", required = true)},
             security = {
-                    @SecurityRequirement(name = "bearerAuth")
+                    @SecurityRequirement(name = "Authorization")
             }
     )
     public ResponseEntity<Void> deleteTicket(@PathVariable Long id) {

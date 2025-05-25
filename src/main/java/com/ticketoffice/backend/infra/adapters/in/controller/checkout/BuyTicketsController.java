@@ -24,7 +24,7 @@ public class BuyTicketsController {
                     "This endpoint should be called when the user charge the page.",
             tags = {"public-endpoints"},
             security = {
-                    @SecurityRequirement(name = "bearerAuth")
+                    @SecurityRequirement(name = "Authorization")
             }
     )
     public ResponseEntity<AvailableTicketListResponse> getBuyTickets() {
@@ -37,7 +37,7 @@ public class BuyTicketsController {
             description = "Endpoint to buy tickets for an event. You have to be logged in as buyer to buy tickets.",
             tags = {"public-endpoints"},
             security = {
-                    @SecurityRequirement(name = "bearerAuth")
+                    @SecurityRequirement(name = "Authorization")
             }
     )
     public ResponseEntity<BuyTicketResponse> buyTickets(
