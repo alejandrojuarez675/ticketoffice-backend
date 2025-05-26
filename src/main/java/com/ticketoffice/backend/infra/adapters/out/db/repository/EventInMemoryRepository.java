@@ -3,7 +3,6 @@ package com.ticketoffice.backend.infra.adapters.out.db.repository;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Image;
 import com.ticketoffice.backend.domain.models.Location;
-import com.ticketoffice.backend.domain.models.Organizer;
 import com.ticketoffice.backend.domain.models.TicketPrice;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import java.time.LocalDateTime;
@@ -60,16 +59,7 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
                                 "No se permite el ingreso de alimentos y bebidas",
                                 "No se permite el ingreso de cámaras fotográficas"
                         ),
-                        new Organizer(
-                                "78cd80e2-023f-4b38-a409-d4a20f2d4ac7",
-                                "Movistar Arena",
-                                "https://movistararena.co/",
-                                new Image(
-                                        "1",
-                                        "https://movistararena.co/wp-content/uploads/2023/08/logo_blanco.png",
-                                        "Organizer Logo"
-                                )
-                        )
+                        "78cd80e2-023f-4b38-a409-d4a20f2d4ac7"
                 )
         );
     }
@@ -87,7 +77,7 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
                     event.prices(),
                     event.description(),
                     event.additionalInfo(),
-                    event.organizer()
+                    event.organizerId()
             );
         }
         return save(event, id);
@@ -120,7 +110,7 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
 
     @Override
     public Optional<Event> getByIdAndOrganizerId(String id, String id1) {
-        return getById(id).filter(event -> event.organizer().id().equals(id1));
+        return getById(id).filter(event -> event.organizerId().equals(id1));
     }
 
     @Override

@@ -9,7 +9,6 @@ import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.usecases.events.CreateEventUseCase;
 import com.ticketoffice.backend.domain.usecases.organizer.GetOrganizerByUserUseCase;
 import org.springframework.stereotype.Service;
-import org.springframework.web.ErrorResponseException;
 
 @Service
 public class CreateEventUseCaseImpl implements CreateEventUseCase {
@@ -36,7 +35,7 @@ public class CreateEventUseCaseImpl implements CreateEventUseCase {
                 event.prices(),
                 event.description(),
                 event.additionalInfo(),
-                organizer
+                organizer.id()
         );
         return eventRepository.save(eventToCreate)
                 .orElseThrow(() -> new ErrorOnPersistDataException("Event could not be created"));

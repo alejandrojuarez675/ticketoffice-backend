@@ -1,10 +1,13 @@
 package com.ticketoffice.backend.infra.adapters.in.handlers;
 
 import com.ticketoffice.backend.domain.models.User;
+import com.ticketoffice.backend.domain.usecases.organizer.GetOrganizerByUserIdUseCase;
 import com.ticketoffice.backend.domain.usecases.users.GetAllUsersUserCase;
 import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCase;
 import com.ticketoffice.backend.domain.usecases.users.IsAnAdminUserUseCase;
+import com.ticketoffice.backend.infra.adapters.in.dto.mapper.OrganizerDtoMapper;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.UserResponse;
+import com.ticketoffice.backend.infra.adapters.in.dto.shared.OrganizerDTO;
 import com.ticketoffice.backend.infra.adapters.in.exception.UnauthorizedUserException;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -15,14 +18,16 @@ public class UserHandler {
     private final GetAllUsersUserCase getAllUsersUserCase;
     private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
     private final IsAnAdminUserUseCase isAnAdminUserUseCase;
+    private final GetOrganizerByUserIdUseCase getOrganizerByUserIdUseCase;
 
     public UserHandler(
             GetAllUsersUserCase getAllUsersUserCase,
-            GetAuthenticatedUserUseCase getAuthenticatedUserUseCase, IsAnAdminUserUseCase isAnAdminUserUseCase
-    ) {
+            GetAuthenticatedUserUseCase getAuthenticatedUserUseCase, IsAnAdminUserUseCase isAnAdminUserUseCase,
+            GetOrganizerByUserIdUseCase getOrganizerByUserIdUseCase) {
         this.getAllUsersUserCase = getAllUsersUserCase;
         this.getAuthenticatedUserUseCase = getAuthenticatedUserUseCase;
         this.isAnAdminUserUseCase = isAnAdminUserUseCase;
+        this.getOrganizerByUserIdUseCase = getOrganizerByUserIdUseCase;
     }
 
     public UserResponse getAuthenticatedUser() {
@@ -32,12 +37,21 @@ public class UserHandler {
     }
 
     private UserResponse createUserResponse(User currentUser) {
+        OrganizerDTO organizerDTO = getOrganizerDTO(currentUser);
+
         return new UserResponse(
                 currentUser.getId(),
                 currentUser.getUsername(),
                 currentUser.getEmail(),
-                currentUser.getRole().stream().map(Enum::name).toList()
+                currentUser.getRole().stream().map(Enum::name).toList(),
+                organizerDTO
         );
+    }
+
+    private OrganizerDTO getOrganizerDTO(User currentUser) {
+        return getOrganizerByUserIdUseCase.findByUserId(currentUser.getId())
+                .map(OrganizerDtoMapper::getFromOrganizer)
+                .orElse(null);
     }
 
     public List<UserResponse> getAllUsers() throws UnauthorizedUserException {
@@ -50,7 +64,8 @@ public class UserHandler {
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
-                user.getRole().stream().map(Enum::name).toList()
+                user.getRole().stream().map(Enum::name).toList(),
+                getOrganizerDTO(user)
             ))
             .toList();
     }

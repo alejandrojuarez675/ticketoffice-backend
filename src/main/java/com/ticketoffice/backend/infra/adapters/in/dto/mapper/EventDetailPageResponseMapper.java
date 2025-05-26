@@ -1,12 +1,12 @@
 package com.ticketoffice.backend.infra.adapters.in.dto.mapper;
 
 import com.ticketoffice.backend.domain.models.Event;
+import com.ticketoffice.backend.domain.models.Organizer;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventDetailPageResponse;
 import java.util.List;
 
 public class EventDetailPageResponseMapper {
-
-    public static EventDetailPageResponse getFromEvent(Event event) {
+    public static EventDetailPageResponse toResponse(Event event, Organizer organizer) {
         return new EventDetailPageResponse(
                 event.id(),
                 event.title(),
@@ -16,7 +16,7 @@ public class EventDetailPageResponseMapper {
                 event.prices() != null ? event.prices().stream().map(PriceDtoMapper::getFromPrice).toList() : List.of(),
                 event.description(),
                 event.additionalInfo(),
-                OrganizerDtoMapper.getFromOrganizer(event.organizer())
+                OrganizerDtoMapper.getFromOrganizer(organizer)
         );
     }
 }

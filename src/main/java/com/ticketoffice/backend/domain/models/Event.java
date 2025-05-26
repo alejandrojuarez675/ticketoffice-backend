@@ -15,7 +15,7 @@ public record Event(
         List<TicketPrice> prices,
         String description,
         List<String> additionalInfo,
-        Organizer organizer
+        String organizerId
 ){
 
     @JsonIgnore
