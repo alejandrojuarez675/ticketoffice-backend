@@ -77,6 +77,19 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
     @Override
     public Optional<Event> save(Event event) {
         String id = Optional.ofNullable(event.id()).orElse(UUID.randomUUID().toString());
+        if (event.id() == null || event.id().isEmpty()) {
+            event = new Event(
+                    id,
+                    event.title(),
+                    event.date(),
+                    event.location(),
+                    event.image(),
+                    event.prices(),
+                    event.description(),
+                    event.additionalInfo(),
+                    event.organizer()
+            );
+        }
         return save(event, id);
     }
 
@@ -103,6 +116,11 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
             return getById(id);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<Event> getByIdAndOrganizerId(String id, String id1) {
+        return getById(id).filter(event -> event.organizer().id().equals(id1));
     }
 
     @Override

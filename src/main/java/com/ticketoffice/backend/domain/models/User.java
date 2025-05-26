@@ -3,6 +3,7 @@ package com.ticketoffice.backend.domain.models;
 import com.ticketoffice.backend.domain.enums.UserRole;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,13 +14,15 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private List<UserRole> role;
+    private Organizer organizer;
 
-    public User(String id, String username, String email, String password, List<UserRole> role) {
+    public User(String id, String username, String email, String password, List<UserRole> role, Organizer organizer) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.organizer = organizer;
     }
 
     public String getId() {
@@ -87,5 +90,13 @@ public class User implements UserDetails {
 
     public void setId(String string) {
         id = string;
+    }
+
+    public Optional<Organizer> getOrganizer() {
+        return Optional.ofNullable(organizer);
+    }
+
+    public void setOrganizer(Organizer organizer) {
+        this.organizer = organizer;
     }
 }

@@ -23,7 +23,8 @@ public class UserInMemoryRepository implements InMemoryRepository<User>, UserRep
                 "admin",
                 "admin",
                 passwordEncoder.encode("admin"),
-                List.of(UserRole.ADMIN, UserRole.USER)
+                List.of(UserRole.ADMIN, UserRole.USER),
+                null
         );
         this.save(userAdmin, "admin");
     }

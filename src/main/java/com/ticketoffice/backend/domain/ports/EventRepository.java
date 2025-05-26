@@ -10,4 +10,8 @@ public interface EventRepository {
     Optional<Event> save(Event event);
 
     List<Event> findAll();
+
+    Optional<Event> update(String id, Event event);
+
+    Optional<Event> getByIdAndOrganizerId(String id, String id1);
 }

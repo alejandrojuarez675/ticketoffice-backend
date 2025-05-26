@@ -31,12 +31,6 @@ public record EventCrudRequest(
                 description = "The additional info of the event",
                 example = "[\"Prohibido el ingreso de menores de edad\", \"No se permite el ingreso de alimentos y bebidas\", \"No se permite el ingreso de cámaras fotográficas\"]"
         )
-        List<String> additionalInfo,
-
-        @Schema(
-                description = "The organizer of the event information",
-                example = "001b2f30-9a84-45e1-9345-518bea8a77c8"
-        )
-        String organizerId
+        List<String> additionalInfo
 ) {
 }

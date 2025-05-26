@@ -47,7 +47,8 @@ public class AuthenticationHandler {
                 input.username(),
                 input.email(),
                 passwordEncoder.encode(input.password()),
-                List.of(UserRole.USER)
+                List.of(UserRole.USER, UserRole.SELLER),
+                null
         );
 
         return userRepository.save(user)
