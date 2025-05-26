@@ -9,4 +9,6 @@ public interface UserRepository {
     Optional<User> findByUsername(String username);
     Optional<User> save(User user);
     List<User> findAll();
+    Optional<User> getById(String id);
+    Optional<User> update(String id, User user);
 }
