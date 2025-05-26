@@ -16,7 +16,7 @@ public class EventCrudRequestMapper {
                 eventCrudRequest.prices().stream().map(PriceDtoMapper::getFromPriceDTO).toList(),
                 eventCrudRequest.description(),
                 eventCrudRequest.additionalInfo(),
-                new Organizer(eventCrudRequest.organizerId(), null, null, null)
+                null
         );
     }
 }

@@ -1,12 +1,12 @@
 package com.ticketoffice.backend.infra.adapters.in.controller.admin;
 
-import com.ticketoffice.backend.infra.adapters.in.dto.mocks.EventMocks;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.EventCrudRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.validators.EventCrudRequestValidator;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventListResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventLightResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.adapters.in.handlers.EventCrudHandler;
+import com.ticketoffice.backend.infra.adapters.in.utils.IdValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -85,15 +85,18 @@ public class EventsController {
 
     @PutMapping("/{id}")
     @Operation(
-            description = "Endpoint to update an event. You have to be logged as ADMIN to update an event.",
-            tags = {"admin-events"},
+            description = "Endpoint to update an event. You can update only your events.",
+            tags = {"admin-events", "MVP"},
             parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)},
             security = {
                     @SecurityRequirement(name = "Authorization")
             }
     )
-    public ResponseEntity<EventLightResponse> putEvents(@PathVariable Long id, @RequestBody EventCrudRequest event) {
-        return new ResponseEntity<>(EventMocks.eventLightDTO, HttpStatus.OK);
+    public ResponseEntity<EventLightResponse> putEvents(
+            @PathVariable String id, @RequestBody EventCrudRequest event
+    ) throws BadRequestException {
+        IdValidator.validateIdFromParams(id, "id", true);
+        return ResponseEntity.ok(eventCrudHandler.updateMyEvent(id, event));
     }
 
     @DeleteMapping("/{id}")

@@ -22,9 +22,6 @@ public class EventCrudRequestValidator implements RequestValidator<EventCrudRequ
         if (request.date() == null) {
             throw new BadRequestException("Date is required");
         }
-        if (request.organizerId() == null || request.organizerId().isBlank()) {
-            throw new BadRequestException("Organizer ID is required");
-        }
 
         validate(request.location());
         validate(request.image());
