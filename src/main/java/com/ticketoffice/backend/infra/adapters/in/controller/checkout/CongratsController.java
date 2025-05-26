@@ -5,6 +5,7 @@ import com.ticketoffice.backend.infra.adapters.in.dto.response.checkout.Congrats
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,10 @@ public class CongratsController {
             description = "This endpoint is used to get the congrats page after a successful purchase.\n" +
                     "This endpoint should be called when the user charge the page.",
             summary = "Get the congrats page",
-            tags = {"public-endpoints"}
+            tags = {"public-endpoints"},
+            security = {
+                    @SecurityRequirement(name = "Authorization")
+            }
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Congrats page retrieved successfully"),

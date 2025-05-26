@@ -1,40 +1,18 @@
 package com.ticketoffice.backend.infra.adapters.out.db.repository;
 
-import java.util.HashMap;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
-public class InMemoryRepository<T> {
+public interface InMemoryRepository<T> {
 
-    @SuppressWarnings("rawtypes")
-    protected static final Map<String, Object> data = new HashMap();
+    List<T> findAll();
 
-    public List<T> findAll() {
-        return data.values().stream()
-                .map(obj -> (T) obj)
-                .toList();
-    }
+    Optional<T> getById(String id);
 
-    public Optional<T> getById(String id) {
-        Object o = data.get(id);
-        T obj = (T) o;
-        return Optional.ofNullable(obj);
-    }
+    Optional<T> save(T obj, @NotNull String id);
 
-    public Optional<T> save(T obj, String id) {;
-        data.put(id, obj);
+    Optional<T> update(String id, T obj);
 
-        return getById(id);
-    }
-
-    public Optional<T> update(String id, T obj) {
-        data.put(id, obj);
-        return getById(id);
-    }
-
-    public void delete(String id) {
-        data.remove(id);
-    }
+    void delete(String id);
 }

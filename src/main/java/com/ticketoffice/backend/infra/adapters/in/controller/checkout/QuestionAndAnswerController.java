@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/public/v1/question-and-answer")
+@RequestMapping("/api/public/v1/question-and-answer")
 public class QuestionAndAnswerController {
 
     @PostMapping
