@@ -3,6 +3,7 @@ package com.ticketoffice.backend.infra.adapters.in.interceptors;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.ErrorResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.adapters.in.exception.NotFoundException;
+import com.ticketoffice.backend.infra.adapters.in.exception.UnauthorizedUserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -27,6 +28,11 @@ public class MyGlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     ResponseEntity<Object> handleAuthenticationException(AuthenticationException ex, WebRequest request) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(ex.getMessage(), "unauthorized"));
+    }
+
+    @ExceptionHandler(UnauthorizedUserException.class)
+    ResponseEntity<Object> handleUnauthorizedUserException(UnauthorizedUserException ex, WebRequest request) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(ex.getMessage(), "forbidden"));
     }
 
     @ExceptionHandler(Exception.class)

@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.out.db.repository;
 
+import com.ticketoffice.backend.domain.enums.UserRole;
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.UserRepository;
 import java.util.ArrayList;
@@ -8,12 +9,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserInMemoryRepository implements InMemoryRepository<User>, UserRepository {
 
     private static final Map<String, User> data = new HashMap<>();
+
+    public UserInMemoryRepository(PasswordEncoder passwordEncoder) {
+        User userAdmin = new User(
+                "admin",
+                "admin",
+                "admin",
+                passwordEncoder.encode("admin"),
+                List.of(UserRole.ADMIN, UserRole.USER)
+        );
+        this.save(userAdmin, "admin");
+    }
 
     @Override
     public Optional<User> findByEmail(String email) {

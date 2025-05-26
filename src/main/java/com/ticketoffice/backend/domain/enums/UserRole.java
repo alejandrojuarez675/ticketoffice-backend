@@ -2,6 +2,7 @@ package com.ticketoffice.backend.domain.enums;
 
 public enum UserRole {
     ADMIN("ADMIN"),
+    SELLER("SELLER"),
     USER("USER");
 
     private final String role;

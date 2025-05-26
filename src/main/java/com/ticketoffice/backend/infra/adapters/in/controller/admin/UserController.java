@@ -1,6 +1,7 @@
 package com.ticketoffice.backend.infra.adapters.in.controller.admin;
 
 import com.ticketoffice.backend.infra.adapters.in.dto.response.UserResponse;
+import com.ticketoffice.backend.infra.adapters.in.exception.UnauthorizedUserException;
 import com.ticketoffice.backend.infra.adapters.in.handlers.UserHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -43,7 +44,7 @@ public class UserController {
             }
     )
     @GetMapping()
-    public ResponseEntity<List<UserResponse>> allUsers() {
+    public ResponseEntity<List<UserResponse>> allUsers() throws UnauthorizedUserException {
         return ResponseEntity.ok(userHandler.getAllUsers());
     }
 }
