@@ -5,7 +5,6 @@ import com.ticketoffice.backend.infra.adapters.in.dto.request.UserSignupRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.LoginResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.adapters.in.handlers.AuthenticationHandler;
-import com.ticketoffice.backend.infra.auth.JwtService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +18,7 @@ public class AuthenticationController {
 
     private final AuthenticationHandler authenticationHandler;
 
-    public AuthenticationController(JwtService jwtService, AuthenticationHandler authenticationHandler) {
+    public AuthenticationController(AuthenticationHandler authenticationHandler) {
         this.authenticationHandler = authenticationHandler;
     }
 

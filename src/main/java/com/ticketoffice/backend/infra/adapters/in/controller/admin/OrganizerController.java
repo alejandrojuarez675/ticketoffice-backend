@@ -1,7 +1,9 @@
 package com.ticketoffice.backend.infra.adapters.in.controller.admin;
 
+import com.ticketoffice.backend.infra.adapters.in.controller.UserRoleValidator;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.OrganizerCrudRequest;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
+import com.ticketoffice.backend.infra.adapters.in.exception.UnauthorizedUserException;
 import com.ticketoffice.backend.infra.adapters.in.handlers.OrganizerCrudHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -17,9 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrganizerController {
 
     private final OrganizerCrudHandler organizerCrudHandler;
+    private final UserRoleValidator userRoleValidator;
 
-    public OrganizerController(OrganizerCrudHandler organizerCrudHandler) {
+    public OrganizerController(OrganizerCrudHandler organizerCrudHandler, UserRoleValidator userRoleValidator) {
         this.organizerCrudHandler = organizerCrudHandler;
+        this.userRoleValidator = userRoleValidator;
     }
 
     @PostMapping
@@ -57,7 +61,9 @@ public class OrganizerController {
                     )
             }
     )
-    public ResponseEntity<Void> createOrganizer(@RequestBody OrganizerCrudRequest organizer) throws BadRequestException {
+    public ResponseEntity<Void> createOrganizer(@RequestBody OrganizerCrudRequest organizer)
+            throws BadRequestException, UnauthorizedUserException {
+        userRoleValidator.validateThatUserIsSeller();
         organizerCrudHandler.createOrganizer(organizer);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

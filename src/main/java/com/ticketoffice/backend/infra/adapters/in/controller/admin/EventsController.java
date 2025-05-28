@@ -1,10 +1,12 @@
 package com.ticketoffice.backend.infra.adapters.in.controller.admin;
 
+import com.ticketoffice.backend.infra.adapters.in.controller.UserRoleValidator;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.EventCrudRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.validators.EventCrudRequestValidator;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventListResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventLightResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
+import com.ticketoffice.backend.infra.adapters.in.exception.UnauthorizedUserException;
 import com.ticketoffice.backend.infra.adapters.in.handlers.EventCrudHandler;
 import com.ticketoffice.backend.infra.adapters.in.utils.IdValidator;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,9 +32,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class EventsController {
 
     private final EventCrudHandler eventCrudHandler;
+    private final UserRoleValidator userRoleValidator;
 
-    public EventsController(EventCrudHandler eventCrudHandler) {
+    public EventsController(EventCrudHandler eventCrudHandler, UserRoleValidator userRoleValidator) {
         this.eventCrudHandler = eventCrudHandler;
+        this.userRoleValidator = userRoleValidator;
     }
 
     @GetMapping()
@@ -47,7 +51,8 @@ public class EventsController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Events retrieved successfully"),
     })
-    public ResponseEntity<EventListResponse> getEvents() {
+    public ResponseEntity<EventListResponse> getEvents() throws UnauthorizedUserException {
+        userRoleValidator.validateThatUserIsSeller();
         return ResponseEntity.ok(new EventListResponse(eventCrudHandler.findAll()));
     }
 
@@ -78,7 +83,8 @@ public class EventsController {
     })
     public ResponseEntity<Void> postEvents(
             @RequestBody EventCrudRequest event
-    ) throws BadRequestException {
+    ) throws BadRequestException, UnauthorizedUserException {
+        userRoleValidator.validateThatUserIsSeller();
         new EventCrudRequestValidator().validate(event);
         eventCrudHandler.create(event);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -95,7 +101,8 @@ public class EventsController {
     )
     public ResponseEntity<EventLightResponse> putEvents(
             @PathVariable String id, @RequestBody EventCrudRequest event
-    ) throws BadRequestException {
+    ) throws BadRequestException, UnauthorizedUserException {
+        userRoleValidator.validateThatUserIsSeller();
         IdValidator.validateIdFromParams(id, "id", true);
         return ResponseEntity.ok(eventCrudHandler.updateMyEvent(id, event));
     }
@@ -109,7 +116,8 @@ public class EventsController {
                     @SecurityRequirement(name = "Authorization")
             }
     )
-    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) throws UnauthorizedUserException {
+        userRoleValidator.validateThatUserIsSeller();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
