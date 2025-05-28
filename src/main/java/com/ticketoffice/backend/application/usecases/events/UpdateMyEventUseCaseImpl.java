@@ -31,7 +31,10 @@ public class UpdateMyEventUseCaseImpl implements UpdateMyEventUseCase {
         User userLogged = getAuthenticatedUserUseCase.getAuthenticatedUser()
                 .orElseThrow(() -> new NotAuthenticatedException("User is not authenticated"));
 
-        Event eventToUpdate = eventRepository.getByIdAndOrganizerId(id, userLogged.getId())
+        Event eventToUpdate = (
+                userLogged.isAdmin()
+                        ? eventRepository.getById(id)
+                        : eventRepository.getByIdAndOrganizerId(id, userLogged.getId()))
                 .orElseThrow(() -> new ResourceDoesntExistException("Event not found"));
 
         Event updatedEvent = overrideFields(eventToUpdate, event, userLogged);
@@ -50,7 +53,8 @@ public class UpdateMyEventUseCaseImpl implements UpdateMyEventUseCase {
                 event.prices(),
                 event.description(),
                 event.additionalInfo(),
-                userLogged.getId()
+                userLogged.isAdmin() ? eventToUpdate.organizerId() : userLogged.getId(),
+                event.status()
         );
     }
 }

@@ -1,11 +1,14 @@
 package com.ticketoffice.backend.infra.adapters.in.controller.admin;
 
+import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.infra.adapters.in.controller.UserRoleValidator;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.EventCrudRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.validators.EventCrudRequestValidator;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventDetailPageResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventListResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventLightResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
+import com.ticketoffice.backend.infra.adapters.in.exception.NotFoundException;
 import com.ticketoffice.backend.infra.adapters.in.exception.UnauthorizedUserException;
 import com.ticketoffice.backend.infra.adapters.in.handlers.EventCrudHandler;
 import com.ticketoffice.backend.infra.adapters.in.utils.IdValidator;
@@ -54,6 +57,24 @@ public class EventsController {
     public ResponseEntity<EventListResponse> getEvents() throws UnauthorizedUserException {
         userRoleValidator.validateThatUserIsSeller();
         return ResponseEntity.ok(new EventListResponse(eventCrudHandler.findAll()));
+    }
+
+    @GetMapping("/{id}")
+    @Operation(
+            summary = "Get my event with id",
+            description = "Endpoint to get all events for the logged in user",
+            tags = {"admin-events", "MVP"},
+            security = {
+                    @SecurityRequirement(name = "Authorization")
+            }
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Events retrieved successfully"),
+    })
+    public ResponseEntity<EventDetailPageResponse> getEventById(@PathVariable String id) throws UnauthorizedUserException, BadRequestException, NotAuthenticatedException, NotFoundException {
+        userRoleValidator.validateThatUserIsSeller();
+        IdValidator.validateIdFromParams(id, "seler_id", true);
+        return ResponseEntity.ok(eventCrudHandler.getEventById(id));
     }
 
     @PostMapping()
@@ -110,14 +131,35 @@ public class EventsController {
     @DeleteMapping("/{id}")
     @Operation(
             description = "Endpoint to delete an event. You have to be logged as ADMIN to delete an event.",
-            tags = {"admin-events"},
+            tags = {"admin-events", "MVP"},
             parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)},
             security = {
                     @SecurityRequirement(name = "Authorization")
+            },
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "204",
+                            description = "Event deleted successfully"
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "400",
+                            description = "Bad Request"
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthorized"
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "500",
+                            description = "Internal Server Error"
+                    )
             }
     )
-    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) throws UnauthorizedUserException {
+    public ResponseEntity<Void> deleteEvent(@PathVariable String id)
+            throws UnauthorizedUserException, BadRequestException, NotAuthenticatedException {
         userRoleValidator.validateThatUserIsSeller();
-        return new ResponseEntity<>(HttpStatus.OK);
+        IdValidator.validateIdFromParams(id, "id", true);
+        eventCrudHandler.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -38,6 +38,9 @@ public record EventDetailPageResponse(
         List<String> additionalInfo,
 
         @Schema(description = "The organizer of the event information")
-        OrganizerDTO organizer
+        OrganizerDTO organizer,
+
+        @Schema(description = "The status of the event", example = "ACTIVE")
+        String status
 ) {
 }

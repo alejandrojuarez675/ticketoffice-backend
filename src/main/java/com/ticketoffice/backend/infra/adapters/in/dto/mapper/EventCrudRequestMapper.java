@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.dto.mapper;
 
+import com.ticketoffice.backend.domain.enums.EventStatus;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Organizer;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.EventCrudRequest;
@@ -16,7 +17,8 @@ public class EventCrudRequestMapper {
                 eventCrudRequest.prices().stream().map(PriceDtoMapper::getFromPriceDTO).toList(),
                 eventCrudRequest.description(),
                 eventCrudRequest.additionalInfo(),
-                null
+                null,
+                EventStatus.ACTIVE
         );
     }
 }

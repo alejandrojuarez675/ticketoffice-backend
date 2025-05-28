@@ -4,18 +4,18 @@ import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.EventRepository;
-import com.ticketoffice.backend.domain.usecases.events.GetAllEventsUseCase;
+import com.ticketoffice.backend.domain.usecases.events.GetAllMyEventsUseCase;
 import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCase;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GetAllEventsUseCaseImpl implements GetAllEventsUseCase {
+public class GetAllMyEventsUseCaseImpl implements GetAllMyEventsUseCase {
 
     final private EventRepository eventRepository;
     final private GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
 
-    public GetAllEventsUseCaseImpl(
+    public GetAllMyEventsUseCaseImpl(
             EventRepository eventRepository,
             GetAuthenticatedUserUseCase getAuthenticatedUserUseCase
     ) {
@@ -25,10 +25,9 @@ public class GetAllEventsUseCaseImpl implements GetAllEventsUseCase {
 
     @Override
     public List<Event> getAllEvents() throws NotAuthenticatedException {
-        String userId = getAuthenticatedUserUseCase.getAuthenticatedUser()
-                .map(User::getId)
+        User user = getAuthenticatedUserUseCase.getAuthenticatedUser()
                 .orElseThrow(() -> new NotAuthenticatedException("User not authenticated"));
 
-        return eventRepository.findByUserId(userId);
+        return user.isAdmin() ? eventRepository.findAll() : eventRepository.findByUserId(user.getId());
     }
 }

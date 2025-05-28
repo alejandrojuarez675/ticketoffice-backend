@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.out.db.repository;
 
+import com.ticketoffice.backend.domain.enums.EventStatus;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Image;
 import com.ticketoffice.backend.domain.models.Location;
@@ -59,7 +60,8 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
                                 "No se permite el ingreso de alimentos y bebidas",
                                 "No se permite el ingreso de cámaras fotográficas"
                         ),
-                        "78cd80e2-023f-4b38-a409-d4a20f2d4ac7"
+                        "78cd80e2-023f-4b38-a409-d4a20f2d4ac7",
+                        EventStatus.ACTIVE
                 )
         );
     }
@@ -68,17 +70,7 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
     public Optional<Event> save(Event event) {
         String id = Optional.ofNullable(event.id()).orElse(UUID.randomUUID().toString());
         if (event.id() == null || event.id().isEmpty()) {
-            event = new Event(
-                    id,
-                    event.title(),
-                    event.date(),
-                    event.location(),
-                    event.image(),
-                    event.prices(),
-                    event.description(),
-                    event.additionalInfo(),
-                    event.organizerId()
-            );
+            event = event.getCopyWithUpdatedId(id);
         }
         return save(event, id);
     }
