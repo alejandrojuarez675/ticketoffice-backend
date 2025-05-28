@@ -30,7 +30,7 @@ public class UserController {
     @Operation(
             summary = "Get authenticated user",
             description = "Endpoint to retrieve the currently authenticated user",
-            tags = {"MVP", "User Management"},
+            tags = {"User Management"},
             security = {
                     @SecurityRequirement(name = "Authorization")
             },
@@ -55,7 +55,7 @@ public class UserController {
     @Operation(
             summary = "Get all users",
             description = "Endpoint to retrieve all users in the system",
-            tags = {"admin-endpoints", "User Management"},
+            tags = {"User Management"},
             security = {
                     @SecurityRequirement(name = "Authorization"),
             },

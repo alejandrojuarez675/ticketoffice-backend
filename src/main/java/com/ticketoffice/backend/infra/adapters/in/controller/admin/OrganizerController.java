@@ -30,7 +30,7 @@ public class OrganizerController {
     @Operation(
             summary = "Create your organizer data",
             description = "Endpoint to create an organizer data for a user",
-            tags = {"admin-endpoints", "Organizer Management", "MVP"},
+            tags = {"User Management"},
             security = {
                     @SecurityRequirement(name = "Authorization"),
             },

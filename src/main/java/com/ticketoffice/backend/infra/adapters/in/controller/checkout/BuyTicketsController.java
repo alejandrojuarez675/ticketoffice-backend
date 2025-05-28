@@ -17,29 +17,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/public/v1/buy-tickets")
 public class BuyTicketsController {
 
-    @GetMapping
-    @Operation(
-            summary = "Get the buy tickets page",
-            description = "This endpoint is used to get the buy tickets page.\n" +
-                    "This endpoint should be called when the user charge the page.",
-            tags = {"public-endpoints"},
-            security = {
-                    @SecurityRequirement(name = "Authorization")
-            }
-    )
+//    @GetMapping
+//    @Operation(
+//            summary = "Get the buy tickets page",
+//            description = "This endpoint is used to get the buy tickets page.\n" +
+//                    "This endpoint should be called when the user charge the page.",
+//            tags = {"public-endpoints"},
+//            security = {
+//                    @SecurityRequirement(name = "Authorization")
+//            }
+//    )
     public ResponseEntity<AvailableTicketListResponse> getBuyTickets() {
         return ResponseEntity.ok(TicketMocks.availableTicketListResponse);
     }
 
-    @PostMapping
-    @Operation(
-            summary = "Buy tickets for an event",
-            description = "Endpoint to buy tickets for an event. You have to be logged in as buyer to buy tickets.",
-            tags = {"public-endpoints"},
-            security = {
-                    @SecurityRequirement(name = "Authorization")
-            }
-    )
+//    @PostMapping
+//    @Operation(
+//            summary = "Buy tickets for an event",
+//            description = "Endpoint to buy tickets for an event. You have to be logged in as buyer to buy tickets.",
+//            tags = {"public-endpoints"},
+//            security = {
+//                    @SecurityRequirement(name = "Authorization")
+//            }
+//    )
     public ResponseEntity<BuyTicketResponse> buyTickets(
             @RequestBody BuyTicketsRequest buyTicketsRequest
     ) {

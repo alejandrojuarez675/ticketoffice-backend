@@ -15,16 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/public/v1/search")
 public class SearchController {
 
-    @GetMapping()
-    @Operation(
-        description = "Endpoint to search for events and fill the search page.\n" +
-                "This endpoint should be called when the user charge the page or types something in the search bar.",
-        summary = "Search for events",
-        tags = {"public-endpoints"}
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Search performed successfully"),
-    })
+//    @GetMapping()
+//    @Operation(
+//        description = "Endpoint to search for events and fill the search page.\n" +
+//                "This endpoint should be called when the user charge the page or types something in the search bar.",
+//        summary = "Search for events",
+//        tags = {"public-endpoints"}
+//    )
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "Search performed successfully"),
+//    })
     public ResponseEntity<SearchResponse> search(
             @RequestParam String city,
             @RequestParam(required = false, defaultValue = "") String query,

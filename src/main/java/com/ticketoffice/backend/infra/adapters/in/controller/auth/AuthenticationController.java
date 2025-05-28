@@ -25,7 +25,7 @@ public class AuthenticationController {
     @Operation(
             summary = "User Signup",
             description = "Endpoint to register a new user",
-            tags = {"public-endpoints", "MVP", "Authentication"}
+            tags = {"Authentication"}
     )
     @PostMapping("/signup")
     public ResponseEntity<LoginResponse> register(@RequestBody UserSignupRequest registerUserDto) throws BadRequestException {
@@ -36,7 +36,7 @@ public class AuthenticationController {
     @Operation(
             summary = "User Login",
             description = "Endpoint to authenticate a user",
-            tags = {"public-endpoints", "MVP", "Authentication"}
+            tags = {"Authentication"}
     )
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@RequestBody UserLoginRequest loginUserDto) {

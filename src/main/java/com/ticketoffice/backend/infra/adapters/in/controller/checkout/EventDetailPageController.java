@@ -33,7 +33,7 @@ public class EventDetailPageController {
     @Operation(
             description = "Endpoint to get a specific event by its ID formatted for detail page",
             summary = "Get all the information of an event by ID",
-            tags = {"public-endpoints", "MVP"},
+            tags = {"Public Endpoints"},
             parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)}
     )
     @ApiResponses(value = {

@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/public/v1/question-and-answer")
 public class QuestionAndAnswerController {
 
-    @PostMapping
-    @Operation(
-            summary = "Contact to us endpoint",
-            description = "This endpoint is used to send a question to the support team.\n" +
-                    "This endpoint should be called when the user wants to ask a question.",
-            tags = {"public-endpoints"}
-    )
+//    @PostMapping
+//    @Operation(
+//            summary = "Contact to us endpoint",
+//            description = "This endpoint is used to send a question to the support team.\n" +
+//                    "This endpoint should be called when the user wants to ask a question.",
+//            tags = {"public-endpoints"}
+//    )
     public ResponseEntity<Void> contactToUs(
             @RequestBody ContactToUsRequest question
     ) {

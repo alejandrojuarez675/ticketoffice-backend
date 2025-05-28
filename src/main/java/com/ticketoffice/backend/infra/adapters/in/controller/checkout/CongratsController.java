@@ -16,20 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/public/v1/congrats")
 public class CongratsController {
 
-    @GetMapping()
-    @Operation(
-            description = "This endpoint is used to get the congrats page after a successful purchase.\n" +
-                    "This endpoint should be called when the user charge the page.",
-            summary = "Get the congrats page",
-            tags = {"public-endpoints"},
-            security = {
-                    @SecurityRequirement(name = "Authorization")
-            }
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Congrats page retrieved successfully"),
-            @ApiResponse(responseCode = "404", description = "Sales not found"),
-    })
+//    @GetMapping()
+//    @Operation(
+//            description = "This endpoint is used to get the congrats page after a successful purchase.\n" +
+//                    "This endpoint should be called when the user charge the page.",
+//            summary = "Get the congrats page",
+//            tags = {"public-endpoints"},
+//            security = {
+//                    @SecurityRequirement(name = "Authorization")
+//            }
+//    )
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "Congrats page retrieved successfully"),
+//            @ApiResponse(responseCode = "404", description = "Sales not found"),
+//    })
     public ResponseEntity<CongratsResponse> getCongrats(
             @RequestParam String salesId
     ) {

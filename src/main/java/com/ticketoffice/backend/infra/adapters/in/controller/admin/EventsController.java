@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -46,13 +47,25 @@ public class EventsController {
     @Operation(
             summary = "Get my events",
             description = "Endpoint to get all events for the logged in user",
-            tags = {"admin-events", "MVP"},
+            tags = {"Events Management"},
             security = {
                     @SecurityRequirement(name = "Authorization")
             }
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Events retrieved successfully"),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Events retrieved successfully",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized",
+                    content = @Content(mediaType = "application/json", examples = {@ExampleObject(value = """
+                                    {
+                                      "code": "unauthorized",
+                                      "message": "You are not authorized to access this resource"
+                                    }
+                            """)}))
     })
     public ResponseEntity<EventListResponse> getEvents() throws UnauthorizedUserException {
         userRoleValidator.validateThatUserIsSeller();
@@ -63,14 +76,27 @@ public class EventsController {
     @Operation(
             summary = "Get my event with id",
             description = "Endpoint to get all events for the logged in user",
-            tags = {"admin-events", "MVP"},
+            tags = {"Events Management"},
             security = {
                     @SecurityRequirement(name = "Authorization")
+            },
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200",
+                            description = "Events retrieved successfully",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = EventDetailPageResponse.class))
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthorized",
+                            content = @Content(mediaType = "application/json", examples = {@ExampleObject(value = """
+                                    {
+                                      "code": "unauthorized",
+                                      "message": "You are not authorized to access this resource"
+                                    }
+                            """)}))
             }
     )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Events retrieved successfully"),
-    })
     public ResponseEntity<EventDetailPageResponse> getEventById(@PathVariable String id) throws UnauthorizedUserException, BadRequestException, NotAuthenticatedException, NotFoundException {
         userRoleValidator.validateThatUserIsSeller();
         IdValidator.validateIdFromParams(id, "seler_id", true);
@@ -81,7 +107,7 @@ public class EventsController {
     @Operation(
             description = "Endpoint to create a new event. You have to be logged as ADMIN to create an event.",
             summary = "Create a new event",
-            tags = {"admin-events", "MVP"},
+            tags = {"Events Management"},
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(),
             security = {
                     @SecurityRequirement(name = "Authorization")
@@ -101,6 +127,30 @@ public class EventsController {
                             """)})
                     }
             ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized",
+                    content = {
+                            @Content(mediaType = "application/json", examples = {@ExampleObject(value = """
+                                    {
+                                      "code": "unauthorized",
+                                      "message": "You are not authorized to access this resource"
+                                    }
+                            """)})
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal Server Error",
+                    content = {
+                            @Content(mediaType = "application/json", examples = {@ExampleObject(value = """
+                                    {
+                                      "code": "internal_server_error",
+                                      "message": "Internal Server Error"
+                                    }
+                            """)})
+                    }
+            )
     })
     public ResponseEntity<Void> postEvents(
             @RequestBody EventCrudRequest event
@@ -114,10 +164,56 @@ public class EventsController {
     @PutMapping("/{id}")
     @Operation(
             description = "Endpoint to update an event. You can update only your events.",
-            tags = {"admin-events", "MVP"},
+            summary = "Update an event",
+            tags = {"Events Management"},
             parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)},
             security = {
                     @SecurityRequirement(name = "Authorization")
+            },
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "The event to update",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = EventCrudRequest.class)
+                    )
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Event updated successfully",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = EventLightResponse.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad Request",
+                            content = @Content(mediaType = "application/json", examples = {@ExampleObject(value = """
+                                    {
+                                      "code": "bad_request",
+                                      "message": "Event name is too large"
+                                    }
+                            """)})
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthorized",
+                            content = @Content(mediaType = "application/json", examples = {@ExampleObject(value = """
+                                    {
+                                      "code": "unauthorized",
+                                      "message": "You are not authorized to access this resource"
+                                    }
+                            """)})
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal Server Error",
+                            content = @Content(mediaType = "application/json", examples = {@ExampleObject(value = """
+                                    {
+                                      "code": "internal_server_error",
+                                      "message": "Internal Server Error"
+                                    }
+                            """)})
+                    )
             }
     )
     public ResponseEntity<EventLightResponse> putEvents(
@@ -130,8 +226,9 @@ public class EventsController {
 
     @DeleteMapping("/{id}")
     @Operation(
+            summary = "Delete an event",
             description = "Endpoint to delete an event. You have to be logged as ADMIN to delete an event.",
-            tags = {"admin-events", "MVP"},
+            tags = {"Events Management"},
             parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)},
             security = {
                     @SecurityRequirement(name = "Authorization")
