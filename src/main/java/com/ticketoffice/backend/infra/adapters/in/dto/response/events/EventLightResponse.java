@@ -9,6 +9,7 @@ public record EventLightResponse(
         String location,
         String bannerUrl,
         Double price,
-        String currency
+        String currency,
+        String status
 ) {
 }

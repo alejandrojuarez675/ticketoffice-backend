@@ -1,6 +1,7 @@
 package com.ticketoffice.backend.domain.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ticketoffice.backend.domain.enums.EventStatus;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -15,7 +16,8 @@ public record Event(
         List<TicketPrice> prices,
         String description,
         List<String> additionalInfo,
-        String organizerId
+        String organizerId,
+        EventStatus status
 ){
 
     @JsonIgnore
@@ -29,5 +31,37 @@ public record Event(
                             .orElse(0.0) // Default value if no prices are found
                 )
                 .orElse(null);
+    }
+
+    @JsonIgnore
+    public Event getCopyWithUpdatedStatus(EventStatus status) {
+        return new Event(
+                id,
+                title,
+                date,
+                location,
+                image,
+                prices,
+                description,
+                additionalInfo,
+                organizerId,
+                status
+        );
+    }
+
+    @JsonIgnore
+    public Event getCopyWithUpdatedId(String id) {
+        return new Event(
+                id,
+                title,
+                date,
+                location,
+                image,
+                prices,
+                description,
+                additionalInfo,
+                organizerId,
+                status
+        );
     }
 }

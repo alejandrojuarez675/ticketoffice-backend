@@ -16,7 +16,8 @@ public class EventDetailPageResponseMapper {
                 event.prices() != null ? event.prices().stream().map(PriceDtoMapper::getFromPrice).toList() : List.of(),
                 event.description(),
                 event.additionalInfo(),
-                OrganizerDtoMapper.getFromOrganizer(organizer)
+                OrganizerDtoMapper.getFromOrganizer(organizer),
+                event.status().getStatus()
         );
     }
 }

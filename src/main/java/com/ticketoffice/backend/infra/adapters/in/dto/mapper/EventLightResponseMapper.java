@@ -12,7 +12,8 @@ public class EventLightResponseMapper {
                 event.location().name(),
                 event.image() != null ? event.image().url() : null,
                 event.getTheCheapestPrice(),
-                event.prices().getFirst().currency() // TODO handle different currencies
+                event.prices().getFirst().currency(), // TODO handle different currencies
+                event.status().getStatus()
         );
     }
 }

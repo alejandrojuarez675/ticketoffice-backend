@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ticketoffice.backend.domain.enums.UserRole;
 import java.util.Collection;
 import java.util.List;
@@ -98,5 +99,10 @@ public class User implements UserDetails {
 
     public void setOrganizer(Organizer organizer) {
         this.organizer = organizer;
+    }
+
+    @JsonIgnore
+    public boolean isAdmin() {
+        return role.contains(UserRole.ADMIN);
     }
 }

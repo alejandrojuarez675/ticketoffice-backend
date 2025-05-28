@@ -35,7 +35,8 @@ public class CreateEventUseCaseImpl implements CreateEventUseCase {
                 event.prices(),
                 event.description(),
                 event.additionalInfo(),
-                organizer.id()
+                organizer.id(),
+                event.status()
         );
         return eventRepository.save(eventToCreate)
                 .orElseThrow(() -> new ErrorOnPersistDataException("Event could not be created"));
