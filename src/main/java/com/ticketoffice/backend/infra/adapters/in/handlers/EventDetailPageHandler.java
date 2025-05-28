@@ -28,7 +28,7 @@ public class EventDetailPageHandler {
                 .orElseThrow(() -> new NotFoundException(String.format("Event with id %s not found", id)));
 
         Organizer organizer = getOrganizerByUserIdUseCase.findByUserId(event.organizerId())
-                .orElseThrow(() -> new NotFoundException(String.format("Organizer with id %s not found", event.organizerId())));
+                .orElse(new Organizer(event.organizerId(), null, null, null));
 
         return EventDetailPageResponseMapper.toResponse(event, organizer);
     }

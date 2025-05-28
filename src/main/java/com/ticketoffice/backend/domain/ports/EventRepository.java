@@ -14,4 +14,6 @@ public interface EventRepository {
     Optional<Event> update(String id, Event event);
 
     Optional<Event> getByIdAndOrganizerId(String id, String id1);
+
+    List<Event> findByUserId(String userId);
 }

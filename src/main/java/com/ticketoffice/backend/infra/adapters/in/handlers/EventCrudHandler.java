@@ -32,10 +32,14 @@ public class EventCrudHandler {
     }
 
     public List<EventLightResponse> findAll() {
-        return getAllEventsUseCase.getAllEvents()
-            .stream()
-            .map(EventLightResponseMapper::getFromEvent)
-            .toList();
+        try {
+            return getAllEventsUseCase.getAllEvents()
+                .stream()
+                .map(EventLightResponseMapper::getFromEvent)
+                .toList();
+        } catch (NotAuthenticatedException e) {
+            return List.of();
+        }
     }
 
     public void create(EventCrudRequest event) throws BadRequestException {

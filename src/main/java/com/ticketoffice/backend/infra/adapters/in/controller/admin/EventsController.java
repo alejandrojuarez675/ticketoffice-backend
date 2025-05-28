@@ -37,8 +37,9 @@ public class EventsController {
 
     @GetMapping()
     @Operation(
+            summary = "Get my events",
             description = "Endpoint to get all events for the logged in user",
-            tags = {"admin-events"},
+            tags = {"admin-events", "MVP"},
             security = {
                     @SecurityRequirement(name = "Authorization")
             }

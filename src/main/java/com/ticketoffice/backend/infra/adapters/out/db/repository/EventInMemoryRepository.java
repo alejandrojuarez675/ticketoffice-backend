@@ -114,6 +114,13 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
     }
 
     @Override
+    public List<Event> findByUserId(String userId) {
+        return findAll().stream()
+                .filter(event -> event.organizerId().equals(userId))
+                .toList();
+    }
+
+    @Override
     public void delete(String id) {
         data.remove(id);
     }
