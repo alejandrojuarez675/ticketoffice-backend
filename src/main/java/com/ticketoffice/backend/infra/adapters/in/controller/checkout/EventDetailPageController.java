@@ -1,6 +1,7 @@
 package com.ticketoffice.backend.infra.adapters.in.controller.checkout;
 
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventDetailPageResponse;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventLightResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.adapters.in.exception.NotFoundException;
 import com.ticketoffice.backend.infra.adapters.in.handlers.EventDetailPageHandler;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,6 +74,51 @@ public class EventDetailPageController {
     ) throws NotFoundException, BadRequestException {
         IdValidator.validateIdFromParams(id, "Event id", true);
         EventDetailPageResponse event = eventDetailPageHandler.getEvent(id);
+        return new ResponseEntity<>(event, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/recommendations")
+    @Operation(
+            description = "Endpoint to get recommendations for a event by its ID formatted for detail page",
+            summary = "Get events to show as recommendation for an event",
+            tags = {"Public Endpoints"},
+            parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Events retrieved successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Event id is not valid",
+                    content = {
+                            @Content(mediaType = "application/json", examples = {@ExampleObject(value = """
+                                    {
+                                      "code": "bad_found",
+                                      "message": "Event id is not valid"
+                                    }
+                            """)})
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Event not found",
+                    content = {
+                            @Content(mediaType = "application/json", examples = {@ExampleObject(value = """
+                                    {
+                                      "code": "not_found",
+                                      "message": "Event not found"
+                                    }
+                            """)})
+                    }
+            ),
+    })
+    public ResponseEntity<List<EventLightResponse>> getEventRecommendations(
+            @PathVariable String id
+    ) throws NotFoundException, BadRequestException {
+        IdValidator.validateIdFromParams(id, "Event id", true);
+        List<EventLightResponse> event = eventDetailPageHandler.getRecommendationByEvent(id);
         return new ResponseEntity<>(event, HttpStatus.OK);
     }
 
