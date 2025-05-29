@@ -53,9 +53,9 @@ public class UserController {
     }
 
     @Operation(
-            summary = "Get all users",
+            summary = "Get all users of the system",
             description = "Endpoint to retrieve all users in the system",
-            tags = {"User Management"},
+            tags = {"SUPER_ADMIN users"},
             security = {
                     @SecurityRequirement(name = "Authorization"),
             },

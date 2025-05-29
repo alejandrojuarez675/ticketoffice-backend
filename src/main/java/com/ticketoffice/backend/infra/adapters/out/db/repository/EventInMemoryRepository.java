@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -20,7 +21,7 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
 
     private static final Map<String, Event> data = new HashMap<>();
 
-    private EventInMemoryRepository() {
+    EventInMemoryRepository() {
         data.put(
                 "cd85b222-2adf-414d-aa26-6a0fb7c87beb",
                 new Event(
@@ -110,6 +111,32 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
         return findAll().stream()
                 .filter(event -> event.organizerId().equals(userId))
                 .toList();
+    }
+
+    @Override
+    public List<Event> search(List<Predicate<Event>> predicates, Integer pageSize, Integer pageNumber) {
+        List<Event> events = findAll().stream()
+                .filter(event -> predicates.stream().allMatch(predicate -> predicate.test(event)))
+                .toList();
+
+        if (events.isEmpty()) {
+            return List.of();
+        }
+
+        // If pageSize is greater than or equal to the total number of items, return all items
+        if (pageSize >= events.size()) {
+            return events;
+        }
+
+        int start = pageNumber * pageSize;
+        int end = Math.min((pageNumber + 1) * pageSize, events.size());
+
+        // If start is greater than size, return an empty list
+        if (start >= events.size()) {
+            return List.of();
+        }
+
+        return events.subList(start, end);
     }
 
     @Override

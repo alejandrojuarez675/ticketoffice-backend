@@ -3,6 +3,7 @@ package com.ticketoffice.backend.domain.ports;
 import com.ticketoffice.backend.domain.models.Event;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public interface EventRepository {
     Optional<Event> getById(String id);
@@ -16,4 +17,6 @@ public interface EventRepository {
     Optional<Event> getByIdAndOrganizerId(String id, String id1);
 
     List<Event> findByUserId(String userId);
+
+    List<Event> search(List<Predicate<Event>> predicates, Integer pageSize, Integer pageNumber);
 }
