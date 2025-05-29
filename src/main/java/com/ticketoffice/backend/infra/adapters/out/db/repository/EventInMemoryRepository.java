@@ -32,7 +32,8 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
                                 "1",
                                 "Movistar Arena",
                                 "Dg. 61c #26-36",
-                                "Bogotá"
+                                "Bogotá",
+                                "Colombia"
                         ),
                         new Image(
                                 "1",
@@ -137,6 +138,14 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
         }
 
         return events.subList(start, end);
+    }
+
+    @Override
+    public Integer count(List<Predicate<Event>> predicates) {
+        return findAll().stream()
+                .filter(event -> predicates.stream()
+                        .allMatch(predicate -> predicate.test(event)))
+                .toList().size();
     }
 
     @Override

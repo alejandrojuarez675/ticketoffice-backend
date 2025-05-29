@@ -31,7 +31,8 @@ public class SearchPageController {
         summary = "Get the events for home page",
         tags = {"Public Endpoints"},
         parameters = {
-                @Parameter(name = "city", description = "The city to search events in", required = true, example = "Bogota"),
+                @Parameter(name = "country", description = "The country to search events in", example = "Colombia"),
+                @Parameter(name = "city", description = "The city to search events in", example = "Bogotá"),
                 @Parameter(name = "query", description = "The search query"),
                 @Parameter(name = "pageSize", description = "The number of results to return per page", example = "9"),
                 @Parameter(name = "pageNumber", description = "The page number to return. Start at page number 0.", example = "1")
@@ -41,11 +42,12 @@ public class SearchPageController {
             @ApiResponse(responseCode = "200", description = "Search performed successfully"),
     })
     public ResponseEntity<SearchResponse> search(
-            @RequestParam String city,
+            @RequestParam String country,
+            @RequestParam(required = false, defaultValue = "") String city,
             @RequestParam(required = false, defaultValue = "") String query,
             @RequestParam(required = false, defaultValue = "9") Integer pageSize,
             @RequestParam(required = false, defaultValue = "1") Integer pageNumber
     ) {
-        return ResponseEntity.ok(searchPageHandler.getEventsByParams(city, query, pageSize, pageNumber));
+        return ResponseEntity.ok(searchPageHandler.getEventsByParams(country, city, query, pageSize, pageNumber));
     }
 }

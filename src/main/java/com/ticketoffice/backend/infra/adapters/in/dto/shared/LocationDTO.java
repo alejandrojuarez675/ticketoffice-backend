@@ -11,7 +11,10 @@ public record LocationDTO(
         String address,
 
         @Schema(description = "The city of the location", example = "Bogotá")
-        String city
+        String city,
+
+        @Schema(description = "The country of the location", example = "Colombia")
+        String country
 
 ) {
 }

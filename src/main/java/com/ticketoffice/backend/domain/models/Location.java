@@ -4,6 +4,7 @@ public record Location(
         String id,
         String name,
         String address,
-        String city
+        String city,
+        String country
 ) {
 }

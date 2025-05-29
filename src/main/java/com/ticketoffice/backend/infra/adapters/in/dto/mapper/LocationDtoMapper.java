@@ -9,7 +9,8 @@ public class LocationDtoMapper {
         return new LocationDTO(
                 location.name(),
                 location.address(),
-                location.city()
+                location.city(),
+                location.country()
         );
     }
 
@@ -18,7 +19,8 @@ public class LocationDtoMapper {
                 null,
                 locationDTO.name(),
                 locationDTO.address(),
-                locationDTO.city()
+                locationDTO.city(),
+                locationDTO.country()
         );
     }
 }
