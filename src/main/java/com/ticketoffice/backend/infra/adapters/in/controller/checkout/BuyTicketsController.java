@@ -4,17 +4,13 @@ import com.ticketoffice.backend.infra.adapters.in.dto.mocks.TicketMocks;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.BuyTicketsRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.checkout.AvailableTicketListResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.checkout.BuyTicketResponse;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/public/v1/buy-tickets")
+@RequestMapping("/api/public/v1/buy-tickets")
 public class BuyTicketsController {
 
 //    @GetMapping

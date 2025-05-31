@@ -1,0 +1,54 @@
+package com.ticketoffice.backend.infra.adapters.in.controller.checkout;
+
+import com.ticketoffice.backend.infra.adapters.in.dto.request.CreateSessionRequest;
+import com.ticketoffice.backend.infra.adapters.in.dto.request.validators.CreateSessionRequestValidator;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.SessionCreatedResponse;
+import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
+import com.ticketoffice.backend.infra.adapters.in.handlers.CheckoutHandler;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/public/v1/checkout")
+public class CheckoutController {
+
+    private final CheckoutHandler checkoutHandler;
+
+    public CheckoutController(CheckoutHandler checkoutHandler) {
+        this.checkoutHandler = checkoutHandler;
+    }
+
+    @Operation(
+            summary = "Create a checkout session to reserve the stock of the tickets",
+            description = "Endpoint to create a checkout session to reserve the stock of the tickets.",
+            tags = { "Checkout", "Public Endpoints" },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Session created",
+                            content = @Content(
+                                    schema = @Schema(implementation = SessionCreatedResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad Request",
+                            content = @Content(mediaType = "application/json")
+                    )
+            }
+    )
+    @PostMapping("/session")
+    public ResponseEntity<SessionCreatedResponse> createSession(
+            @RequestBody CreateSessionRequest body
+    ) throws BadRequestException {
+        new CreateSessionRequestValidator().validate(body);
+        return ResponseEntity.ok(checkoutHandler.createSession(body));
+    }
+}
