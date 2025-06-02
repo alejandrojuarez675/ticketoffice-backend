@@ -17,8 +17,8 @@ public class GetOrganizerByUserIdUseCaseImpl implements GetOrganizerByUserIdUseC
     }
 
     @Override
-    public Optional<Organizer> findByUserId(String userId) {
-        return getUserByIdUseCase.findById(userId)
+    public Optional<Organizer> apply(String userId) {
+        return getUserByIdUseCase.apply(userId)
                 .flatMap(User::getOrganizer);
     }
 }

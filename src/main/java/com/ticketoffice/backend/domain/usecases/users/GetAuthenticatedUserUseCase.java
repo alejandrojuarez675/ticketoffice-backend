@@ -1,13 +1,10 @@
 package com.ticketoffice.backend.domain.usecases.users;
 
 import com.ticketoffice.backend.domain.models.User;
+import com.ticketoffice.backend.domain.usecases.UseCase;
 import java.util.Optional;
+import java.util.function.Supplier;
 
-public interface GetAuthenticatedUserUseCase {
-    /**
-     * Retrieves the currently authenticated user.
-     *
-     * @return The authenticated user.
-     */
-    Optional<User> getAuthenticatedUser();
+@FunctionalInterface
+public interface GetAuthenticatedUserUseCase extends UseCase, Supplier<Optional<User>> {
 }

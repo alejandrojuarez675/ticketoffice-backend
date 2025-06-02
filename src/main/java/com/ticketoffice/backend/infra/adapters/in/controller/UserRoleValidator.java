@@ -25,7 +25,7 @@ public class UserRoleValidator {
      * @throws UnauthorizedUserException If the user does not have one of the allowed roles.
      */
     public void validateUserRole(List<UserRole> allowedRoles) throws UnauthorizedUserException {
-        getAuthenticatedUserUseCase.getAuthenticatedUser()
+        getAuthenticatedUserUseCase.get()
                 .filter(user -> {
                     List<UserRole> allowedRolesAndAdmin = new ArrayList<>();
                     allowedRolesAndAdmin.add(UserRole.ADMIN);

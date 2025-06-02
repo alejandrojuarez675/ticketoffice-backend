@@ -24,7 +24,7 @@ public class CheckoutHandler {
 
         CheckoutSession checkoutSession;
         try {
-            checkoutSession = createCheckoutSessionUseCase.createCheckoutSession(
+            checkoutSession = createCheckoutSessionUseCase.apply(
                     body.eventId(),
                     body.priceId(),
                     body.quantity());

@@ -16,7 +16,7 @@ public class GetCheckoutSessionUseCaseImpl implements GetCheckoutSessionUseCase 
     }
 
     @Override
-    public Optional<CheckoutSession> getCheckoutSession(String sessionId) {
+    public Optional<CheckoutSession> apply(String sessionId) {
         return checkoutSessionCache.getById(sessionId);
     }
 }

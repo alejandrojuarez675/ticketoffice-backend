@@ -16,7 +16,7 @@ public class GetAllUsersUserCaseImpl implements GetAllUsersUserCase {
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> get() {
         return userRepository.findAll();
     }
 }

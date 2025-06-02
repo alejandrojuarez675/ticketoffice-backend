@@ -4,8 +4,10 @@ import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
 import com.ticketoffice.backend.domain.models.Event;
+import com.ticketoffice.backend.domain.usecases.UseCase;
 
-public interface UpdateMyEventUseCase {
+@FunctionalInterface
+public interface UpdateMyEventUseCase extends UseCase {
     /**
      * Updates an event with the given ID using the provided event data.
      *
@@ -13,6 +15,6 @@ public interface UpdateMyEventUseCase {
      * @param event The event data to update.
      * @return The updated event.
      */
-    Event updateMyEvent(String id, Event event)
+    Event apply(String id, Event event)
             throws NotAuthenticatedException, ResourceDoesntExistException, ErrorOnPersistDataException;
 }

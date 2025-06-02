@@ -19,8 +19,8 @@ public class GetOrganizerByUserUseCaseImpl implements GetOrganizerByUserUseCase 
     }
 
     @Override
-    public Organizer getOrganizerByUser() throws NotAuthenticatedException, ResourceDoesntExistException {
-        User userLogged = getAuthenticatedUserUseCase.getAuthenticatedUser()
+    public Organizer get() throws NotAuthenticatedException, ResourceDoesntExistException {
+        User userLogged = getAuthenticatedUserUseCase.get()
                 .orElseThrow(() -> new NotAuthenticatedException("User is not authenticated"));
 
         if (userLogged.getRole().stream().noneMatch(UserRole.SELLER::equals)) {

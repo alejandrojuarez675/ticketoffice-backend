@@ -15,8 +15,8 @@ public class IsAnAdminUserUseCaseImpl implements IsAnAdminUserUseCase {
     }
 
     @Override
-    public boolean isAdmin() {
-        return getAuthenticatedUserUseCase.getAuthenticatedUser()
+    public boolean getAsBoolean() {
+        return getAuthenticatedUserUseCase.get()
                 .filter(user -> user.getRole().contains(UserRole.ADMIN))
                 .isPresent();
     }

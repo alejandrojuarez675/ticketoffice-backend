@@ -25,8 +25,8 @@ public class DeleteMyEventUseCaseImpl implements DeleteMyEventUseCase {
     }
 
     @Override
-    public void deleteMyEvent(String id) throws NotAuthenticatedException, ErrorOnPersistDataException {
-        User userLogged = getAuthenticatedUserUseCase.getAuthenticatedUser()
+    public void accept(String id) throws NotAuthenticatedException, ErrorOnPersistDataException {
+        User userLogged = getAuthenticatedUserUseCase.get()
                 .orElseThrow(() -> new NotAuthenticatedException("User not authenticated"));
 
         eventRepository.getById(id)

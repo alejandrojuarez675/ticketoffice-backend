@@ -20,7 +20,7 @@ public class OrganizerCrudHandler {
 
     public void createOrganizer(OrganizerCrudRequest organizer) throws BadRequestException {
         try {
-            createOrganizerUseCase.createOrganizer(
+            createOrganizerUseCase.accept(
                     new Organizer(
                             null,
                             organizer.name(),

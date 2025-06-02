@@ -1,8 +1,10 @@
 package com.ticketoffice.backend.domain.usecases.checkout;
 
 import com.ticketoffice.backend.domain.models.CheckoutSession;
+import com.ticketoffice.backend.domain.usecases.UseCase;
 import java.util.Optional;
+import java.util.function.Function;
 
-public interface GetCheckoutSessionUseCase {
-    Optional<CheckoutSession> getCheckoutSession(String sessionId);
+@FunctionalInterface
+public interface GetCheckoutSessionUseCase extends UseCase, Function<String, Optional<CheckoutSession>> {
 }

@@ -15,7 +15,7 @@ public class GetOnHoldTicketsStockUseCaseImpl implements GetOnHoldTicketsStockUs
     }
 
     @Override
-    public Integer getOnHoldTicketsStock(String eventId, String ticketId) {
+    public Integer apply(String eventId, String ticketId) {
         return checkoutSessionCache.countKeysMatches(CheckoutSessionIdUtils.getCheckoutSessionPattern(eventId, ticketId));
     }
 }

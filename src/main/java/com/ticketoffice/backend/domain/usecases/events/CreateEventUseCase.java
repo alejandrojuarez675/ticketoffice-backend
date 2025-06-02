@@ -4,7 +4,9 @@ import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
 import com.ticketoffice.backend.domain.models.Event;
+import com.ticketoffice.backend.domain.usecases.UseCase;
 
-public interface CreateEventUseCase {
-    Event createEvent(Event event) throws NotAuthenticatedException, ResourceDoesntExistException, ErrorOnPersistDataException;
+@FunctionalInterface
+public interface CreateEventUseCase extends UseCase {
+    Event apply(Event event) throws NotAuthenticatedException, ResourceDoesntExistException, ErrorOnPersistDataException;
 }

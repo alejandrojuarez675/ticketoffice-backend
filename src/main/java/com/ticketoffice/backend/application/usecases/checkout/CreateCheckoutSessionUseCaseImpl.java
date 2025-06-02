@@ -8,6 +8,7 @@ import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
 import com.ticketoffice.backend.domain.models.CheckoutSession;
 import com.ticketoffice.backend.domain.ports.CheckoutSessionCache;
 import com.ticketoffice.backend.domain.usecases.checkout.CreateCheckoutSessionUseCase;
+import com.ticketoffice.backend.domain.usecases.tickets.GetAvailableTicketStockIdUseCase;
 import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ public class CreateCheckoutSessionUseCaseImpl implements CreateCheckoutSessionUs
     public static final Long EXPIRATION_TIME_IN_SECONDS = 600L; // 10 minutes
 
     private final CheckoutSessionCache checkoutSessionCache;
-    private final GetAvailableTicketStockIdUseCaseImpl getAvailableTicketStockIdUseCase;
+    private final GetAvailableTicketStockIdUseCase getAvailableTicketStockIdUseCase;
 
     public CreateCheckoutSessionUseCaseImpl(
             CheckoutSessionCache checkoutSessionCache,
@@ -28,13 +29,14 @@ public class CreateCheckoutSessionUseCaseImpl implements CreateCheckoutSessionUs
     }
 
     @Override
-    public CheckoutSession createCheckoutSession(
+    public CheckoutSession apply(
             String eventId,
             String priceId,
             Integer quantity
     ) throws ResourceDoesntExistException, ProblemWithTicketStock, ErrorOnPersistDataException {
 
-        Integer availableTicketStock = getAvailableTicketStockIdUseCase.getAvailableTicketStock(eventId, priceId);
+        Integer availableTicketStock = getAvailableTicketStockIdUseCase.apply(eventId, priceId);
+
         if (availableTicketStock < quantity) {
             throw new ProblemWithTicketStock("Not enough tickets available");
         }

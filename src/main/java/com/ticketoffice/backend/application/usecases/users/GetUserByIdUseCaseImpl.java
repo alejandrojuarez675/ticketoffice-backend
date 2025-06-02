@@ -16,7 +16,7 @@ public class GetUserByIdUseCaseImpl implements GetUserByIdUseCase {
     }
 
     @Override
-    public Optional<User> findById(String id) {
-        return userRepository.getById(id);
+    public Optional<User> apply(String s) {
+        return userRepository.getById(s);
     }
 }

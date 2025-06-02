@@ -24,8 +24,8 @@ public class GetAllMyEventsUseCaseImpl implements GetAllMyEventsUseCase {
     }
 
     @Override
-    public List<Event> getAllEvents() throws NotAuthenticatedException {
-        User user = getAuthenticatedUserUseCase.getAuthenticatedUser()
+    public List<Event> get() throws NotAuthenticatedException {
+        User user = getAuthenticatedUserUseCase.get()
                 .orElseThrow(() -> new NotAuthenticatedException("User not authenticated"));
 
         return user.isAdmin() ? eventRepository.findAll() : eventRepository.findByUserId(user.getId());

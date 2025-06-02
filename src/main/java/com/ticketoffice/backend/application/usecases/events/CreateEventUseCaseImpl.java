@@ -24,8 +24,8 @@ public class CreateEventUseCaseImpl implements CreateEventUseCase {
     }
 
     @Override
-    public Event createEvent(Event event) throws NotAuthenticatedException, ResourceDoesntExistException, ErrorOnPersistDataException {
-        Organizer organizer = getOrganizerByUserUseCase.getOrganizerByUser();
+    public Event apply(Event event) throws NotAuthenticatedException, ResourceDoesntExistException, ErrorOnPersistDataException {
+        Organizer organizer = getOrganizerByUserUseCase.get();
         Event eventToCreate = new Event(
                 null,
                 event.title(),

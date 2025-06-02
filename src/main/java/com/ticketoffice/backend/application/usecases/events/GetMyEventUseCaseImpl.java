@@ -24,11 +24,11 @@ public class GetMyEventUseCaseImpl implements GetMyEventUseCase {
     }
 
     @Override
-    public Optional<Event> getMyEventById(String id) throws NotAuthenticatedException {
-        User user = getAuthenticatedUserUseCase.getAuthenticatedUser()
+    public Optional<Event> apply(String id) throws NotAuthenticatedException {
+        User user = getAuthenticatedUserUseCase.get()
                 .orElseThrow(() -> new NotAuthenticatedException("User not authenticated"));
 
-        return getEventUseCase.getEventById(id)
+        return getEventUseCase.apply(id)
                 .filter(event -> user.isAdmin() || event.organizerId().equals(user.getId()));
     }
 }

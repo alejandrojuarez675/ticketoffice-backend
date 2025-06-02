@@ -27,8 +27,8 @@ public class GetSimilarEventsToAnEventUseCaseImpl implements GetSimilarEventsToA
     }
 
     @Override
-    public List<Event> getSimilarEventsToAnEvent(String eventId, Integer quantity) throws ResourceDoesntExistException {
-        Event event = getEventUseCase.getEventById(eventId)
+    public List<Event> apply(String eventId, Integer quantity) throws ResourceDoesntExistException {
+        Event event = getEventUseCase.apply(eventId)
                 .orElseThrow(() -> new ResourceDoesntExistException(String.format("Event with id %s not found", eventId)));
 
         List<List<Predicate<Event>>> predicates = new ArrayList<>(List.of(

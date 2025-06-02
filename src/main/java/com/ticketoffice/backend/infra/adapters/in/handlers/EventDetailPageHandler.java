@@ -29,7 +29,8 @@ public class EventDetailPageHandler {
     public EventDetailPageHandler(
             GetEventUseCase getEventUseCase,
             GetOrganizerByUserIdUseCase getOrganizerByUserIdUseCase,
-            GetSimilarEventsToAnEventUseCase getSimilarEventsToAnEventUseCase, GetAvailableTicketStockIdUseCase getAvailableTicketStockIdUseCase
+            GetSimilarEventsToAnEventUseCase getSimilarEventsToAnEventUseCase,
+            GetAvailableTicketStockIdUseCase getAvailableTicketStockIdUseCase
     ) {
         this.getEventUseCase = getEventUseCase;
         this.getOrganizerByUserIdUseCase = getOrganizerByUserIdUseCase;
@@ -38,10 +39,10 @@ public class EventDetailPageHandler {
     }
 
     public EventDetailPageResponse getEvent(String id) throws NotFoundException {
-        Event event = getEventUseCase.getEventById(id)
+        Event event = getEventUseCase.apply(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Event with id %s not found", id)));
 
-        Organizer organizer = getOrganizerByUserIdUseCase.findByUserId(event.organizerId())
+        Organizer organizer = getOrganizerByUserIdUseCase.apply(event.organizerId())
                 .orElse(new Organizer(event.organizerId(), null, null, null));
 
         List<PriceDTO> priceListToOverride = event.prices().stream()
@@ -66,7 +67,7 @@ public class EventDetailPageHandler {
     private Function<TicketPrice, PriceDTO> getTicketPricePriceDTOFunction(String id) {
         return price -> {
             try {
-                Integer availableTicketStock = getAvailableTicketStockIdUseCase.getAvailableTicketStock(id, price.id());
+                Integer availableTicketStock = getAvailableTicketStockIdUseCase.apply(id, price.id());
                 return new PriceDTO(price.id(), price.value(), price.currency(), price.type(), price.isFree(), availableTicketStock);
             } catch (ResourceDoesntExistException e) {
                 throw new RuntimeException(e);
@@ -76,7 +77,7 @@ public class EventDetailPageHandler {
 
     public List<EventLightResponse> getRecommendationByEvent(String id) throws NotFoundException {
         try {
-            return getSimilarEventsToAnEventUseCase.getSimilarEventsToAnEvent(id, 5)
+            return getSimilarEventsToAnEventUseCase.apply(id, 5)
                     .stream()
                     .map(EventLightResponseMapper::getFromEvent)
                     .toList();

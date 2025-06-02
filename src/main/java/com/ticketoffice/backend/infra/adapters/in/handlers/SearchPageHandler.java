@@ -25,12 +25,12 @@ public class SearchPageHandler {
 
     public SearchResponse getEventsByParams(String country, String city, String query, Integer pageSize, Integer pageNumber) {
         EventSearchParameters eventSearchParameters = new EventSearchParameters(country, city, query);
-        List<Event> events = getEventsByParamsUseCase.getEventsByParams(eventSearchParameters, pageSize, pageNumber);
+        List<Event> events = getEventsByParamsUseCase.apply(eventSearchParameters, pageSize, pageNumber);
 
         return new SearchResponse(
                 events.stream().map(EventLightResponseMapper::getFromEvent).toList(),
                 !events.isEmpty(),
-                countEventsByParamsUseCase.countEventsByParams(eventSearchParameters)/pageSize + 1,
+                countEventsByParamsUseCase.apply(eventSearchParameters)/pageSize + 1,
                 pageNumber,
                 pageSize
         );

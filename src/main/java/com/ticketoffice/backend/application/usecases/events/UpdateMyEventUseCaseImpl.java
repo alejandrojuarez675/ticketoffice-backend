@@ -25,10 +25,10 @@ public class UpdateMyEventUseCaseImpl implements UpdateMyEventUseCase {
     }
 
     @Override
-    public Event updateMyEvent(
+    public Event apply(
             String id, Event event
     ) throws NotAuthenticatedException, ResourceDoesntExistException, ErrorOnPersistDataException {
-        User userLogged = getAuthenticatedUserUseCase.getAuthenticatedUser()
+        User userLogged = getAuthenticatedUserUseCase.get()
                 .orElseThrow(() -> new NotAuthenticatedException("User is not authenticated"));
 
         Event eventToUpdate = (

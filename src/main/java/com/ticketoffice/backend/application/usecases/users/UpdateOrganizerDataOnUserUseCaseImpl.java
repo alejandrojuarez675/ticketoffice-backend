@@ -17,7 +17,7 @@ public class UpdateOrganizerDataOnUserUseCaseImpl implements UpdateOrganizerData
     }
 
     @Override
-    public Optional<User> update(User user, Organizer organizer) {
+    public Optional<User> apply(User user, Organizer organizer) {
         User updatedUser = updateUserData(user, organizer);
         return userRepository.update(updatedUser.getId(), updatedUser);
     }

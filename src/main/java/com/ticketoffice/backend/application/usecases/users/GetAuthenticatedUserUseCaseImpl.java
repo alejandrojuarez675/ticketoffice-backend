@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GetAuthenticatedUserUseCaseImpl implements GetAuthenticatedUserUseCase {
     @Override
-    public Optional<User> getAuthenticatedUser() {
+    public Optional<User> get() {
         return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                 .filter(Authentication::isAuthenticated)
                 .map(Authentication::getPrincipal)

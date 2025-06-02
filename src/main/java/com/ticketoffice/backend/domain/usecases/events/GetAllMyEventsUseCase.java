@@ -2,8 +2,10 @@ package com.ticketoffice.backend.domain.usecases.events;
 
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.domain.models.Event;
+import com.ticketoffice.backend.domain.usecases.UseCase;
 import java.util.List;
 
-public interface GetAllMyEventsUseCase {
-    List<Event> getAllEvents() throws NotAuthenticatedException;
+@FunctionalInterface
+public interface GetAllMyEventsUseCase extends UseCase {
+    List<Event> get() throws NotAuthenticatedException;
 }

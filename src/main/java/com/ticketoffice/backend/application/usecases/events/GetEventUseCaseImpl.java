@@ -16,7 +16,7 @@ public class GetEventUseCaseImpl implements GetEventUseCase {
     }
 
     @Override
-    public Optional<Event> getEventById(String id) {
+    public Optional<Event> apply(String id) {
         return eventRepository.getById(id);
     }
 }

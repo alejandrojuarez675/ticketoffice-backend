@@ -50,7 +50,7 @@ public class EventCrudHandler {
 
     public List<EventLightResponse> findAll() {
         try {
-            return getAllMyEventsUseCase.getAllEvents()
+            return getAllMyEventsUseCase.get()
                 .stream()
                 .map(EventLightResponseMapper::getFromEvent)
                 .toList();
@@ -61,7 +61,7 @@ public class EventCrudHandler {
 
     public void create(EventCrudRequest event) throws BadRequestException {
         try {
-            createEventUseCase.createEvent(EventCrudRequestMapper.toDomain(event));
+            createEventUseCase.apply(EventCrudRequestMapper.toDomain(event));
         } catch (NotAuthenticatedException e) {
             throw new BadRequestException("User is not authenticated");
         } catch (ResourceDoesntExistException e) {
@@ -77,7 +77,7 @@ public class EventCrudHandler {
         Event eventDomain = EventCrudRequestMapper.toDomain(event);
         Event eventResponse;
         try {
-            eventResponse = updateMyEventUseCase.updateMyEvent(id, eventDomain);
+            eventResponse = updateMyEventUseCase.apply(id, eventDomain);
         } catch (NotAuthenticatedException e) {
             throw new BadRequestException("User is not authenticated");
         } catch (ResourceDoesntExistException e) {
@@ -89,10 +89,10 @@ public class EventCrudHandler {
     }
 
     public EventDetailPageResponse getEventById(String id) throws NotAuthenticatedException, NotFoundException {
-        Event event = getMyEventUseCase.getMyEventById(id)
+        Event event = getMyEventUseCase.apply(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Event with id %s not found", id)));
 
-        Organizer organizer = getOrganizerByUserIdUseCase.findByUserId(event.organizerId())
+        Organizer organizer = getOrganizerByUserIdUseCase.apply(event.organizerId())
                 .orElse(new Organizer(event.organizerId(), null, null, null));
 
         return EventDetailPageResponseMapper.toResponse(event, organizer);
@@ -100,7 +100,7 @@ public class EventCrudHandler {
 
     public void deleteById(String id) throws NotAuthenticatedException {
         try {
-            deleteMyEventUseCase.deleteMyEvent(id);
+            deleteMyEventUseCase.accept(id);
         } catch (ErrorOnPersistDataException e) {
             throw new RuntimeException(e);
         }

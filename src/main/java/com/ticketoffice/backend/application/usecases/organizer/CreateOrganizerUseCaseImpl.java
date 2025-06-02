@@ -23,13 +23,13 @@ public class CreateOrganizerUseCaseImpl implements CreateOrganizerUseCase {
     }
 
     @Override
-    public void createOrganizer(Organizer organizer) throws NotAuthenticatedException, ErrorOnPersistDataException {
-        User userLogged = getAuthenticatedUserUseCase.getAuthenticatedUser()
+    public void accept(Organizer organizer) throws NotAuthenticatedException, ErrorOnPersistDataException {
+        User userLogged = getAuthenticatedUserUseCase.get()
                 .orElseThrow(() -> new NotAuthenticatedException("User is not authenticated"));
 
         Organizer organizerDomain = updateOrganizer(organizer, userLogged);
 
-        updateOrganizerDataOnUserUseCase.update(userLogged, organizerDomain)
+        updateOrganizerDataOnUserUseCase.apply(userLogged, organizerDomain)
                 .orElseThrow(() -> new ErrorOnPersistDataException("Organizer could not be created"));
     }
 

@@ -15,7 +15,7 @@ public class CountEventsByParamsUseCaseImpl implements CountEventsByParamsUseCas
     }
 
     @Override
-    public Integer countEventsByParams(EventSearchParameters eventSearchParameters) {
+    public Integer apply(EventSearchParameters eventSearchParameters) {
         return eventRepository.count(eventSearchParameters.getPredicates());
     }
 }

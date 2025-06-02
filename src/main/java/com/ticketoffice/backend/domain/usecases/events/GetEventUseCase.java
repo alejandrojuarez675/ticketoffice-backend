@@ -1,9 +1,10 @@
 package com.ticketoffice.backend.domain.usecases.events;
 
 import com.ticketoffice.backend.domain.models.Event;
-import java.util.List;
+import com.ticketoffice.backend.domain.usecases.UseCase;
 import java.util.Optional;
+import java.util.function.Function;
 
-public interface GetEventUseCase {
-    Optional<Event> getEventById(String id);
+@FunctionalInterface
+public interface GetEventUseCase extends UseCase, Function<String, Optional<Event>> {
 }

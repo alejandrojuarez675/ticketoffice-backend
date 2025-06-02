@@ -23,8 +23,8 @@ public class GetAvailableTicketStockIdUseCaseImpl implements GetAvailableTicketS
     }
 
     @Override
-    public Integer getAvailableTicketStock(String eventId, String ticketId) throws ResourceDoesntExistException {
-        Event event = getEventUseCase.getEventById(eventId)
+    public Integer apply(String eventId, String ticketId) throws ResourceDoesntExistException {
+        Event event = getEventUseCase.apply(eventId)
                 .orElseThrow(() -> new ResourceDoesntExistException("Event not found"));
 
         Integer initialStock = event.prices().stream()
@@ -33,7 +33,7 @@ public class GetAvailableTicketStockIdUseCaseImpl implements GetAvailableTicketS
                 .map(TicketPrice::stock)
                 .orElseThrow(() -> new ResourceDoesntExistException("Ticket not found"));
 
-        Integer onHoldStock = getOnHoldTicketsStockUseCase.getOnHoldTicketsStock(eventId, ticketId);
+        Integer onHoldStock = getOnHoldTicketsStockUseCase.apply(eventId, ticketId);
 
         return initialStock - onHoldStock; // TODO add sales
     }

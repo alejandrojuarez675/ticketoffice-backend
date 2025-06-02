@@ -22,7 +22,8 @@ public class UserHandler {
 
     public UserHandler(
             GetAllUsersUserCase getAllUsersUserCase,
-            GetAuthenticatedUserUseCase getAuthenticatedUserUseCase, IsAnAdminUserUseCase isAnAdminUserUseCase,
+            GetAuthenticatedUserUseCase getAuthenticatedUserUseCase,
+            IsAnAdminUserUseCase isAnAdminUserUseCase,
             GetOrganizerByUserIdUseCase getOrganizerByUserIdUseCase) {
         this.getAllUsersUserCase = getAllUsersUserCase;
         this.getAuthenticatedUserUseCase = getAuthenticatedUserUseCase;
@@ -31,7 +32,7 @@ public class UserHandler {
     }
 
     public UserResponse getAuthenticatedUser() {
-        return getAuthenticatedUserUseCase.getAuthenticatedUser()
+        return getAuthenticatedUserUseCase.get()
                 .map(this::createUserResponse)
                 .orElse(null);
     }
@@ -49,17 +50,17 @@ public class UserHandler {
     }
 
     private OrganizerDTO getOrganizerDTO(User currentUser) {
-        return getOrganizerByUserIdUseCase.findByUserId(currentUser.getId())
+        return getOrganizerByUserIdUseCase.apply(currentUser.getId())
                 .map(OrganizerDtoMapper::getFromOrganizer)
                 .orElse(null);
     }
 
     public List<UserResponse> getAllUsers() throws UnauthorizedUserException {
-        if (!isAnAdminUserUseCase.isAdmin()) {
+        if (!isAnAdminUserUseCase.getAsBoolean()) {
             throw new UnauthorizedUserException("You do not have permission to access this user");
         }
 
-        return getAllUsersUserCase.getAllUsers().stream()
+        return getAllUsersUserCase.get().stream()
             .map(user -> new UserResponse(
                 user.getId(),
                 user.getUsername(),
