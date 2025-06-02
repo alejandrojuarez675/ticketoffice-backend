@@ -40,7 +40,7 @@ public class CreateCheckoutSessionUseCaseImpl implements CreateCheckoutSessionUs
         }
 
         CheckoutSession checkoutSession = new CheckoutSession(
-                CheckoutSessionIdUtils.createCheckoutSessionId(eventId, priceId),
+                CheckoutSessionIdUtils.createCheckoutSessionId(eventId, priceId, quantity),
                 eventId,
                 priceId,
                 quantity,

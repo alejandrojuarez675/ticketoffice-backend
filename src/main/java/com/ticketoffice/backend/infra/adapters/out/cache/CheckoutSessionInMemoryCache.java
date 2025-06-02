@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.out.cache;
 
+import com.ticketoffice.backend.application.utils.CheckoutSessionIdUtils;
 import com.ticketoffice.backend.domain.models.CheckoutSession;
 import com.ticketoffice.backend.domain.ports.CheckoutSessionCache;
 import java.util.HashMap;
@@ -25,7 +26,10 @@ public class CheckoutSessionInMemoryCache implements CheckoutSessionCache {
     @Override
     public Integer countKeysMatches(String pattern) {
         removeExpiredSessions();
-        return Math.toIntExact(data.keySet().stream().filter(key -> key.matches(pattern)).count());
+        return data.keySet().stream()
+                .filter(key -> key.matches(pattern))
+                .map(CheckoutSessionIdUtils::getQuantity)
+                .reduce(0, Integer::sum);
     }
 
     @Override
