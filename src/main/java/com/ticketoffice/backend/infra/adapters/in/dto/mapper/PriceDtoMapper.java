@@ -11,7 +11,8 @@ public class PriceDtoMapper {
                 price.value(),
                 price.currency(),
                 price.type(),
-                price.isFree()
+                price.isFree(),
+                price.stock()
         );
     }
 
@@ -21,7 +22,8 @@ public class PriceDtoMapper {
                 priceDTO.value(),
                 priceDTO.currency(),
                 priceDTO.type(),
-                priceDTO.isFree()
+                priceDTO.isFree(),
+                priceDTO.stock()
         );
     }
 }

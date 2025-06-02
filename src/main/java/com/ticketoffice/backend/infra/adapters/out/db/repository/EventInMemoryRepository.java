@@ -46,14 +46,16 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
                                         100000.0,
                                         "$",
                                         "VIP",
-                                        false
+                                        false,
+                                        10
                                 ),
                                 new TicketPrice(
                                         "cd85b222-2adf-414d-aa26-6a0fb7c87beb",
                                         30000.0,
                                         "$",
                                         "General",
-                                        false
+                                        false,
+                                        15
                                 )
                         ),
                         "Trueno es uno de los grandes artistas latinoamericanos de nuestros tiempos. Un rapero que comenzó destacándose en las batallas de freestyle en su natal Buenos Aires y hoy ha logrado el reconocimiento internacional además de acumular millones de oyentes en plataformas digitales. Este 7 de junio el Movistar Arena será testigo del prime de uno de los nuevos grandes del universo urbano.",

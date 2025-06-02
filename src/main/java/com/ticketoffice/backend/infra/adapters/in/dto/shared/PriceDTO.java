@@ -17,6 +17,9 @@ public record PriceDTO(
         String type,
 
         @Schema(description = "The description of the price", example = "false")
-        Boolean isFree
+        Boolean isFree,
+
+        @Schema(description = "The stock of the price", example = "100")
+        Integer stock
 ) {
 }

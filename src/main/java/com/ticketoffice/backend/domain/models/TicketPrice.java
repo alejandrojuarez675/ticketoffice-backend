@@ -5,6 +5,7 @@ public record TicketPrice(
         Double value,
         String currency,
         String type,
-        Boolean isFree
+        Boolean isFree,
+        Integer stock
 ) {
 }
