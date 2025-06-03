@@ -1,13 +1,19 @@
 package com.ticketoffice.backend.infra.adapters.in.dto.request;
 
+import java.util.List;
+
 public record BuyTicketsRequest(
-        String eventId,
-        String ticketId,
-        Integer quantity,
-        String buyerName,
-        String buyerLastname,
-        String buyerPhone,
-        String buyerIdentification,
-        String buyerEmail
+        String sessionId,
+        String mainEmail,
+        List<PersonalData> buyer
 ) {
+    public record PersonalData(
+            String name,
+            String lastName,
+            String email,
+            String phone,
+            String nationality,
+            String documentType,
+            String document
+    ){}
 }
