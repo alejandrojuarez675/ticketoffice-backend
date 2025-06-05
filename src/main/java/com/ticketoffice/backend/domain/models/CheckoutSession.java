@@ -8,13 +8,15 @@ public class CheckoutSession {
     private String eventId;
     private String priceId;
     private Integer quantity;
+    private Status status;
     private LocalDateTime expirationTime;
 
-    public CheckoutSession(String id, String eventId, String priceId, Integer quantity, LocalDateTime expirationTime) {
+    public CheckoutSession(String id, String eventId, String priceId, Integer quantity, Status status, LocalDateTime expirationTime) {
         this.id = id;
         this.eventId = eventId;
         this.priceId = priceId;
         this.quantity = quantity;
+        this.status = status;
         this.expirationTime = expirationTime;
     }
 
@@ -61,4 +63,14 @@ public class CheckoutSession {
     public void setPriceId(String priceId) {
         this.priceId = priceId;
     }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public enum Status {CREATED, CONFIRMING}
 }

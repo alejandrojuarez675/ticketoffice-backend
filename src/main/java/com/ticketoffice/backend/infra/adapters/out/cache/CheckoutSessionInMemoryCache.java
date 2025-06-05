@@ -34,7 +34,9 @@ public class CheckoutSessionInMemoryCache implements CheckoutSessionCache {
 
     @Override
     public Optional<CheckoutSession> getById(String sessionId) {
+        System.out.println("[Before expering] Getting checkout session by id: " + sessionId + " on " + data);
         removeExpiredSessions();
+        System.out.println("[After expering] Getting checkout session by id: " + sessionId + " on " + data);
         return Optional.ofNullable(data.get(sessionId));
     }
 
@@ -43,5 +45,23 @@ public class CheckoutSessionInMemoryCache implements CheckoutSessionCache {
         removeExpiredSessions();
         data.put(checkoutSession.getId(), checkoutSession);
         return getById(checkoutSession.getId());
+    }
+
+    @Override
+    public void deleteById(String sessionId) {
+        data.remove(sessionId);
+    }
+
+    @Override
+    public Optional<CheckoutSession> updateStatus(String sessionId, CheckoutSession.Status status) {
+        return getById(sessionId)
+                .map(session -> new CheckoutSession(
+                        session.getId(),
+                        session.getEventId(),
+                        session.getPriceId(),
+                        session.getQuantity(),
+                        status,
+                        session.getExpirationTime()))
+                .map(session -> data.replace(sessionId, session));
     }
 }

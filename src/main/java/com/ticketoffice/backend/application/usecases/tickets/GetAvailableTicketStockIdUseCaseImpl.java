@@ -4,6 +4,7 @@ import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.TicketPrice;
 import com.ticketoffice.backend.domain.usecases.events.GetEventUseCase;
+import com.ticketoffice.backend.domain.usecases.tickets.CountTicketsByEventIdAndPriceIdUseCase;
 import com.ticketoffice.backend.domain.usecases.tickets.GetAvailableTicketStockIdUseCase;
 import com.ticketoffice.backend.domain.usecases.tickets.GetOnHoldTicketsStockUseCase;
 import org.springframework.stereotype.Service;
@@ -13,13 +14,16 @@ public class GetAvailableTicketStockIdUseCaseImpl implements GetAvailableTicketS
 
     private final GetEventUseCase getEventUseCase;
     private final GetOnHoldTicketsStockUseCase getOnHoldTicketsStockUseCase;
+    private final CountTicketsByEventIdAndPriceIdUseCase countTicketsByEventIdAndPriceIdUseCase;
 
     public GetAvailableTicketStockIdUseCaseImpl(
             GetEventUseCase getEventUseCase,
-            GetOnHoldTicketsStockUseCase getOnHoldTicketsStockUseCase
+            GetOnHoldTicketsStockUseCase getOnHoldTicketsStockUseCase,
+            CountTicketsByEventIdAndPriceIdUseCase countTicketsByEventIdAndPriceIdUseCase
     ) {
         this.getEventUseCase = getEventUseCase;
         this.getOnHoldTicketsStockUseCase = getOnHoldTicketsStockUseCase;
+        this.countTicketsByEventIdAndPriceIdUseCase = countTicketsByEventIdAndPriceIdUseCase;
     }
 
     @Override
@@ -34,7 +38,8 @@ public class GetAvailableTicketStockIdUseCaseImpl implements GetAvailableTicketS
                 .orElseThrow(() -> new ResourceDoesntExistException("Ticket not found"));
 
         Integer onHoldStock = getOnHoldTicketsStockUseCase.apply(eventId, ticketId);
+        Integer soldTickets = countTicketsByEventIdAndPriceIdUseCase.apply(eventId, ticketId);
 
-        return initialStock - onHoldStock; // TODO add sales
+        return initialStock - onHoldStock - soldTickets;
     }
 }
