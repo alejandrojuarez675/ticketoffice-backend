@@ -46,6 +46,11 @@ public class TicketInMemoryRepository implements TicketRepository, InMemoryRepos
     }
 
     @Override
+    public List<Ticket> findByEventId(String eventId) {
+        return findAll().stream().filter(ticket -> ticket.eventId().equals(eventId)).toList();
+    }
+
+    @Override
     public Optional<Ticket> update(String id, Ticket obj) {
         if (data.containsKey(id)) {
             data.put(id, obj);

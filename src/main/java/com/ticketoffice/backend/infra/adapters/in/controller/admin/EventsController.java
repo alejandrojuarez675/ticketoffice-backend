@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
 @RequestMapping("/api/v1/events")
+@Tag(name = "Events Management", description = "Endpoints for managing tickets")
 public class EventsController {
 
     private final EventCrudHandler eventCrudHandler;
@@ -47,7 +49,6 @@ public class EventsController {
     @Operation(
             summary = "Get my events",
             description = "Endpoint to get all events for the logged in user",
-            tags = {"Events Management"},
             security = {
                     @SecurityRequirement(name = "Authorization")
             }
@@ -76,7 +77,6 @@ public class EventsController {
     @Operation(
             summary = "Get my event with id",
             description = "Endpoint to get all events for the logged in user",
-            tags = {"Events Management"},
             security = {
                     @SecurityRequirement(name = "Authorization")
             },
@@ -107,7 +107,6 @@ public class EventsController {
     @Operation(
             description = "Endpoint to create a new event. You have to be logged as ADMIN to create an event.",
             summary = "Create a new event",
-            tags = {"Events Management"},
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(),
             security = {
                     @SecurityRequirement(name = "Authorization")
@@ -165,7 +164,6 @@ public class EventsController {
     @Operation(
             description = "Endpoint to update an event. You can update only your events.",
             summary = "Update an event",
-            tags = {"Events Management"},
             parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)},
             security = {
                     @SecurityRequirement(name = "Authorization")
@@ -228,7 +226,6 @@ public class EventsController {
     @Operation(
             summary = "Delete an event",
             description = "Endpoint to delete an event. You have to be logged as ADMIN to delete an event.",
-            tags = {"Events Management"},
             parameters = {@Parameter(name = "id", description = "The ID of the event to be retrieved", required = true)},
             security = {
                     @SecurityRequirement(name = "Authorization")
