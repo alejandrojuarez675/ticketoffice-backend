@@ -30,6 +30,8 @@ public class RegisterPurchaseUseCaseImpl implements RegisterPurchaseUseCase {
             GetEventUseCase getEventUseCase,
             SendConfirmationEmailToBuyerUseCase sendConfirmationEmailToBuyerUseCase,
             SendTicketEmailToBuyerUseCase sendTicketEmailToBuyerUseCase,
+            DeleteCheckoutSessionUseCase deleteCheckoutSessionUseCase,
+            GetAvailableTicketStockIdUseCase getAvailableTicketStockIdUseCase
     ) {
         this.ticketRepository = ticketRepository;
         this.getEventUseCase = getEventUseCase;
