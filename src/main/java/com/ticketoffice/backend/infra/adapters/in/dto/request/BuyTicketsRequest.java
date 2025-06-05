@@ -3,7 +3,6 @@ package com.ticketoffice.backend.infra.adapters.in.dto.request;
 import java.util.List;
 
 public record BuyTicketsRequest(
-        String sessionId,
         String mainEmail,
         List<PersonalData> buyer
 ) {

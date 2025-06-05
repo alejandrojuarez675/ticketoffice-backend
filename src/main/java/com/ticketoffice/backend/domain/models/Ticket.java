@@ -2,7 +2,7 @@ package com.ticketoffice.backend.domain.models;
 
 import java.util.List;
 
-public record Purchase(
+public record Ticket(
     String id,
     String eventId,
     String priceId,
@@ -10,8 +10,8 @@ public record Purchase(
     List<Buyer> buyer,
     String mainEmail
 ) {
-    public Purchase getCopyWithUpdatedId(String id) {
-        return new Purchase(
+    public Ticket getCopyWithUpdatedId(String id) {
+        return new Ticket(
                 id,
                 this.eventId,
                 this.priceId,

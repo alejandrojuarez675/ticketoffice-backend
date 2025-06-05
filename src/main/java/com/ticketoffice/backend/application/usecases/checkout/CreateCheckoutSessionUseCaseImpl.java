@@ -46,6 +46,7 @@ public class CreateCheckoutSessionUseCaseImpl implements CreateCheckoutSessionUs
                 eventId,
                 priceId,
                 quantity,
+                CheckoutSession.Status.CREATED,
                 LocalDateTime.now().plusSeconds(EXPIRATION_TIME_IN_SECONDS)
         );
 

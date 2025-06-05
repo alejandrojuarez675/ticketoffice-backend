@@ -5,11 +5,11 @@ import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.ProblemWithTicketStock;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
 import com.ticketoffice.backend.domain.models.CheckoutSession;
-import com.ticketoffice.backend.domain.models.Purchase;
+import com.ticketoffice.backend.domain.models.Ticket;
 import com.ticketoffice.backend.domain.usecases.checkout.CreateCheckoutSessionUseCase;
 import com.ticketoffice.backend.domain.usecases.checkout.GetCheckoutSessionUseCase;
-import com.ticketoffice.backend.domain.usecases.checkout.SavePurchaseUseCase;
-import com.ticketoffice.backend.infra.adapters.in.dto.mapper.PurchaseMapper;
+import com.ticketoffice.backend.domain.usecases.checkout.RegisterPurchaseUseCase;
+import com.ticketoffice.backend.infra.adapters.in.dto.mapper.TicketMapper;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.BuyTicketsRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.CreateSessionRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.SessionCreatedResponse;
@@ -21,16 +21,16 @@ public class CheckoutHandler {
 
     private final CreateCheckoutSessionUseCase createCheckoutSessionUseCase;
     private final GetCheckoutSessionUseCase getCheckoutSessionUseCase;
-    private final SavePurchaseUseCase savePurchaseUseCase;
+    private final RegisterPurchaseUseCase registerPurchaseUseCase;
 
     public CheckoutHandler(
             CreateCheckoutSessionUseCase createCheckoutSessionUseCase,
             GetCheckoutSessionUseCase getCheckoutSessionUseCase,
-            SavePurchaseUseCase savePurchaseUseCase
+            RegisterPurchaseUseCase registerPurchaseUseCase
     ) {
         this.createCheckoutSessionUseCase = createCheckoutSessionUseCase;
         this.getCheckoutSessionUseCase = getCheckoutSessionUseCase;
-        this.savePurchaseUseCase = savePurchaseUseCase;
+        this.registerPurchaseUseCase = registerPurchaseUseCase;
     }
 
     public SessionCreatedResponse createSession(CreateSessionRequest body) throws BadRequestException {
@@ -57,8 +57,12 @@ public class CheckoutHandler {
         CheckoutSession checkoutSession = getCheckoutSessionUseCase.apply(sessionId)
                 .orElseThrow(() -> new BadRequestException("Session not found"));
 
-        Purchase purchase = PurchaseMapper.getPurchase(checkoutSession, request);
-        savePurchaseUseCase.apply(purchase)
-                .orElseThrow(() -> new RuntimeException("Problems to register the purchase"));
+        if (checkoutSession.getQuantity() != request.buyer().size()) {
+            throw new BadRequestException("Invalid number of buyers");
+        }
+
+        Ticket ticket = TicketMapper.getTicketFromBuyTickets(checkoutSession, request);
+
+        registerPurchaseUseCase.accept(sessionId, ticket);
     }
 }

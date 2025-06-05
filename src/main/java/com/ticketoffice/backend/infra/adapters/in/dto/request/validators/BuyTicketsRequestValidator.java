@@ -10,9 +10,6 @@ public class BuyTicketsRequestValidator implements RequestValidator<BuyTicketsRe
         if (request == null) {
             throw new BadRequestException("Request is required");
         }
-        if (StringUtils.isBlank(request.sessionId())) {
-            throw new BadRequestException("Session id is required");
-        }
         if (request.buyer() == null || request.buyer().isEmpty()) {
             throw new BadRequestException("Buyer is required");
         }

@@ -7,7 +7,6 @@ import com.ticketoffice.backend.infra.adapters.in.dto.request.validators.CreateS
 import com.ticketoffice.backend.infra.adapters.in.dto.response.SessionCreatedResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.adapters.in.handlers.CheckoutHandler;
-import com.ticketoffice.backend.infra.adapters.in.utils.IdValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -78,7 +77,6 @@ public class CheckoutController {
             @RequestParam String sessionId,
             @RequestBody BuyTicketsRequest request
     ) throws BadRequestException {
-        IdValidator.validateIdFromParams(sessionId, "session_id", true);
         new BuyTicketsRequestValidator().validate(request);
         checkoutHandler.buyTickets(sessionId, request);
         return ResponseEntity.noContent().build();
