@@ -1,9 +1,13 @@
 package com.ticketoffice.backend.infra.adapters.in.controller.admin;
 
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
+import com.ticketoffice.backend.infra.adapters.in.controller.UserRoleValidator;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.tickets.TicketListResponse;
+import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.adapters.in.exception.NotFoundException;
+import com.ticketoffice.backend.infra.adapters.in.exception.UnauthorizedUserException;
 import com.ticketoffice.backend.infra.adapters.in.handlers.TicketHandler;
+import com.ticketoffice.backend.infra.adapters.in.utils.IdValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,9 +24,14 @@ import org.springframework.web.bind.annotation.*;
 public class TicketController {
 
     private final TicketHandler ticketHandler;
+    private final UserRoleValidator userRoleValidator;
 
-    public TicketController(TicketHandler ticketHandler) {
+    public TicketController(
+            TicketHandler ticketHandler,
+            UserRoleValidator userRoleValidator
+    ) {
         this.ticketHandler = ticketHandler;
+        this.userRoleValidator = userRoleValidator;
     }
 
     @GetMapping
@@ -38,6 +47,18 @@ public class TicketController {
                             content = @Content(mediaType = "application/json")
                     ),
                     @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad Request",
+                            content = @Content(mediaType = "application/json", examples = {
+                                    @ExampleObject(value = """
+                                    {
+                                      "code": "bad_request",
+                                      "message": "Event id is not valid"
+                                    }
+                                    """)
+                            })
+                    ),
+                    @ApiResponse(
                             responseCode = "401",
                             description = "Unauthorized",
                             content = @Content(mediaType = "application/json", examples = {
@@ -45,6 +66,18 @@ public class TicketController {
                                     {
                                       "code": "unauthorized",
                                       "message": "You are not authorized to access this resource"
+                                    }
+                                    """)
+                            })
+                    ),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Forbidden",
+                            content = @Content(mediaType = "application/json", examples = {
+                                    @ExampleObject(value = """
+                                    {
+                                      "code": "forbidden",
+                                      "message": "You are not allowed to access this resource"
                                     }
                                     """)
                             })
@@ -65,7 +98,9 @@ public class TicketController {
     )
     public ResponseEntity<TicketListResponse> getAllTicketsByEventId(
             @PathVariable String id
-    ) throws NotAuthenticatedException, NotFoundException {
+    ) throws NotAuthenticatedException, NotFoundException, UnauthorizedUserException, BadRequestException {
+        IdValidator.validateIdFromParams(id, "event_id", true);
+        userRoleValidator.validateThatUserIsSeller();
         return ResponseEntity.ok(ticketHandler.getAllTicketsByEventId(id));
     }
 }
