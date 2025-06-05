@@ -17,6 +17,12 @@ public class SendTicketEmailToBuyerUseCaseImpl implements SendTicketEmailToBuyer
     @Value("${email.no-reply-email}")
     private String from;
 
+    @Value("${baseurl.frontend}")
+    private String frontendUrl;
+
+    @Value("${url.frontend.confirmation}")
+    private String pathToConfirmationPage;
+
     public SendTicketEmailToBuyerUseCaseImpl(EmailService emailService) {
         this.emailService = emailService;
     }
@@ -26,7 +32,9 @@ public class SendTicketEmailToBuyerUseCaseImpl implements SendTicketEmailToBuyer
         emailService.sendEmail(
                 createConfirmationEmailContent(ticket, event),
                 List.of(ticket.mainEmail()),
-                from);
+                from,
+                "Felicitaciones compraste un ticket para %s".formatted(event.title())
+        );
     }
 
     private String createConfirmationEmailContent(Ticket ticket, Event event) {
@@ -35,11 +43,12 @@ public class SendTicketEmailToBuyerUseCaseImpl implements SendTicketEmailToBuyer
                 <body>
                 <p>Hi, <b>%s</b></p>
                 <p>Thanks for your purchase. Here is your ticket.</p>
-                <p>Event: %s</p>
-                <p>Date: %s at %s</p>
-                <p>Location: %s</p>
-                <p>Ticket ID: %s</p>
-                <p>QR Code: %s</p>
+                <p><b>Event</b>: %s</p>
+                <p><b>Date</b>: %s at %s</p>
+                <p><b>Location</b>: %s</p>
+                <p><b>Ticket</b>: %s</p>
+                <p>QR Code:</p>
+                <p>%s</p>
                 </body>
                 </html>
                 """.formatted(
@@ -58,6 +67,10 @@ public class SendTicketEmailToBuyerUseCaseImpl implements SendTicketEmailToBuyer
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                     <image href="https://api.qrserver.com/v1/create-qr-code/?data=%s" x="0" y="0" width="100" height="100" />
                 </svg>
-                """.formatted(id);
+                """.formatted(getUrlToConfirmTicket(id));
+    }
+
+    private String getUrlToConfirmTicket(String id) {
+        return frontendUrl + pathToConfirmationPage.replace("{id}", id);
     }
 }

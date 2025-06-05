@@ -46,7 +46,7 @@ public class EventDetailPageHandler {
                 .orElse(new Organizer(event.organizerId(), null, null, null));
 
         List<PriceDTO> priceListToOverride = event.prices().stream()
-                .map(getTicketPricePriceDTOFunction(id)).toList();
+                .map(getTicketPricePriceDTOFunction(event)).toList();
 
         EventDetailPageResponse response = EventDetailPageResponseMapper.toResponse(event, organizer, priceListToOverride);
 
@@ -64,10 +64,10 @@ public class EventDetailPageHandler {
         );
     }
 
-    private Function<TicketPrice, PriceDTO> getTicketPricePriceDTOFunction(String id) {
+    private Function<TicketPrice, PriceDTO> getTicketPricePriceDTOFunction(Event event) {
         return price -> {
             try {
-                Integer availableTicketStock = getAvailableTicketStockIdUseCase.apply(id, price.id());
+                Integer availableTicketStock = getAvailableTicketStockIdUseCase.apply(event, price.id());
                 return new PriceDTO(price.id(), price.value(), price.currency(), price.type(), price.isFree(), availableTicketStock);
             } catch (ResourceDoesntExistException e) {
                 throw new RuntimeException(e);

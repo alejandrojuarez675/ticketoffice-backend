@@ -26,7 +26,8 @@ public class SendConfirmationEmailToBuyerUseCaseImpl implements SendConfirmation
         emailService.sendEmail(
                 createConfirmationEmailContent(ticket, event),
                 List.of(ticket.mainEmail()),
-                from);
+                from,
+                "Confirmación de compra");
     }
 
     private String createConfirmationEmailContent(Ticket ticket, Event event) {
@@ -36,13 +37,12 @@ public class SendConfirmationEmailToBuyerUseCaseImpl implements SendConfirmation
                 <p>Hi, <b>%s</b></p>
                 <p>Thanks for your purchase. Here is your confirmation email.</p>
                 <p>Event: %s</p>
-                <p>Date: %s at %s</p>
+                <p>Date: %s</p>
                 <p>Location: %s</p>
                 </body>
                 </html>
                 """.formatted(
                         ticket.buyer().getFirst().name(),
-                        ticket.eventId(),
                         event.title(),
                         event.date().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                         event.location().name()

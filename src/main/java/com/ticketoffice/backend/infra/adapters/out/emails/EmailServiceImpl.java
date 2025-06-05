@@ -7,10 +7,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailServiceImpl implements EmailService {
     @Override
-    public void sendEmail(String content, List<String> to, String from) {
-        System.out.printf("Sending email to %s \n from: %s \n body: %s \n",
+    public void sendEmail(String content, List<String> to, String from, String subject) {
+        System.out.printf("Sending email to %s \n from: %s \n subject: %s \n body:\n\n %s \n",
                 to.stream().reduce("", (a, b) -> a + ", " + b),
                 from,
+                subject,
                 content
         );
     }

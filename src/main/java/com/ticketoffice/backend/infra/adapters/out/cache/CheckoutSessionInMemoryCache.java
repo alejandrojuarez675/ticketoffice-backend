@@ -34,9 +34,7 @@ public class CheckoutSessionInMemoryCache implements CheckoutSessionCache {
 
     @Override
     public Optional<CheckoutSession> getById(String sessionId) {
-        System.out.println("[Before expering] Getting checkout session by id: " + sessionId + " on " + data);
         removeExpiredSessions();
-        System.out.println("[After expering] Getting checkout session by id: " + sessionId + " on " + data);
         return Optional.ofNullable(data.get(sessionId));
     }
 
