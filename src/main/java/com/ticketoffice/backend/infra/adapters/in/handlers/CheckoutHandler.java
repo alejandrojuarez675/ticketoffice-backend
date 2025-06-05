@@ -61,6 +61,10 @@ public class CheckoutHandler {
             throw new BadRequestException("Invalid number of buyers");
         }
 
+        if (!CheckoutSession.Status.CREATED.equals(checkoutSession.getStatus())) {
+            throw new BadRequestException("Session is not ready");
+        }
+
         Ticket ticket = TicketMapper.getTicketFromBuyTickets(checkoutSession, request);
 
         registerPurchaseUseCase.accept(sessionId, ticket);

@@ -6,8 +6,10 @@ import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.ProblemWithTicketStock;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
 import com.ticketoffice.backend.domain.models.CheckoutSession;
+import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.ports.CheckoutSessionCache;
 import com.ticketoffice.backend.domain.usecases.checkout.CreateCheckoutSessionUseCase;
+import com.ticketoffice.backend.domain.usecases.events.GetEventUseCase;
 import com.ticketoffice.backend.domain.usecases.tickets.GetAvailableTicketStockIdUseCase;
 import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
@@ -18,13 +20,16 @@ public class CreateCheckoutSessionUseCaseImpl implements CreateCheckoutSessionUs
     public static final Long EXPIRATION_TIME_IN_SECONDS = 600L; // 10 minutes
 
     private final CheckoutSessionCache checkoutSessionCache;
+    private final GetEventUseCase getEventUseCase;
     private final GetAvailableTicketStockIdUseCase getAvailableTicketStockIdUseCase;
 
     public CreateCheckoutSessionUseCaseImpl(
             CheckoutSessionCache checkoutSessionCache,
+            GetEventUseCase getEventUseCase,
             GetAvailableTicketStockIdUseCaseImpl getAvailableTicketStockIdUseCase
     ) {
         this.checkoutSessionCache = checkoutSessionCache;
+        this.getEventUseCase = getEventUseCase;
         this.getAvailableTicketStockIdUseCase = getAvailableTicketStockIdUseCase;
     }
 
@@ -35,7 +40,10 @@ public class CreateCheckoutSessionUseCaseImpl implements CreateCheckoutSessionUs
             Integer quantity
     ) throws ResourceDoesntExistException, ProblemWithTicketStock, ErrorOnPersistDataException {
 
-        Integer availableTicketStock = getAvailableTicketStockIdUseCase.apply(eventId, priceId);
+        Event event = getEventUseCase.apply(eventId)
+                .orElseThrow(() -> new ResourceDoesntExistException("Event not found"));
+
+        Integer availableTicketStock = getAvailableTicketStockIdUseCase.apply(event, priceId);
 
         if (availableTicketStock < quantity) {
             throw new ProblemWithTicketStock("Not enough tickets available");
