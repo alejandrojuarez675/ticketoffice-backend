@@ -45,7 +45,7 @@ public class EventDetailPageHandler {
         Organizer organizer = getOrganizerByUserIdUseCase.apply(event.organizerId())
                 .orElse(new Organizer(event.organizerId(), null, null, null));
 
-        List<TicketDTO> priceListToOverride = event.prices().stream()
+        List<TicketDTO> priceListToOverride = event.tickets().stream()
                 .map(getTicketPricePriceDTOFunction(event)).toList();
 
         EventDetailPageResponse response = EventDetailPageResponseMapper.toResponse(event, organizer, priceListToOverride);

@@ -50,7 +50,7 @@ public class UpdateMyEventUseCaseImpl implements UpdateMyEventUseCase {
                 event.date(),
                 event.location(),
                 event.image(),
-                event.prices(),
+                event.tickets(),
                 event.description(),
                 event.additionalInfo(),
                 userLogged.isAdmin() ? eventToUpdate.organizerId() : userLogged.getId(),

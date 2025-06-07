@@ -3,6 +3,7 @@ package com.ticketoffice.backend.application.usecases.checkout;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Sale;
+import com.ticketoffice.backend.domain.models.Ticket;
 import com.ticketoffice.backend.domain.ports.SaleRepository;
 import com.ticketoffice.backend.domain.usecases.checkout.DeleteCheckoutSessionUseCase;
 import com.ticketoffice.backend.domain.usecases.checkout.RegisterPurchaseUseCase;
@@ -55,6 +56,13 @@ public class RegisterPurchaseUseCaseImpl implements RegisterPurchaseUseCase {
             throw new RuntimeException(e);
         }
 
+        Double price = event.tickets()
+                .stream()
+                .filter(t -> t.id().equals(sale.ticketId()))
+                .findFirst()
+                .map(Ticket::value)
+                .orElseThrow(() -> new RuntimeException("Ticket cannot be found"));
+
         sale.buyer()
                 .stream()
                 .map(buyer -> new Sale(
@@ -62,8 +70,10 @@ public class RegisterPurchaseUseCaseImpl implements RegisterPurchaseUseCase {
                         sale.eventId(),
                         sale.ticketId(),
                         sale.quantity(),
+                        price,
                         List.of(buyer),
-                        buyer.email()
+                        buyer.email(),
+                        Boolean.FALSE
                 ))
                 .map(saleRepository::save)
                 .filter(Optional::isPresent)

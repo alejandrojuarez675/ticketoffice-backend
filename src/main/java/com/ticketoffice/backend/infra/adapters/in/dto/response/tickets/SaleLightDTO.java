@@ -19,5 +19,8 @@ public record SaleLightDTO(
         String ticketType,
 
         @Schema(description = "The price of the ticket", example = "150.50")
-        Double price
+        Double price,
+
+        @Schema(description = "The validation status of the ticket", example = "true")
+        Boolean validated
 ) {}

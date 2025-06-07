@@ -49,11 +49,18 @@ public class CreateCheckoutSessionUseCaseImpl implements CreateCheckoutSessionUs
             throw new ProblemWithTicketStock("Not enough sales available");
         }
 
+        Double price = event.tickets().stream()
+                .filter(t -> t.id().equals(priceId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceDoesntExistException("Ticket not found"))
+                .value();
+
         CheckoutSession checkoutSession = new CheckoutSession(
                 CheckoutSessionIdUtils.createCheckoutSessionId(eventId, priceId, quantity),
                 eventId,
                 priceId,
                 quantity,
+                price,
                 CheckoutSession.Status.CREATED,
                 LocalDateTime.now().plusSeconds(EXPIRATION_TIME_IN_SECONDS)
         );

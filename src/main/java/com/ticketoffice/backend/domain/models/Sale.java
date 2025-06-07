@@ -7,8 +7,10 @@ public record Sale(
     String eventId,
     String ticketId,
     Integer quantity,
+    Double price,
     List<Buyer> buyer,
-    String mainEmail
+    String mainEmail,
+    Boolean validated
 ) {
     public Sale getCopyWithUpdatedId(String id) {
         return new Sale(
@@ -16,8 +18,23 @@ public record Sale(
                 this.eventId,
                 this.ticketId,
                 this.quantity,
+                this.price,
                 this.buyer,
-                this.mainEmail
+                this.mainEmail,
+                this.validated
+        );
+    }
+
+    public Sale getCopyWithUpdatedValidated(boolean value) {
+        return new Sale(
+                this.id,
+                this.eventId,
+                this.ticketId,
+                this.quantity,
+                this.price,
+                this.buyer,
+                this.mainEmail,
+                value
         );
     }
 }

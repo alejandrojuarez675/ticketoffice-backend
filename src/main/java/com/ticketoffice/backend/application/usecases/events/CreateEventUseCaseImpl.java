@@ -32,7 +32,7 @@ public class CreateEventUseCaseImpl implements CreateEventUseCase {
                 event.date(),
                 event.location(),
                 event.image(),
-                event.prices(),
+                event.tickets(),
                 event.description(),
                 event.additionalInfo(),
                 organizer.id(),

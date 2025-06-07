@@ -11,8 +11,10 @@ public class TicketMapper {
                 session.getEventId(),
                 session.getPriceId(),
                 session.getQuantity(),
+                session.getPrice(),
                 request.buyer().stream().map(BuyerMapper::get).toList(),
-                request.mainEmail()
+                request.mainEmail(),
+                Boolean.FALSE
         );
     }
 }

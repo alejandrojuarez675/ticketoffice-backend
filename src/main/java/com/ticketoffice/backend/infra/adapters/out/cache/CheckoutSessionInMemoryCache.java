@@ -55,13 +55,7 @@ public class CheckoutSessionInMemoryCache implements CheckoutSessionCache {
     @Override
     public Optional<CheckoutSession> updateStatus(String sessionId, CheckoutSession.Status status) {
         return getById(sessionId)
-                .map(session -> new CheckoutSession(
-                        session.getId(),
-                        session.getEventId(),
-                        session.getPriceId(),
-                        session.getQuantity(),
-                        status,
-                        session.getExpirationTime()))
+                .map(session -> session.getCopyWithUpdatedStatus(status))
                 .map(session -> data.replace(sessionId, session));
     }
 }
