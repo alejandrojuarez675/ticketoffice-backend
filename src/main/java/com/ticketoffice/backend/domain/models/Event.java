@@ -13,7 +13,7 @@ public record Event(
         LocalDateTime date,
         Location location,
         Image image,
-        List<TicketPrice> prices,
+        List<Ticket> prices,
         String description,
         List<String> additionalInfo,
         String organizerId,
@@ -28,7 +28,7 @@ public record Event(
                         prices -> prices.stream()
                             .map(price -> price.isFree() ? 0.0 : price.value())
                             .min(Comparator.comparingDouble(Double::doubleValue))
-                            .orElse(0.0) // Default value if no prices are found
+                            .orElse(0.0) // Default value if no sales are found
                 )
                 .orElse(null);
     }

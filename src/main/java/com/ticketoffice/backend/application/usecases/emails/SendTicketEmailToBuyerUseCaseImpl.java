@@ -1,7 +1,7 @@
 package com.ticketoffice.backend.application.usecases.emails;
 
 import com.ticketoffice.backend.domain.models.Event;
-import com.ticketoffice.backend.domain.models.Ticket;
+import com.ticketoffice.backend.domain.models.Sale;
 import com.ticketoffice.backend.domain.ports.EmailService;
 import com.ticketoffice.backend.domain.usecases.emails.SendTicketEmailToBuyerUseCase;
 import java.time.format.DateTimeFormatter;
@@ -28,21 +28,21 @@ public class SendTicketEmailToBuyerUseCaseImpl implements SendTicketEmailToBuyer
     }
 
     @Override
-    public void accept(Ticket ticket, Event event) {
+    public void accept(Sale sale, Event event) {
         emailService.sendEmail(
-                createConfirmationEmailContent(ticket, event),
-                List.of(ticket.mainEmail()),
+                createConfirmationEmailContent(sale, event),
+                List.of(sale.mainEmail()),
                 from,
-                "Felicitaciones compraste un ticket para %s".formatted(event.title())
+                "Felicitaciones compraste un sale para %s".formatted(event.title())
         );
     }
 
-    private String createConfirmationEmailContent(Ticket ticket, Event event) {
+    private String createConfirmationEmailContent(Sale sale, Event event) {
         return """
                 <html>
                 <body>
                 <p>Hi, <b>%s</b></p>
-                <p>Thanks for your purchase. Here is your ticket.</p>
+                <p>Thanks for your purchase. Here is your sale.</p>
                 <p><b>Event</b>: %s</p>
                 <p><b>Date</b>: %s at %s</p>
                 <p><b>Location</b>: %s</p>
@@ -52,13 +52,13 @@ public class SendTicketEmailToBuyerUseCaseImpl implements SendTicketEmailToBuyer
                 </body>
                 </html>
                 """.formatted(
-                ticket.buyer().getFirst().name(),
-                ticket.eventId(),
+                sale.buyer().getFirst().name(),
+                sale.eventId(),
                 event.title(),
                 event.date().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                 event.location().name(),
-                ticket.id(),
-                generateSvgOfQrCode(ticket.id())
+                sale.id(),
+                generateSvgOfQrCode(sale.id())
         );
     }
 

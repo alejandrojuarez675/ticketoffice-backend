@@ -18,7 +18,7 @@ public interface EventRepository {
 
     List<Event> findByUserId(String userId);
 
-    List<Event> search(List<Predicate<Event>> predicates, Integer pageSize, Integer pageNumber);
+    List<Event> search(Predicate<Event> predicate, Integer pageSize, Integer pageNumber);
 
-    Integer count(List<Predicate<Event>> predicates);
+    Integer count(Predicate<Event> predicate);
 }

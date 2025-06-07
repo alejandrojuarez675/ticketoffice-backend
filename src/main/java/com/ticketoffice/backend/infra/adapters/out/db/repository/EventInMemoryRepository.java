@@ -4,7 +4,7 @@ import com.ticketoffice.backend.domain.enums.EventStatus;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Image;
 import com.ticketoffice.backend.domain.models.Location;
-import com.ticketoffice.backend.domain.models.TicketPrice;
+import com.ticketoffice.backend.domain.models.Ticket;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
                                 "Concierto de Trueno"
                         ),
                         List.of(
-                                new TicketPrice(
+                                new Ticket(
                                         "001b2f30-9a84-45e1-9345-518bea8a77c8",
                                         100000.0,
                                         "$",
@@ -49,7 +49,7 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
                                         false,
                                         10
                                 ),
-                                new TicketPrice(
+                                new Ticket(
                                         "cd85b222-2adf-414d-aa26-6a0fb7c87beb",
                                         30000.0,
                                         "$",
@@ -117,9 +117,9 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
     }
 
     @Override
-    public List<Event> search(List<Predicate<Event>> predicates, Integer pageSize, Integer pageNumber) {
+    public List<Event> search(Predicate<Event> predicate, Integer pageSize, Integer pageNumber) {
         List<Event> events = findAll().stream()
-                .filter(event -> predicates.stream().allMatch(predicate -> predicate.test(event)))
+                .filter(predicate)
                 .toList();
 
         if (events.isEmpty()) {
@@ -143,10 +143,9 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
     }
 
     @Override
-    public Integer count(List<Predicate<Event>> predicates) {
+    public Integer count(Predicate<Event> predicate) {
         return findAll().stream()
-                .filter(event -> predicates.stream()
-                        .allMatch(predicate -> predicate.test(event)))
+                .filter(predicate)
                 .toList().size();
     }
 

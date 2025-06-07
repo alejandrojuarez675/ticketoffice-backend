@@ -3,17 +3,17 @@ package com.ticketoffice.backend.infra.adapters.in.dto.mapper;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Organizer;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventDetailPageResponse;
-import com.ticketoffice.backend.infra.adapters.in.dto.shared.PriceDTO;
+import com.ticketoffice.backend.infra.adapters.in.dto.shared.TicketDTO;
 import java.util.List;
 import java.util.Optional;
 
 public class EventDetailPageResponseMapper {
 
-    public static EventDetailPageResponse toResponse(Event event, Organizer organizer, List<PriceDTO> priceListToOverride) {
-        List<PriceDTO> priceDTOS = Optional.ofNullable(priceListToOverride)
+    public static EventDetailPageResponse toResponse(Event event, Organizer organizer, List<TicketDTO> priceListToOverride) {
+        List<TicketDTO> ticketDTOS = Optional.ofNullable(priceListToOverride)
                 .orElse(
                         Optional.ofNullable(event.prices())
-                                .map(prices -> prices.stream().map(PriceDtoMapper::getFromPrice).toList())
+                                .map(prices -> prices.stream().map(TicketDtoMapper::getFromTicket).toList())
                                 .orElse(null)
                 );
 
@@ -23,7 +23,7 @@ public class EventDetailPageResponseMapper {
                 event.date(),
                 LocationDtoMapper.getFromLocation(event.location()),
                 event.image() != null ? ImageDtoMapper.getFromImage(event.image()) : null,
-                priceDTOS,
+                ticketDTOS,
                 event.description(),
                 event.additionalInfo(),
                 OrganizerDtoMapper.getFromOrganizer(organizer),

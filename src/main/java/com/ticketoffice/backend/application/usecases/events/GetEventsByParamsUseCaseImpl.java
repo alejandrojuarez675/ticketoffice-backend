@@ -18,6 +18,6 @@ public class GetEventsByParamsUseCaseImpl implements GetEventsByParamsUseCase {
 
     @Override
     public List<Event> apply(EventSearchParameters eventSearchParameters, Integer pageSize, Integer pageNumber) {
-        return eventRepository.search(eventSearchParameters.getPredicates(), pageSize, pageNumber);
+        return eventRepository.search(eventSearchParameters.getPredicate(), pageSize, pageNumber);
     }
 }

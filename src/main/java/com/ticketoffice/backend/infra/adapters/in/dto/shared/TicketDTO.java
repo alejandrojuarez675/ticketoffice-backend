@@ -2,7 +2,7 @@ package com.ticketoffice.backend.infra.adapters.in.dto.shared;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public record PriceDTO(
+public record TicketDTO(
 
         @Schema(description = "The ID of the price", example = "001b2f30-9a84-45e1-9345-518bea8a77c8")
         String id,
