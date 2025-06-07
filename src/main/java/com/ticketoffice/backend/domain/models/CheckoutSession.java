@@ -8,14 +8,16 @@ public class CheckoutSession {
     private String eventId;
     private String priceId;
     private Integer quantity;
+    private Double price;
     private Status status;
     private LocalDateTime expirationTime;
 
-    public CheckoutSession(String id, String eventId, String priceId, Integer quantity, Status status, LocalDateTime expirationTime) {
+    public CheckoutSession(String id, String eventId, String priceId, Integer quantity, Double price, Status status, LocalDateTime expirationTime) {
         this.id = id;
         this.eventId = eventId;
         this.priceId = priceId;
         this.quantity = quantity;
+        this.price = price;
         this.status = status;
         this.expirationTime = expirationTime;
     }
@@ -70,6 +72,25 @@ public class CheckoutSession {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public CheckoutSession getCopyWithUpdatedStatus(Status status) {
+        return new CheckoutSession(
+                this.getId(),
+                this.getEventId(),
+                this.getPriceId(),
+                this.getQuantity(),
+                this.getPrice(),
+                status,
+                this.getExpirationTime());
     }
 
     public enum Status {CREATED, CONFIRMING}

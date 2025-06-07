@@ -11,4 +11,8 @@ public interface SaleRepository {
     Integer count(Predicate<Sale> predicate);
 
     List<Sale> findByEventId(String eventId);
+
+    Optional<Sale> getById(String id);
+
+    Optional<Sale> update(String id, Sale sale);
 }

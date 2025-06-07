@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.emails;
 
+import com.ticketoffice.backend.application.utils.QrUtils;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Sale;
 import com.ticketoffice.backend.domain.ports.EmailService;
@@ -58,19 +59,11 @@ public class SendTicketEmailToBuyerUseCaseImpl implements SendTicketEmailToBuyer
                 event.date().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                 event.location().name(),
                 sale.id(),
-                generateSvgOfQrCode(sale.id())
+                QrUtils.generateSvgOfQrCode(getUrlToConfirmTicket(event.id(), sale.id()))
         );
     }
 
-    private String generateSvgOfQrCode(String id) {
-        return """
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                    <image href="https://api.qrserver.com/v1/create-qr-code/?data=%s" x="0" y="0" width="100" height="100" />
-                </svg>
-                """.formatted(getUrlToConfirmTicket(id));
-    }
-
-    private String getUrlToConfirmTicket(String id) {
-        return frontendUrl + pathToConfirmationPage.replace("{id}", id);
+    private String getUrlToConfirmTicket(String eventId, String saleId) {
+        return frontendUrl + pathToConfirmationPage.replace("{eventId}", eventId).replace("{saleId}", saleId);
     }
 }

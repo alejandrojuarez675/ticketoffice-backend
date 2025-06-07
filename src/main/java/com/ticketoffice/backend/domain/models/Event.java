@@ -13,7 +13,7 @@ public record Event(
         LocalDateTime date,
         Location location,
         Image image,
-        List<Ticket> prices,
+        List<Ticket> tickets,
         String description,
         List<String> additionalInfo,
         String organizerId,
@@ -22,7 +22,7 @@ public record Event(
 
     @JsonIgnore
     public Double getTheCheapestPrice() {
-        return Optional.ofNullable(prices)
+        return Optional.ofNullable(tickets)
                 .filter(prices -> !prices.isEmpty())
                 .map(
                         prices -> prices.stream()
@@ -41,7 +41,7 @@ public record Event(
                 date,
                 location,
                 image,
-                prices,
+                tickets,
                 description,
                 additionalInfo,
                 organizerId,
@@ -57,7 +57,7 @@ public record Event(
                 date,
                 location,
                 image,
-                prices,
+                tickets,
                 description,
                 additionalInfo,
                 organizerId,

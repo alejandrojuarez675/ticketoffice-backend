@@ -24,7 +24,7 @@ public class GetAvailableTicketStockIdUseCaseImpl implements GetAvailableTicketS
 
     @Override
     public Integer apply(Event event, String ticketId) throws ResourceDoesntExistException {
-        Integer initialStock = event.prices().stream()
+        Integer initialStock = event.tickets().stream()
                 .filter(price -> price.id().equals(ticketId))
                 .findAny()
                 .map(Ticket::stock)

@@ -12,7 +12,7 @@ public class EventDetailPageResponseMapper {
     public static EventDetailPageResponse toResponse(Event event, Organizer organizer, List<TicketDTO> priceListToOverride) {
         List<TicketDTO> ticketDTOS = Optional.ofNullable(priceListToOverride)
                 .orElse(
-                        Optional.ofNullable(event.prices())
+                        Optional.ofNullable(event.tickets())
                                 .map(prices -> prices.stream().map(TicketDtoMapper::getFromTicket).toList())
                                 .orElse(null)
                 );

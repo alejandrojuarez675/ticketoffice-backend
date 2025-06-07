@@ -2,6 +2,7 @@ package com.ticketoffice.backend.infra.adapters.in.controller.admin;
 
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.infra.adapters.in.controller.UserRoleValidator;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.tickets.SaleLightDTO;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.tickets.SalesListResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.adapters.in.exception.NotFoundException;
@@ -104,4 +105,81 @@ public class SalesController {
         userRoleValidator.validateThatUserIsSeller();
         return ResponseEntity.ok(salesHandler.getAllSalesByEventId(id));
     }
+
+    @PostMapping("/{saleId}/validate")
+    @Operation(
+            summary = "Validate a sale",
+            description = "Validate a sale for an event",
+            security = @SecurityRequirement(name = "Authorization"),
+            parameters = {
+                    @Parameter(name = "id", description = "The ID of the event", required = true),
+                    @Parameter(name = "saleId", description = "The ID of the sale to be validated", required = true)
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "204",
+                            description = "Successfully validated sale",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = SalesListResponse.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad Request",
+                            content = @Content(mediaType = "application/json", examples = {
+                                    @ExampleObject(value = """
+                                    {
+                                      "code": "bad_request",
+                                      "message": "Event id is not valid"
+                                    }
+                                    """)
+                            })
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthorized",
+                            content = @Content(mediaType = "application/json", examples = {
+                                    @ExampleObject(value = """
+                                    {
+                                      "code": "unauthorized",
+                                      "message": "You are not authorized to access this resource"
+                                    }
+                                    """)
+                            })
+                    ),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Forbidden",
+                            content = @Content(mediaType = "application/json", examples = {
+                                    @ExampleObject(value = """
+                                    {
+                                      "code": "forbidden",
+                                      "message": "You are not allowed to access this resource"
+                                    }
+                                    """)
+                            })
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Event not found",
+                            content = @Content(mediaType = "application/json", examples = {
+                                    @ExampleObject(value = """
+                                    {
+                                      "code": "not_found",
+                                      "message": "Event not found"
+                                    }
+                                    """)
+                            })
+                    )
+            }
+    )
+    public ResponseEntity<Void> validateSale(
+            @PathVariable String saleId,
+            @Parameter(name = "id", description = "The ID of the event", required = true) @PathVariable String id
+    ) throws NotAuthenticatedException, NotFoundException, UnauthorizedUserException, BadRequestException {
+        IdValidator.validateIdFromParams(id, "event_id", true);
+        IdValidator.validateIdFromParams(saleId, "sale_id", true);
+        userRoleValidator.validateThatUserIsSeller();
+        salesHandler.validateSale(saleId, id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
