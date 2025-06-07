@@ -5,7 +5,7 @@ import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.ProblemWithTicketStock;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
 import com.ticketoffice.backend.domain.models.CheckoutSession;
-import com.ticketoffice.backend.domain.models.Ticket;
+import com.ticketoffice.backend.domain.models.Sale;
 import com.ticketoffice.backend.domain.usecases.checkout.CreateCheckoutSessionUseCase;
 import com.ticketoffice.backend.domain.usecases.checkout.GetCheckoutSessionUseCase;
 import com.ticketoffice.backend.domain.usecases.checkout.RegisterPurchaseUseCase;
@@ -65,8 +65,8 @@ public class CheckoutHandler {
             throw new BadRequestException("Session is not ready");
         }
 
-        Ticket ticket = TicketMapper.getTicketFromBuyTickets(checkoutSession, request);
+        Sale sale = TicketMapper.getTicketFromBuyTickets(checkoutSession, request);
 
-        registerPurchaseUseCase.accept(sessionId, ticket);
+        registerPurchaseUseCase.accept(sessionId, sale);
     }
 }

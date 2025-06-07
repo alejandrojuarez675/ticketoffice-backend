@@ -46,7 +46,7 @@ public class CreateCheckoutSessionUseCaseImpl implements CreateCheckoutSessionUs
         Integer availableTicketStock = getAvailableTicketStockIdUseCase.apply(event, priceId);
 
         if (availableTicketStock < quantity) {
-            throw new ProblemWithTicketStock("Not enough tickets available");
+            throw new ProblemWithTicketStock("Not enough sales available");
         }
 
         CheckoutSession checkoutSession = new CheckoutSession(

@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
 @RequestMapping("/api/v1/events")
-@Tag(name = "Events Management", description = "Endpoints for managing tickets")
+@Tag(name = "Events Management", description = "Endpoints for managing sales")
 public class EventsController {
 
     private final EventCrudHandler eventCrudHandler;
@@ -57,7 +57,8 @@ public class EventsController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Events retrieved successfully",
-                    content = @Content(mediaType = "application/json")),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EventListResponse.class))
+            ),
             @ApiResponse(
                     responseCode = "401",
                     description = "Unauthorized",

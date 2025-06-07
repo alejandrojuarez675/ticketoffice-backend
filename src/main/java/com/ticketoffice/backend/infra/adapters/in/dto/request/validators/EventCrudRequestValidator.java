@@ -3,7 +3,7 @@ package com.ticketoffice.backend.infra.adapters.in.dto.request.validators;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.EventCrudRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.shared.ImageDTO;
 import com.ticketoffice.backend.infra.adapters.in.dto.shared.LocationDTO;
-import com.ticketoffice.backend.infra.adapters.in.dto.shared.PriceDTO;
+import com.ticketoffice.backend.infra.adapters.in.dto.shared.TicketDTO;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import java.util.List;
 
@@ -25,15 +25,15 @@ public class EventCrudRequestValidator implements RequestValidator<EventCrudRequ
 
         validate(request.location());
         validate(request.image());
-        validate(request.prices());
+        validate(request.tickets());
 
     }
 
-    private void validate(List<PriceDTO> prices) throws BadRequestException {
+    private void validate(List<TicketDTO> prices) throws BadRequestException {
         if (prices == null || prices.isEmpty()) {
             throw new BadRequestException("Prices are required");
         }
-        for (PriceDTO price : prices) {
+        for (TicketDTO price : prices) {
             if (price == null) {
                 throw new BadRequestException("Price is required");
             }

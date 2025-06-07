@@ -1,7 +1,7 @@
 package com.ticketoffice.backend.application.usecases.emails;
 
 import com.ticketoffice.backend.domain.models.Event;
-import com.ticketoffice.backend.domain.models.Ticket;
+import com.ticketoffice.backend.domain.models.Sale;
 import com.ticketoffice.backend.domain.ports.EmailService;
 import com.ticketoffice.backend.domain.usecases.emails.SendConfirmationEmailToBuyerUseCase;
 import java.time.format.DateTimeFormatter;
@@ -22,15 +22,15 @@ public class SendConfirmationEmailToBuyerUseCaseImpl implements SendConfirmation
     }
 
     @Override
-    public void accept(Ticket ticket, Event event) {
+    public void accept(Sale sale, Event event) {
         emailService.sendEmail(
-                createConfirmationEmailContent(ticket, event),
-                List.of(ticket.mainEmail()),
+                createConfirmationEmailContent(sale, event),
+                List.of(sale.mainEmail()),
                 from,
                 "Confirmación de compra");
     }
 
-    private String createConfirmationEmailContent(Ticket ticket, Event event) {
+    private String createConfirmationEmailContent(Sale sale, Event event) {
         return """
                 <html>
                 <body>
@@ -42,7 +42,7 @@ public class SendConfirmationEmailToBuyerUseCaseImpl implements SendConfirmation
                 </body>
                 </html>
                 """.formatted(
-                        ticket.buyer().getFirst().name(),
+                        sale.buyer().getFirst().name(),
                         event.title(),
                         event.date().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                         event.location().name()

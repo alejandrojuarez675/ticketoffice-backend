@@ -43,7 +43,8 @@ public class GetSimilarEventsToAnEventUseCaseImpl implements GetSimilarEventsToA
             if (results.size() < quantity) {
                 ArrayList<Predicate<Event>> completePredicates = new ArrayList<>(predicate);
                 completePredicates.addAll(getPredicateForPreventDuplicates(results));
-                results.addAll(eventRepository.search(completePredicates, quantity - results.size(), 0));
+                Predicate<Event> predicateToSearch = completePredicates.stream().reduce(Predicate::and).orElse(e -> true);
+                results.addAll(eventRepository.search(predicateToSearch, quantity - results.size(), 0));
             }
         });
 

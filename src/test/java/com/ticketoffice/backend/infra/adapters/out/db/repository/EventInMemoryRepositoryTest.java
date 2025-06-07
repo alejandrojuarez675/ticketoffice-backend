@@ -2,7 +2,7 @@ package com.ticketoffice.backend.infra.adapters.out.db.repository;
 
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Location;
-import com.ticketoffice.backend.domain.models.TicketPrice;
+import com.ticketoffice.backend.domain.models.Ticket;
 import com.ticketoffice.backend.domain.models.Image;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,12 +36,11 @@ class EventInMemoryRepositoryTest {
 
         // Create a simple predicate that matches all events
         Predicate<Event> truePredicate = event -> event.title().matches("Event [0-9]");
-        List<Predicate<Event>> predicates = List.of(truePredicate);
 
         // When - Request first page with 2 items
         int pageSize = 2;
         int pageNumber = 0; // 0-based page number
-        List<Event> result = repository.search(predicates, pageSize, pageNumber);
+        List<Event> result = repository.search(truePredicate, pageSize, pageNumber);
 
         // Then
         assertEquals(pageSize, result.size(), "Should return exactly pageSize items");
@@ -56,10 +55,9 @@ class EventInMemoryRepositoryTest {
         }
 
         Predicate<Event> truePredicate = event -> event.title().matches("Event [0-9]");
-        List<Predicate<Event>> predicates = List.of(truePredicate);
 
         // When - Request page 2 with pageSize 3 when there are only 3 items total
-        List<Event> result = repository.search(predicates, 6, 3);
+        List<Event> result = repository.search(truePredicate, 6, 3);
 
         // Then
         assertTrue(result.isEmpty(), "Should return empty list when page number exceeds available pages");
@@ -76,10 +74,9 @@ class EventInMemoryRepositoryTest {
         }
 
         Predicate<Event> truePredicate = event -> event.title().matches("Event [0-9]");
-        List<Predicate<Event>> predicates = List.of(truePredicate);
 
         // When - Request more items than exist
-        List<Event> result = repository.search(predicates, totalItems + 10, 0);
+        List<Event> result = repository.search(truePredicate, totalItems + 10, 0);
 
         // Then
         assertEquals(totalItems, result.size(), "Should return all items when pageSize > total items");
@@ -94,10 +91,9 @@ class EventInMemoryRepositoryTest {
         }
         // Predicate that won't match any events
         Predicate<Event> falsePredicate = event -> false;
-        List<Predicate<Event>> predicates = List.of(falsePredicate);
 
         // When
-        List<Event> result = repository.search(predicates, 10, 0);
+        List<Event> result = repository.search(falsePredicate, 10, 0);
 
         // Then
         assertTrue(result.isEmpty(), "Should return empty list when no items match the predicate");
@@ -108,10 +104,9 @@ class EventInMemoryRepositoryTest {
     void search_shouldHandleEmptyRepository() {
         // Given
         Predicate<Event> truePredicate = event -> event.title().matches("Event [0-9]");
-        List<Predicate<Event>> predicates = List.of(truePredicate);
 
         // When
-        List<Event> result = repository.search(predicates, 10, 0);
+        List<Event> result = repository.search(truePredicate, 10, 0);
 
         // Then
         assertTrue(result.isEmpty(), "Should return empty list when repository is empty");
@@ -122,15 +117,16 @@ class EventInMemoryRepositoryTest {
                 java.util.UUID.randomUUID().toString(),
                 title,
                 LocalDateTime.now().plusDays(1),
-                new Location("1", "Test Venue", "Test Address", city),
+                new Location("1", "Test Venue", "Test Address", city, "Colombia"),
                 new Image("1", "http://test.com/image.jpg", "Test Image"),
                 List.of(
-                        new TicketPrice(
+                        new Ticket(
                                 java.util.UUID.randomUUID().toString(),
                                 100.0,
                                 "$",
                                 "General",
-                                false
+                                false,
+                                100
                         )
                 ),
                 "Test Description",

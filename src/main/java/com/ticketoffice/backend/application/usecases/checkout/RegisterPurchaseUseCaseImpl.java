@@ -2,8 +2,8 @@ package com.ticketoffice.backend.application.usecases.checkout;
 
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
 import com.ticketoffice.backend.domain.models.Event;
-import com.ticketoffice.backend.domain.models.Ticket;
-import com.ticketoffice.backend.domain.ports.TicketRepository;
+import com.ticketoffice.backend.domain.models.Sale;
+import com.ticketoffice.backend.domain.ports.SaleRepository;
 import com.ticketoffice.backend.domain.usecases.checkout.DeleteCheckoutSessionUseCase;
 import com.ticketoffice.backend.domain.usecases.checkout.RegisterPurchaseUseCase;
 import com.ticketoffice.backend.domain.usecases.emails.SendConfirmationEmailToBuyerUseCase;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RegisterPurchaseUseCaseImpl implements RegisterPurchaseUseCase {
 
-    private final TicketRepository ticketRepository;
+    private final SaleRepository saleRepository;
     private final GetEventUseCase getEventUseCase;
     private final SendConfirmationEmailToBuyerUseCase sendConfirmationEmailToBuyerUseCase;
     private final SendTicketEmailToBuyerUseCase sendTicketEmailToBuyerUseCase;
@@ -26,14 +26,14 @@ public class RegisterPurchaseUseCaseImpl implements RegisterPurchaseUseCase {
     private final GetAvailableTicketStockIdUseCase getAvailableTicketStockIdUseCase;
 
     public RegisterPurchaseUseCaseImpl(
-            TicketRepository ticketRepository,
+            SaleRepository saleRepository,
             GetEventUseCase getEventUseCase,
             SendConfirmationEmailToBuyerUseCase sendConfirmationEmailToBuyerUseCase,
             SendTicketEmailToBuyerUseCase sendTicketEmailToBuyerUseCase,
             DeleteCheckoutSessionUseCase deleteCheckoutSessionUseCase,
             GetAvailableTicketStockIdUseCase getAvailableTicketStockIdUseCase
     ) {
-        this.ticketRepository = ticketRepository;
+        this.saleRepository = saleRepository;
         this.getEventUseCase = getEventUseCase;
         this.sendConfirmationEmailToBuyerUseCase = sendConfirmationEmailToBuyerUseCase;
         this.sendTicketEmailToBuyerUseCase = sendTicketEmailToBuyerUseCase;
@@ -42,35 +42,35 @@ public class RegisterPurchaseUseCaseImpl implements RegisterPurchaseUseCase {
     }
 
     @Override
-    public void accept(String sessionId, Ticket ticket) {
-        Event event = getEventUseCase.apply(ticket.eventId())
+    public void accept(String sessionId, Sale sale) {
+        Event event = getEventUseCase.apply(sale.eventId())
                 .orElseThrow(() -> new RuntimeException("Event cannot be found"));
 
         try {
-            Integer availableQuantity = getAvailableTicketStockIdUseCase.apply(event, ticket.priceId());
+            Integer availableQuantity = getAvailableTicketStockIdUseCase.apply(event, sale.ticketId());
             if (availableQuantity < 0) {
-                throw new RuntimeException("Not enough tickets available");
+                throw new RuntimeException("Not enough sales available");
             }
         } catch (ResourceDoesntExistException e) {
             throw new RuntimeException(e);
         }
 
-        ticket.buyer()
+        sale.buyer()
                 .stream()
-                .map(buyer -> new Ticket(
+                .map(buyer -> new Sale(
                         UUID.randomUUID().toString(),
-                        ticket.eventId(),
-                        ticket.priceId(),
-                        ticket.quantity(),
+                        sale.eventId(),
+                        sale.ticketId(),
+                        sale.quantity(),
                         List.of(buyer),
                         buyer.email()
                 ))
-                .map(ticketRepository::save)
+                .map(saleRepository::save)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .forEach(t -> sendTicketEmailToBuyerUseCase.accept(t, event));
 
-        sendConfirmationEmailToBuyerUseCase.accept(ticket, event);
+        sendConfirmationEmailToBuyerUseCase.accept(sale, event);
         deleteCheckoutSessionUseCase.accept(sessionId);
     }
 }
