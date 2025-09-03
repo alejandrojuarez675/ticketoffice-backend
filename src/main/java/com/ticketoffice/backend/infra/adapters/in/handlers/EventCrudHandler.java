@@ -20,9 +20,7 @@ import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventLight
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.adapters.in.exception.NotFoundException;
 import java.util.List;
-import org.springframework.stereotype.Service;
 
-@Service
 public class EventCrudHandler {
 
     private final CreateEventUseCase createEventUseCase;

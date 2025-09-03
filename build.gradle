@@ -1,7 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.4.3'
-	id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.github.johnrengelman.shadow' version '8.1.1' // si necesitas fatJar
 }
 
 group = 'com.ticketoffice'
@@ -18,17 +17,35 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5'
-	implementation 'org.springframework.security:spring-security-web'
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+// Javalin (usa la versión estable más reciente)
+    implementation 'io.javalin:javalin:6.7.0'
+
+    // Guice (DI)
+    implementation 'com.google.inject:guice:5.1.0'
+
+    // OpenAPI/Swagger para Javalin
+    implementation 'io.javalin.community.openapi:javalin-swagger-plugin:6.3.0'
+
+    // AWS Serverless Java Container (si eliges ZIP/JAR approach)
+    implementation 'com.amazonaws.serverless:aws-serverless-java-container-core:2.1.4'
+    implementation 'com.amazonaws.serverless:aws-serverless-java-container-servlet:2.1.4'
+
+    // AWS Lambda Java libs
+    implementation 'com.amazonaws:aws-lambda-java-core:1.2.3'
+    implementation 'com.amazonaws:aws-lambda-java-events:3.11.0'
+
+    // JDBC / JPA / Hibernate (si mantienes JPA)
+    // implementation 'org.hibernate:hibernate-core:6.x'
+
+    // Testing
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// Shadow jar config si quieres zip/jar deploy
+shadowJar {
+    archiveClassifier.set('all')
 }

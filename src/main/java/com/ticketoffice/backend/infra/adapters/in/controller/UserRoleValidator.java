@@ -5,9 +5,7 @@ import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCas
 import com.ticketoffice.backend.infra.adapters.in.exception.UnauthorizedUserException;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.stereotype.Service;
 
-@Service
 public class UserRoleValidator {
 
     private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
