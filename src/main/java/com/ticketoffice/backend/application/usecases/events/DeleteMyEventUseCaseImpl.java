@@ -8,9 +8,7 @@ import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.usecases.events.DeleteMyEventUseCase;
 import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCase;
-import org.springframework.stereotype.Service;
 
-@Service
 public class DeleteMyEventUseCaseImpl implements DeleteMyEventUseCase {
 
     private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;

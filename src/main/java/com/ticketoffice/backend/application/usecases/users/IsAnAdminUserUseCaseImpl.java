@@ -3,9 +3,7 @@ package com.ticketoffice.backend.application.usecases.users;
 import com.ticketoffice.backend.domain.enums.UserRole;
 import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCase;
 import com.ticketoffice.backend.domain.usecases.users.IsAnAdminUserUseCase;
-import org.springframework.stereotype.Service;
 
-@Service
 public class IsAnAdminUserUseCaseImpl implements IsAnAdminUserUseCase {
 
     private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;

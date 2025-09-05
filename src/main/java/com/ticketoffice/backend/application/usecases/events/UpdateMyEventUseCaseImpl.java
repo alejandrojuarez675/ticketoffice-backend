@@ -8,9 +8,7 @@ import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.usecases.events.UpdateMyEventUseCase;
 import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCase;
-import org.springframework.stereotype.Service;
 
-@Service
 public class UpdateMyEventUseCaseImpl implements UpdateMyEventUseCase {
 
     private final EventRepository eventRepository;

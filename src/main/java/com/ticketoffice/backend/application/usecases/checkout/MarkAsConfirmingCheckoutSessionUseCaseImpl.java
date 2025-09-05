@@ -4,9 +4,7 @@ import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.models.CheckoutSession;
 import com.ticketoffice.backend.domain.ports.CheckoutSessionCache;
 import com.ticketoffice.backend.domain.usecases.checkout.MarkAsConfirmingCheckoutSessionUseCase;
-import org.springframework.stereotype.Service;
 
-@Service
 public class MarkAsConfirmingCheckoutSessionUseCaseImpl implements MarkAsConfirmingCheckoutSessionUseCase {
 
     private final CheckoutSessionCache checkoutSessionCache;

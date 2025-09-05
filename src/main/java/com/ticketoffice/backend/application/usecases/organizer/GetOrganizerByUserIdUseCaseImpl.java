@@ -5,9 +5,7 @@ import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.usecases.organizer.GetOrganizerByUserIdUseCase;
 import com.ticketoffice.backend.domain.usecases.users.GetUserByIdUseCase;
 import java.util.Optional;
-import org.springframework.stereotype.Service;
 
-@Service
 public class GetOrganizerByUserIdUseCaseImpl implements GetOrganizerByUserIdUseCase {
 
     private final GetUserByIdUseCase getUserByIdUseCase;

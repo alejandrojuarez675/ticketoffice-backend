@@ -6,9 +6,7 @@ import com.ticketoffice.backend.domain.models.Ticket;
 import com.ticketoffice.backend.domain.usecases.sales.CountSalesByEventIdAndTicketIdUseCase;
 import com.ticketoffice.backend.domain.usecases.tickets.GetAvailableTicketStockIdUseCase;
 import com.ticketoffice.backend.domain.usecases.tickets.GetOnHoldTicketsStockUseCase;
-import org.springframework.stereotype.Service;
 
-@Service
 public class GetAvailableTicketStockIdUseCaseImpl implements GetAvailableTicketStockIdUseCase {
 
     private final GetOnHoldTicketsStockUseCase getOnHoldTicketsStockUseCase;

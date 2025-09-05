@@ -7,9 +7,7 @@ import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.usecases.organizer.CreateOrganizerUseCase;
 import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCase;
 import com.ticketoffice.backend.domain.usecases.users.UpdateOrganizerDataOnUserUseCase;
-import org.springframework.stereotype.Service;
 
-@Service
 public class CreateOrganizerUseCaseImpl implements CreateOrganizerUseCase {
 
     private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;

@@ -7,9 +7,7 @@ import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.usecases.events.GetAllMyEventsUseCase;
 import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCase;
 import java.util.List;
-import org.springframework.stereotype.Service;
 
-@Service
 public class GetAllMyEventsUseCaseImpl implements GetAllMyEventsUseCase {
 
     final private EventRepository eventRepository;

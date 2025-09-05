@@ -14,9 +14,7 @@ import com.ticketoffice.backend.domain.usecases.tickets.GetAvailableTicketStockI
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.stereotype.Service;
 
-@Service
 public class RegisterPurchaseUseCaseImpl implements RegisterPurchaseUseCase {
 
     private final SaleRepository saleRepository;

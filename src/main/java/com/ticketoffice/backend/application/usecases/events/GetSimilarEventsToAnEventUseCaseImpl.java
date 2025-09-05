@@ -10,9 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import org.springframework.stereotype.Service;
 
-@Service
 public class GetSimilarEventsToAnEventUseCaseImpl implements GetSimilarEventsToAnEventUseCase {
 
     private final GetEventUseCase getEventUseCase;

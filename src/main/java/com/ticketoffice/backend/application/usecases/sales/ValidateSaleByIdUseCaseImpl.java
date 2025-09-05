@@ -7,9 +7,7 @@ import com.ticketoffice.backend.domain.models.Sale;
 import com.ticketoffice.backend.domain.usecases.sales.GetSaleByIdUseCase;
 import com.ticketoffice.backend.domain.usecases.sales.UpdateSaleUseCase;
 import com.ticketoffice.backend.domain.usecases.sales.ValidateSaleByIdUseCase;
-import org.springframework.stereotype.Service;
 
-@Service
 public class ValidateSaleByIdUseCaseImpl implements ValidateSaleByIdUseCase {
 
     private final GetSaleByIdUseCase getSaleByIdUseCase;

@@ -8,9 +8,7 @@ import com.ticketoffice.backend.domain.models.Organizer;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.usecases.events.CreateEventUseCase;
 import com.ticketoffice.backend.domain.usecases.organizer.GetOrganizerByUserUseCase;
-import org.springframework.stereotype.Service;
 
-@Service
 public class CreateEventUseCaseImpl implements CreateEventUseCase {
 
     final private EventRepository eventRepository;

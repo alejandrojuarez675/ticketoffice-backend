@@ -7,21 +7,18 @@ import com.ticketoffice.backend.domain.ports.EmailService;
 import com.ticketoffice.backend.domain.usecases.emails.SendTicketEmailToBuyerUseCase;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
-@Service
 public class SendTicketEmailToBuyerUseCaseImpl implements SendTicketEmailToBuyerUseCase {
 
     private final EmailService emailService;
 
-    @Value("${email.no-reply-email}")
+//    @Value("${email.no-reply-email}")
     private String from;
 
-    @Value("${baseurl.frontend}")
+//    @Value("${baseurl.frontend}")
     private String frontendUrl;
 
-    @Value("${url.frontend.confirmation}")
+//    @Value("${url.frontend.confirmation}")
     private String pathToConfirmationPage;
 
     public SendTicketEmailToBuyerUseCaseImpl(EmailService emailService) {

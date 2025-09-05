@@ -4,9 +4,7 @@ import com.ticketoffice.backend.domain.models.Sale;
 import com.ticketoffice.backend.domain.ports.SaleRepository;
 import com.ticketoffice.backend.domain.usecases.sales.UpdateSaleUseCase;
 import java.util.Optional;
-import org.springframework.stereotype.Service;
 
-@Service
 public class UpdateSaleUseCaseImpl implements UpdateSaleUseCase {
 
     private final SaleRepository saleRepository;

@@ -4,9 +4,7 @@ import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.usecases.events.GetEventUseCase;
 import java.util.Optional;
-import org.springframework.stereotype.Service;
 
-@Service
 public class GetEventUseCaseImpl implements GetEventUseCase {
 
     final private EventRepository eventRepository;

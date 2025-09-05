@@ -12,9 +12,7 @@ import com.ticketoffice.backend.domain.usecases.checkout.CreateCheckoutSessionUs
 import com.ticketoffice.backend.domain.usecases.events.GetEventUseCase;
 import com.ticketoffice.backend.domain.usecases.tickets.GetAvailableTicketStockIdUseCase;
 import java.time.LocalDateTime;
-import org.springframework.stereotype.Service;
 
-@Service
 public class CreateCheckoutSessionUseCaseImpl implements CreateCheckoutSessionUseCase {
 
     public static final Long EXPIRATION_TIME_IN_SECONDS = 600L; // 10 minutes

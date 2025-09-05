@@ -3,11 +3,8 @@ package com.ticketoffice.backend.application.usecases.sales;
 import com.ticketoffice.backend.domain.models.Sale;
 import com.ticketoffice.backend.domain.ports.SaleRepository;
 import com.ticketoffice.backend.domain.usecases.sales.GetAllSalesByEventIdUseCase;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 
-@Service
 public class GetAllSalesByEventIdUseCaseImpl implements GetAllSalesByEventIdUseCase {
 
     private final SaleRepository saleRepository;

@@ -6,15 +6,12 @@ import com.ticketoffice.backend.domain.ports.EmailService;
 import com.ticketoffice.backend.domain.usecases.emails.SendConfirmationEmailToBuyerUseCase;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
-@Service
 public class SendConfirmationEmailToBuyerUseCaseImpl implements SendConfirmationEmailToBuyerUseCase {
 
     private final EmailService emailService;
 
-    @Value("${email.no-reply-email}")
+//    @Value("${email.no-reply-email}")
     private String from;
 
     public SendConfirmationEmailToBuyerUseCaseImpl(EmailService emailService) {
