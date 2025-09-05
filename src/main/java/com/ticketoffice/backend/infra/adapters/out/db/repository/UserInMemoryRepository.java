@@ -9,10 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public class UserInMemoryRepository implements InMemoryRepository<User>, UserRepository {
 
     private static final Map<String, User> data = new HashMap<>();

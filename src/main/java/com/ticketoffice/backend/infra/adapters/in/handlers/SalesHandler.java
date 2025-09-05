@@ -13,11 +13,8 @@ import com.ticketoffice.backend.infra.adapters.in.dto.mapper.SalesListResponseMa
 import com.ticketoffice.backend.infra.adapters.in.dto.response.tickets.SalesListResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.adapters.in.exception.NotFoundException;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 
-@Service
 public class SalesHandler {
 
     private final GetAllSalesByEventIdUseCase getAllSalesByEventIdUseCase;

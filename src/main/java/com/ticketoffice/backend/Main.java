@@ -4,6 +4,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.ticketoffice.backend.infra.adapters.in.controller.PingController;
 import com.ticketoffice.backend.infra.adapters.in.controller.admin.EventsController;
+import com.ticketoffice.backend.infra.adapters.in.controller.admin.OrganizerController;
+import com.ticketoffice.backend.infra.adapters.in.controller.admin.SalesController;
 import com.ticketoffice.backend.infra.config.AppModule;
 import io.javalin.Javalin;
 
@@ -17,6 +19,8 @@ public class Main {
 
         injector.getInstance(PingController.class).registeredRoutes(app);
         injector.getInstance(EventsController.class).registeredRoutes(app);
+        injector.getInstance(OrganizerController.class).registeredRoutes(app);
+        injector.getInstance(SalesController.class).registeredRoutes(app);
 
         app.start(8080);
     }

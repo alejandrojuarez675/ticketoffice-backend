@@ -7,9 +7,7 @@ import com.ticketoffice.backend.domain.utils.EventSearchParameters;
 import com.ticketoffice.backend.infra.adapters.in.dto.mapper.EventLightResponseMapper;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.SearchResponse;
 import java.util.List;
-import org.springframework.stereotype.Service;
 
-@Service
 public class SearchPageHandler {
 
     private final GetEventsByParamsUseCase getEventsByParamsUseCase;

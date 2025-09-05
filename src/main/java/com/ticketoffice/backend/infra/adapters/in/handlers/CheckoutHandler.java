@@ -14,9 +14,7 @@ import com.ticketoffice.backend.infra.adapters.in.dto.request.BuyTicketsRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.CreateSessionRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.SessionCreatedResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
-import org.springframework.stereotype.Service;
 
-@Service
 public class CheckoutHandler {
 
     private final CreateCheckoutSessionUseCase createCheckoutSessionUseCase;

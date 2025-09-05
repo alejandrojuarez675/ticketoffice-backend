@@ -16,9 +16,7 @@ import com.ticketoffice.backend.infra.adapters.in.dto.shared.TicketDTO;
 import com.ticketoffice.backend.infra.adapters.in.exception.NotFoundException;
 import java.util.List;
 import java.util.function.Function;
-import org.springframework.stereotype.Service;
 
-@Service
 public class EventDetailPageHandler {
 
     final private GetEventUseCase getEventUseCase;

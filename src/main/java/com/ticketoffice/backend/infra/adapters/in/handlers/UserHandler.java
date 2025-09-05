@@ -10,9 +10,7 @@ import com.ticketoffice.backend.infra.adapters.in.dto.response.UserResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.shared.OrganizerDTO;
 import com.ticketoffice.backend.infra.adapters.in.exception.UnauthorizedUserException;
 import java.util.List;
-import org.springframework.stereotype.Service;
 
-@Service
 public class UserHandler {
 
     private final GetAllUsersUserCase getAllUsersUserCase;

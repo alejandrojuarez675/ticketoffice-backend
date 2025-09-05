@@ -7,9 +7,7 @@ import com.ticketoffice.backend.domain.usecases.organizer.CreateOrganizerUseCase
 import com.ticketoffice.backend.infra.adapters.in.dto.mapper.ImageDtoMapper;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.OrganizerCrudRequest;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
-import org.springframework.stereotype.Service;
 
-@Service
 public class OrganizerCrudHandler {
 
     private final CreateOrganizerUseCase createOrganizerUseCase;
