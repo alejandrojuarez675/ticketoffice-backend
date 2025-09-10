@@ -39,11 +39,11 @@ dependencies {
     implementation 'com.amazonaws:aws-lambda-java-core:1.2.3'
     implementation 'com.amazonaws:aws-lambda-java-events:3.11.0'
 
-    // JDBC / JPA / Hibernate (si mantienes JPA)
-    // implementation 'org.hibernate:hibernate-core:6.x'
-
     // Testing
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
+
+    // logger
+    implementation("org.slf4j:slf4j-simple:2.0.16")
 }
 
 tasks.named('test') {

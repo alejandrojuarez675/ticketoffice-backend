@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.handlers;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.usecases.organizer.GetOrganizerByUserIdUseCase;
 import com.ticketoffice.backend.domain.usecases.users.GetAllUsersUserCase;
@@ -18,6 +19,7 @@ public class UserHandler {
     private final IsAnAdminUserUseCase isAnAdminUserUseCase;
     private final GetOrganizerByUserIdUseCase getOrganizerByUserIdUseCase;
 
+    @Inject
     public UserHandler(
             GetAllUsersUserCase getAllUsersUserCase,
             GetAuthenticatedUserUseCase getAuthenticatedUserUseCase,

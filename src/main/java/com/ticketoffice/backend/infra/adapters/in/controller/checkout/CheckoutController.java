@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.controller.checkout;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.infra.adapters.in.controller.CustomController;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.BuyTicketsRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.CreateSessionRequest;
@@ -16,6 +17,7 @@ public class CheckoutController implements CustomController {
     private static final String PATH = "/api/public/v1/checkout";
     private final CheckoutHandler checkoutHandler;
 
+    @Inject
     public CheckoutController(CheckoutHandler checkoutHandler) {
         this.checkoutHandler = checkoutHandler;
     }
@@ -26,7 +28,7 @@ public class CheckoutController implements CustomController {
             var body = ctx.bodyAsClass(CreateSessionRequest.class);
             ctx.json(createSession(body));
         });
-        app.post(PATH + "/session/:sessionId/buy", ctx -> {
+        app.post(PATH + "/session/{sessionId}/buy", ctx -> {
             String id = ctx.pathParam("sessionId");
             var body = ctx.bodyAsClass(BuyTicketsRequest.class);
             buyTicket(id, body);

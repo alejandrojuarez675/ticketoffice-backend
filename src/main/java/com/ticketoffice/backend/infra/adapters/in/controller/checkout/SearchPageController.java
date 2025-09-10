@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.controller.checkout;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.infra.adapters.in.controller.CustomController;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.SearchResponse;
 import com.ticketoffice.backend.infra.adapters.in.handlers.SearchPageHandler;
@@ -12,6 +13,7 @@ public class SearchPageController implements CustomController {
     private final static String PATH = "/api/public/v1/event/search";
     private final SearchPageHandler searchPageHandler;
 
+    @Inject
     public SearchPageController(SearchPageHandler searchPageHandler) {
         this.searchPageHandler = searchPageHandler;
     }

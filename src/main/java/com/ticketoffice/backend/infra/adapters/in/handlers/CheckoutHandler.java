@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.handlers;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.application.usecases.checkout.CreateCheckoutSessionUseCaseImpl;
 import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.ProblemWithTicketStock;
@@ -21,6 +22,7 @@ public class CheckoutHandler {
     private final GetCheckoutSessionUseCase getCheckoutSessionUseCase;
     private final RegisterPurchaseUseCase registerPurchaseUseCase;
 
+    @Inject
     public CheckoutHandler(
             CreateCheckoutSessionUseCase createCheckoutSessionUseCase,
             GetCheckoutSessionUseCase getCheckoutSessionUseCase,

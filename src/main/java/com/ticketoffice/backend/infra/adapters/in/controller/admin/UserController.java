@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.controller.admin;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.infra.adapters.in.controller.CustomController;
 import com.ticketoffice.backend.infra.adapters.in.controller.UserRoleValidator;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.UserResponse;
@@ -14,6 +15,7 @@ public class UserController implements CustomController {
     private final UserHandler userHandler;
     private final UserRoleValidator userRoleValidator;
 
+    @Inject
     public UserController(UserHandler userHandler, UserRoleValidator userRoleValidator) {
         this.userHandler = userHandler;
         this.userRoleValidator = userRoleValidator;

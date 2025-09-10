@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.handlers;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.domain.models.Organizer;
@@ -12,6 +13,7 @@ public class OrganizerCrudHandler {
 
     private final CreateOrganizerUseCase createOrganizerUseCase;
 
+    @Inject
     public OrganizerCrudHandler(CreateOrganizerUseCase createOrganizerUseCase) {
         this.createOrganizerUseCase = createOrganizerUseCase;
     }

@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.controller.admin;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.infra.adapters.in.controller.CustomController;
 import com.ticketoffice.backend.infra.adapters.in.controller.UserRoleValidator;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.OrganizerCrudRequest;
@@ -14,6 +15,7 @@ public class OrganizerController implements CustomController {
     private final OrganizerCrudHandler organizerCrudHandler;
     private final UserRoleValidator userRoleValidator;
 
+    @Inject
     public OrganizerController(OrganizerCrudHandler organizerCrudHandler, UserRoleValidator userRoleValidator) {
         this.organizerCrudHandler = organizerCrudHandler;
         this.userRoleValidator = userRoleValidator;

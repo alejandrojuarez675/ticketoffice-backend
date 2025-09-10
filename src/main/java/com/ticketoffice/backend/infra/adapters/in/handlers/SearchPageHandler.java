@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.handlers;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.usecases.events.CountEventsByParamsUseCase;
 import com.ticketoffice.backend.domain.usecases.events.GetEventsByParamsUseCase;
@@ -13,6 +14,7 @@ public class SearchPageHandler {
     private final GetEventsByParamsUseCase getEventsByParamsUseCase;
     private final CountEventsByParamsUseCase countEventsByParamsUseCase;
 
+    @Inject
     public SearchPageHandler(
             GetEventsByParamsUseCase getEventsByParamsUseCase,
             CountEventsByParamsUseCase countEventsByParamsUseCase

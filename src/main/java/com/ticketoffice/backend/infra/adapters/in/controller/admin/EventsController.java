@@ -33,7 +33,7 @@ public class EventsController implements CustomController {
     @Override
     public void registeredRoutes(Javalin app) {
         app.get(PATH, context -> context.json(getEvents()));
-        app.get(PATH + "/:eventId", context -> {
+        app.get(PATH + "/{eventId}", context -> {
             String id = context.pathParam("eventId");
             context.json(getEventById(id));
         });
@@ -42,12 +42,12 @@ public class EventsController implements CustomController {
             postEvents(eventCrudRequest);
             context.status(HttpStatus.CREATED);
         });
-        app.put(PATH + "/:eventId", context -> {
+        app.put(PATH + "/{eventId}", context -> {
             String id = context.pathParam("eventId");
             EventCrudRequest eventCrudRequest = context.bodyAsClass(EventCrudRequest.class);
             context.json(putEvents(id, eventCrudRequest));
         });
-        app.delete(PATH + "/:eventId", context -> {
+        app.delete(PATH + "/{eventId}", context -> {
             String id = context.pathParam("eventId");
             deleteEvent(id);
             context.status(HttpStatus.NO_CONTENT);

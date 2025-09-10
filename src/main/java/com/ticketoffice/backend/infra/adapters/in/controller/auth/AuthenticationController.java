@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.controller.auth;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.infra.adapters.in.controller.CustomController;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.UserLoginRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.UserSignupRequest;
@@ -13,6 +14,7 @@ public class AuthenticationController implements CustomController {
     private final static String PATH = "/auth";
     private final AuthenticationHandler authenticationHandler;
 
+    @Inject
     public AuthenticationController(AuthenticationHandler authenticationHandler) {
         this.authenticationHandler = authenticationHandler;
     }

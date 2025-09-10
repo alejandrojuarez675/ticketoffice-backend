@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.handlers;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
@@ -21,6 +22,7 @@ public class SalesHandler {
     private final GetMyEventUseCase getMyEventUseCase;
     private final ValidateSaleByIdUseCase validateSaleByIdUseCase;
 
+    @Inject
     public SalesHandler(
             GetAllSalesByEventIdUseCase getAllSalesByEventIdUseCase,
             GetMyEventUseCase getMyEventUseCase,

@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.controller.admin;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.infra.adapters.in.controller.CustomController;
 import com.ticketoffice.backend.infra.adapters.in.controller.UserRoleValidator;
@@ -18,6 +19,7 @@ public class SalesController implements CustomController {
     private final SalesHandler salesHandler;
     private final UserRoleValidator userRoleValidator;
 
+    @Inject
     public SalesController(
             SalesHandler salesHandler,
             UserRoleValidator userRoleValidator
@@ -28,11 +30,11 @@ public class SalesController implements CustomController {
 
     @Override
     public void registeredRoutes(Javalin app) {
-        app.get("/api/v1/events/:eventId/sales", context -> {
+        app.get("/api/v1/events/{eventId}/sales", context -> {
             String eventId = context.pathParam("eventId");
             context.json(getAllTicketsByEventId(eventId));
         });
-        app.post("/api/v1/events/:eventId/sales/:saleId/validate", context -> {
+        app.post("/api/v1/events/{eventId}/sales/{saleId}/validate", context -> {
             String saleId = context.pathParam("saleId");
             String eventId = context.pathParam("eventId");
             validateSale(saleId, eventId);

@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.handlers;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.enums.UserRole;
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.UserRepository;
@@ -14,6 +15,7 @@ public class AuthenticationHandler {
 
     private final UserRepository userRepository;
 
+    @Inject
     public AuthenticationHandler(
              UserRepository userRepository
     ) {

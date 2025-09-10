@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.handlers;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Organizer;
@@ -24,6 +25,7 @@ public class EventDetailPageHandler {
     private final GetSimilarEventsToAnEventUseCase getSimilarEventsToAnEventUseCase;
     private final GetAvailableTicketStockIdUseCase getAvailableTicketStockIdUseCase;
 
+    @Inject
     public EventDetailPageHandler(
             GetEventUseCase getEventUseCase,
             GetOrganizerByUserIdUseCase getOrganizerByUserIdUseCase,
