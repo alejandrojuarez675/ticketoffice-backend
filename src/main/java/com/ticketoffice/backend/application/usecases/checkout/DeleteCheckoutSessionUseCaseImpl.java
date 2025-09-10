@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.checkout;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.ports.CheckoutSessionCache;
 import com.ticketoffice.backend.domain.usecases.checkout.DeleteCheckoutSessionUseCase;
 
@@ -7,6 +8,7 @@ public class DeleteCheckoutSessionUseCaseImpl implements DeleteCheckoutSessionUs
 
     private final CheckoutSessionCache checkoutSessionCache;
 
+    @Inject
     public DeleteCheckoutSessionUseCaseImpl(CheckoutSessionCache checkoutSessionCache) {
         this.checkoutSessionCache = checkoutSessionCache;
     }

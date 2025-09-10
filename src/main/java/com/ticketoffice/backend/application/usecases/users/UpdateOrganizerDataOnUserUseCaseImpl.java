@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.users;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.models.Organizer;
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.UserRepository;
@@ -10,6 +11,7 @@ public class UpdateOrganizerDataOnUserUseCaseImpl implements UpdateOrganizerData
 
     private final UserRepository userRepository;
 
+    @Inject
     public UpdateOrganizerDataOnUserUseCaseImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

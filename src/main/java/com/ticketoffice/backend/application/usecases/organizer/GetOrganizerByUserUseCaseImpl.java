@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.organizer;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.enums.UserRole;
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
@@ -12,6 +13,7 @@ public class GetOrganizerByUserUseCaseImpl implements GetOrganizerByUserUseCase 
 
     private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
 
+    @Inject
     public GetOrganizerByUserUseCaseImpl(GetAuthenticatedUserUseCase getAuthenticatedUserUseCase) {
         this.getAuthenticatedUserUseCase = getAuthenticatedUserUseCase;
     }

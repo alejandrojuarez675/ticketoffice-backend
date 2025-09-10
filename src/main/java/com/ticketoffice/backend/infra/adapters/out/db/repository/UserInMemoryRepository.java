@@ -1,5 +1,7 @@
 package com.ticketoffice.backend.infra.adapters.out.db.repository;
 
+import com.google.inject.Inject;
+import com.ticketoffice.backend.application.services.PasswordEncoder;
 import com.ticketoffice.backend.domain.enums.UserRole;
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.UserRepository;
@@ -14,6 +16,7 @@ public class UserInMemoryRepository implements InMemoryRepository<User>, UserRep
 
     private static final Map<String, User> data = new HashMap<>();
 
+    @Inject
     public UserInMemoryRepository(PasswordEncoder passwordEncoder) {
         User userAdmin = new User(
                 "admin",

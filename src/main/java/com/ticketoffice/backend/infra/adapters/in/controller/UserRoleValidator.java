@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.controller;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.enums.UserRole;
 import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCase;
 import com.ticketoffice.backend.infra.adapters.in.exception.UnauthorizedUserException;
@@ -10,6 +11,7 @@ public class UserRoleValidator {
 
     private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
 
+    @Inject
     public UserRoleValidator(GetAuthenticatedUserUseCase getAuthenticatedUserUseCase) {
         this.getAuthenticatedUserUseCase = getAuthenticatedUserUseCase;
     }

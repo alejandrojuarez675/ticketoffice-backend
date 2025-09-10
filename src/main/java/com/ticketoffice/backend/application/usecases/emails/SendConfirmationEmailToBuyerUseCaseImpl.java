@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.emails;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Sale;
 import com.ticketoffice.backend.domain.ports.EmailService;
@@ -14,6 +15,7 @@ public class SendConfirmationEmailToBuyerUseCaseImpl implements SendConfirmation
 //    @Value("${email.no-reply-email}")
     private String from;
 
+    @Inject
     public SendConfirmationEmailToBuyerUseCaseImpl(EmailService emailService) {
         this.emailService = emailService;
     }

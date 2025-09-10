@@ -1,10 +1,11 @@
 plugins {
-	id 'java'
-    id 'com.github.johnrengelman.shadow' version '8.1.1' // si necesitas fatJar
+    id 'application'
+//    id 'com.github.johnrengelman.shadow' version '8.1.1' // si necesitas fatJar
 }
 
 group = 'com.ticketoffice'
 version = '0.0.1-SNAPSHOT'
+mainClassName = 'com.ticketoffice.backend.Main'
 
 java {
 	toolchain {
@@ -21,14 +22,18 @@ dependencies {
     implementation 'io.javalin:javalin:6.7.0'
 
     // Guice (DI)
-    implementation 'com.google.inject:guice:5.1.0'
+    implementation 'com.google.inject:guice:7.0.0'
 
     // OpenAPI/Swagger para Javalin
-    implementation 'io.javalin.community.openapi:javalin-swagger-plugin:6.3.0'
+//    implementation 'io.javalin:javalin-bundle:6.7.0'
+//    implementation 'io.javalin.community.openapi:javalin-openapi-plugin:6.7.0'
+//    implementation 'io.javalin.community.openapi:javalin-swagger-plugin:6.7.0'
+//    implementation 'io.javalin.community.openapi:javalin-redoc-plugin:6.7.0'
+//    annotationProcessor 'io.javalin.community.openapi:openapi-annotation-processor:6.7.0'
 
     // AWS Serverless Java Container (si eliges ZIP/JAR approach)
     implementation 'com.amazonaws.serverless:aws-serverless-java-container-core:2.1.4'
-    implementation 'com.amazonaws.serverless:aws-serverless-java-container-servlet:2.1.4'
+//    implementation 'com.amazonaws.serverless:aws-serverless-java-container-servlet:2.1.4'
 
     // AWS Lambda Java libs
     implementation 'com.amazonaws:aws-lambda-java-core:1.2.3'
@@ -46,6 +51,6 @@ tasks.named('test') {
 }
 
 // Shadow jar config si quieres zip/jar deploy
-shadowJar {
-    archiveClassifier.set('all')
-}
+//shadowJar {
+//    archiveClassifier.set('all')
+//}

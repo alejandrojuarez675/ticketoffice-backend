@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.emails;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.application.utils.QrUtils;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Sale;
@@ -21,6 +22,7 @@ public class SendTicketEmailToBuyerUseCaseImpl implements SendTicketEmailToBuyer
 //    @Value("${url.frontend.confirmation}")
     private String pathToConfirmationPage;
 
+    @Inject
     public SendTicketEmailToBuyerUseCaseImpl(EmailService emailService) {
         this.emailService = emailService;
     }

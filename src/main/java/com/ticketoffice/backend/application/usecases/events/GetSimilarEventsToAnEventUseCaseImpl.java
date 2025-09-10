@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.events;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.enums.EventStatus;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
 import com.ticketoffice.backend.domain.models.Event;
@@ -16,6 +17,7 @@ public class GetSimilarEventsToAnEventUseCaseImpl implements GetSimilarEventsToA
     private final GetEventUseCase getEventUseCase;
     private final EventRepository eventRepository;
 
+    @Inject
     public GetSimilarEventsToAnEventUseCaseImpl(
             GetEventUseCase getEventUseCase,
             EventRepository eventRepository

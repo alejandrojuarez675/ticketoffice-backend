@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.events;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.usecases.events.GetEventsByParamsUseCase;
@@ -10,6 +11,7 @@ public class GetEventsByParamsUseCaseImpl implements GetEventsByParamsUseCase {
 
     private final EventRepository eventRepository;
 
+    @Inject
     public GetEventsByParamsUseCaseImpl(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
     }

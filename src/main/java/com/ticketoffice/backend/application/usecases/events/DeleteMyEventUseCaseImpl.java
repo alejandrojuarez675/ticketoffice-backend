@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.events;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.enums.EventStatus;
 import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
@@ -14,6 +15,7 @@ public class DeleteMyEventUseCaseImpl implements DeleteMyEventUseCase {
     private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
     private final EventRepository eventRepository;
 
+    @Inject
     public DeleteMyEventUseCaseImpl(
             GetAuthenticatedUserUseCase getAuthenticatedUserUseCase,
             EventRepository eventRepository

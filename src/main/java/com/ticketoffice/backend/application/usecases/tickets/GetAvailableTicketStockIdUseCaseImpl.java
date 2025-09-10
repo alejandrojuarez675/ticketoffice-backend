@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.tickets;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Ticket;
@@ -12,6 +13,7 @@ public class GetAvailableTicketStockIdUseCaseImpl implements GetAvailableTicketS
     private final GetOnHoldTicketsStockUseCase getOnHoldTicketsStockUseCase;
     private final CountSalesByEventIdAndTicketIdUseCase countSalesByEventIdAndTicketIdUseCase;
 
+    @Inject
     public GetAvailableTicketStockIdUseCaseImpl(
             GetOnHoldTicketsStockUseCase getOnHoldTicketsStockUseCase,
             CountSalesByEventIdAndTicketIdUseCase countSalesByEventIdAndTicketIdUseCase

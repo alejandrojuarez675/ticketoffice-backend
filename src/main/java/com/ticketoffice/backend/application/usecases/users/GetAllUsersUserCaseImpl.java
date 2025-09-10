@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.users;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.UserRepository;
 import com.ticketoffice.backend.domain.usecases.users.GetAllUsersUserCase;
@@ -9,6 +10,7 @@ public class GetAllUsersUserCaseImpl implements GetAllUsersUserCase {
 
     private final UserRepository userRepository;
 
+    @Inject
     public GetAllUsersUserCaseImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

@@ -1,7 +1,6 @@
 package com.ticketoffice.backend.infra.config;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Singleton;
 import com.ticketoffice.backend.application.usecases.checkout.CreateCheckoutSessionUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.checkout.DeleteCheckoutSessionUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.checkout.GetCheckoutSessionUseCaseImpl;
@@ -69,14 +68,6 @@ import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCas
 import com.ticketoffice.backend.domain.usecases.users.GetUserByIdUseCase;
 import com.ticketoffice.backend.domain.usecases.users.IsAnAdminUserUseCase;
 import com.ticketoffice.backend.domain.usecases.users.UpdateOrganizerDataOnUserUseCase;
-import com.ticketoffice.backend.infra.adapters.in.controller.UserRoleValidator;
-import com.ticketoffice.backend.infra.adapters.in.handlers.CheckoutHandler;
-import com.ticketoffice.backend.infra.adapters.in.handlers.EventCrudHandler;
-import com.ticketoffice.backend.infra.adapters.in.handlers.EventDetailPageHandler;
-import com.ticketoffice.backend.infra.adapters.in.handlers.OrganizerCrudHandler;
-import com.ticketoffice.backend.infra.adapters.in.handlers.SalesHandler;
-import com.ticketoffice.backend.infra.adapters.in.handlers.SearchPageHandler;
-import com.ticketoffice.backend.infra.adapters.in.handlers.UserHandler;
 import com.ticketoffice.backend.infra.adapters.out.cache.CheckoutSessionInMemoryCache;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.EventInMemoryRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.SaleInMemoryRepository;
@@ -88,16 +79,16 @@ public class AppModule extends AbstractModule {
     @Override
     protected void configure() {
         // handlers
-        bind(EventCrudHandler.class).to(EventCrudHandler.class);
-        bind(CheckoutHandler.class).to(CheckoutHandler.class).in(Singleton.class);
-        bind(EventDetailPageHandler.class).to(EventDetailPageHandler.class);
-        bind(OrganizerCrudHandler.class).to(OrganizerCrudHandler.class);
-        bind(SalesHandler.class).to(SalesHandler.class);
-        bind(SearchPageHandler.class).to(SearchPageHandler.class);
-        bind(UserHandler.class).to(UserHandler.class);
+//        bind(EventCrudHandler.class).to(EventCrudHandler.class);
+//        bind(CheckoutHandler.class).to(CheckoutHandler.class).in(Singleton.class);
+//        bind(EventDetailPageHandler.class).to(EventDetailPageHandler.class);
+//        bind(OrganizerCrudHandler.class).to(OrganizerCrudHandler.class);
+//        bind(SalesHandler.class).to(SalesHandler.class);
+//        bind(SearchPageHandler.class).to(SearchPageHandler.class);
+//        bind(UserHandler.class).to(UserHandler.class);
 
         // validators
-        bind(UserRoleValidator.class).to(UserRoleValidator.class);
+//        bind(UserRoleValidator.class).to(UserRoleValidator.class);
 
         // usecases
         bind(GetAuthenticatedUserUseCase.class).to(GetAuthenticatedUserUseCaseImpl.class);

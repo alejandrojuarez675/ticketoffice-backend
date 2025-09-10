@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.events;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
@@ -14,6 +15,7 @@ public class CreateEventUseCaseImpl implements CreateEventUseCase {
     final private EventRepository eventRepository;
     final private GetOrganizerByUserUseCase getOrganizerByUserUseCase;
 
+    @Inject
     public CreateEventUseCaseImpl(
             EventRepository eventRepository, GetOrganizerByUserUseCase getOrganizerByUserUseCase
     ) {

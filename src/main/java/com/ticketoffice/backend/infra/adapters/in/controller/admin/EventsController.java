@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.controller.admin;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.infra.adapters.in.controller.CustomController;
 import com.ticketoffice.backend.infra.adapters.in.controller.UserRoleValidator;
@@ -15,8 +16,6 @@ import com.ticketoffice.backend.infra.adapters.in.handlers.EventCrudHandler;
 import com.ticketoffice.backend.infra.adapters.in.utils.IdValidator;
 import io.javalin.Javalin;
 import io.javalin.http.HttpStatus;
-
-import javax.inject.Inject;
 
 //@Tag(name = "Events Management", description = "Endpoints for managing sales")
 public class EventsController implements CustomController {

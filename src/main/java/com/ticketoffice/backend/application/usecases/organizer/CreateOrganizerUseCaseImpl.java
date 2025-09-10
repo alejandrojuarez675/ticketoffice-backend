@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.organizer;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.domain.models.Organizer;
@@ -13,6 +14,7 @@ public class CreateOrganizerUseCaseImpl implements CreateOrganizerUseCase {
     private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
     private final UpdateOrganizerDataOnUserUseCase updateOrganizerDataOnUserUseCase;
 
+    @Inject
     public CreateOrganizerUseCaseImpl(
             GetAuthenticatedUserUseCase getAuthenticatedUserUseCase,
             UpdateOrganizerDataOnUserUseCase updateOrganizerDataOnUserUseCase) {

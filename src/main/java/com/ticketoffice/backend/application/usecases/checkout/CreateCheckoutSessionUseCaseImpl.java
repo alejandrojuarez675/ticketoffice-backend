@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.checkout;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.application.usecases.tickets.GetAvailableTicketStockIdUseCaseImpl;
 import com.ticketoffice.backend.application.utils.CheckoutSessionIdUtils;
 import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
@@ -21,6 +22,7 @@ public class CreateCheckoutSessionUseCaseImpl implements CreateCheckoutSessionUs
     private final GetEventUseCase getEventUseCase;
     private final GetAvailableTicketStockIdUseCase getAvailableTicketStockIdUseCase;
 
+    @Inject
     public CreateCheckoutSessionUseCaseImpl(
             CheckoutSessionCache checkoutSessionCache,
             GetEventUseCase getEventUseCase,

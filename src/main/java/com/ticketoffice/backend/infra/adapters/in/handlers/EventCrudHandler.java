@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.handlers;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
@@ -30,6 +31,7 @@ public class EventCrudHandler {
     private final GetOrganizerByUserIdUseCase getOrganizerByUserIdUseCase;
     private final DeleteMyEventUseCase deleteMyEventUseCase;
 
+    @Inject
     public EventCrudHandler(
             CreateEventUseCase createEventUseCase,
             GetAllMyEventsUseCase getAllMyEventsUseCase,

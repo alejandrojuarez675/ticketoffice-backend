@@ -1,12 +1,12 @@
 package com.ticketoffice.backend.domain.utils;
 
+import com.google.common.base.Strings;
 import com.ticketoffice.backend.domain.enums.EventStatus;
 import com.ticketoffice.backend.domain.models.Event;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import org.apache.commons.lang3.StringUtils;
 
 public record EventSearchParameters(
         String country,
@@ -15,7 +15,7 @@ public record EventSearchParameters(
 ) {
 
     public Predicate<Event> getPredicate() {
-        String title = Optional.ofNullable(query).map(String::toUpperCase).orElse(StringUtils.EMPTY);
+        String title = Optional.ofNullable(query).map(String::toUpperCase).orElse("");
 
         return getPredicate(title).reduce(Predicate::and).orElse(event -> true);
     }
@@ -23,8 +23,8 @@ public record EventSearchParameters(
     private Stream<Predicate<Event>> getPredicate(String title) {
         return Stream.of(
                 event -> event.location().country().equals(country),
-                event -> StringUtils.isEmpty(city) || event.location().city().equals(city),
-                event -> StringUtils.isEmpty(title) || event.title().toUpperCase().contains(title),
+                event -> Strings.isNullOrEmpty(city) || event.location().city().equals(city),
+                event -> Strings.isNullOrEmpty(title) || event.title().toUpperCase().contains(title),
                 event -> event.status().equals(EventStatus.ACTIVE),
                 event -> event.date().isAfter(LocalDateTime.now())
         );

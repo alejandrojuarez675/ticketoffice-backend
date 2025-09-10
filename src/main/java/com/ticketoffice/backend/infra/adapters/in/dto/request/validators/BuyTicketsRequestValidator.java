@@ -1,8 +1,8 @@
 package com.ticketoffice.backend.infra.adapters.in.dto.request.validators;
 
+import com.google.common.base.Strings;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.BuyTicketsRequest;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
-import org.apache.commons.lang3.StringUtils;
 
 public class BuyTicketsRequestValidator implements RequestValidator<BuyTicketsRequest> {
     @Override
@@ -13,7 +13,7 @@ public class BuyTicketsRequestValidator implements RequestValidator<BuyTicketsRe
         if (request.buyer() == null || request.buyer().isEmpty()) {
             throw new BadRequestException("Buyer is required");
         }
-        if (StringUtils.isBlank(request.mainEmail())) {
+        if (Strings.isNullOrEmpty(request.mainEmail())) {
             throw new BadRequestException("Main email is required");
         }
         for (BuyTicketsRequest.PersonalData personalData : request.buyer()) {
@@ -25,13 +25,13 @@ public class BuyTicketsRequestValidator implements RequestValidator<BuyTicketsRe
         if (personalData == null) {
             throw new BadRequestException("Personal data is required");
         }
-        if (StringUtils.isBlank(personalData.name())) {
+        if (Strings.isNullOrEmpty(personalData.name())) {
             throw new BadRequestException("First name is required");
         }
-        if (StringUtils.isBlank(personalData.lastName())) {
+        if (Strings.isNullOrEmpty(personalData.lastName())) {
             throw new BadRequestException("Last name is required");
         }
-        if (StringUtils.isBlank(personalData.email())) {
+        if (Strings.isNullOrEmpty(personalData.email())) {
             throw new BadRequestException("Email is required");
         }
     }

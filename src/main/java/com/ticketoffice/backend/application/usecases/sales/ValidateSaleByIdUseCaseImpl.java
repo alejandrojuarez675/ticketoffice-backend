@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.sales;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
 import com.ticketoffice.backend.domain.exception.TicketValidatedPreviouslyException;
@@ -13,6 +14,7 @@ public class ValidateSaleByIdUseCaseImpl implements ValidateSaleByIdUseCase {
     private final GetSaleByIdUseCase getSaleByIdUseCase;
     private final UpdateSaleUseCase updateSaleUseCase;
 
+    @Inject
     public ValidateSaleByIdUseCaseImpl(
             GetSaleByIdUseCase getSaleByIdUseCase,
             UpdateSaleUseCase updateSaleUseCase

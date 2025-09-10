@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.checkout;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Sale;
@@ -24,6 +25,7 @@ public class RegisterPurchaseUseCaseImpl implements RegisterPurchaseUseCase {
     private final DeleteCheckoutSessionUseCase deleteCheckoutSessionUseCase;
     private final GetAvailableTicketStockIdUseCase getAvailableTicketStockIdUseCase;
 
+    @Inject
     public RegisterPurchaseUseCaseImpl(
             SaleRepository saleRepository,
             GetEventUseCase getEventUseCase,
