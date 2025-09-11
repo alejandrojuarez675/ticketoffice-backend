@@ -30,16 +30,19 @@ public class Main {
 //            config.registerPlugin(new ReDocPlugin());
         });
 
+        // Public
+        injector.getInstance(AuthenticationController.class).registeredRoutes(app);
+        injector.getInstance(CheckoutController.class).registeredRoutes(app);
+        injector.getInstance(SearchPageController.class).registeredRoutes(app);
+        injector.getInstance(EventDetailPageController.class).registeredRoutes(app);
+
+        // Authenticated
         injector.getInstance(PingController.class).registeredRoutes(app);
         injector.getInstance(EventsController.class).registeredRoutes(app);
         injector.getInstance(OrganizerController.class).registeredRoutes(app);
         injector.getInstance(SalesController.class).registeredRoutes(app);
         injector.getInstance(UserController.class).registeredRoutes(app);
-        injector.getInstance(AuthenticationController.class).registeredRoutes(app);
-        injector.getInstance(CheckoutController.class).registeredRoutes(app);
-        injector.getInstance(EventDetailPageController.class).registeredRoutes(app);
-        injector.getInstance(SearchPageController.class).registeredRoutes(app);
-
+        
         app.start(8080);
     }
 }
