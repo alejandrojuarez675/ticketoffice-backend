@@ -24,6 +24,11 @@ dependencies {
     // Guice (DI)
     implementation 'com.google.inject:guice:7.0.0'
 
+    // Jackson Core
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+
     // OpenAPI/Swagger para Javalin
 //    implementation 'io.javalin:javalin-bundle:6.7.0'
 //    implementation 'io.javalin.community.openapi:javalin-openapi-plugin:6.7.0'

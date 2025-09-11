@@ -1,5 +1,8 @@
 package com.ticketoffice.backend.infra.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.inject.AbstractModule;
 import com.ticketoffice.backend.application.usecases.checkout.CreateCheckoutSessionUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.checkout.DeleteCheckoutSessionUseCaseImpl;
@@ -78,15 +81,6 @@ public class AppModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        // handlers
-//        bind(EventCrudHandler.class).to(EventCrudHandler.class);
-//        bind(CheckoutHandler.class).to(CheckoutHandler.class).in(Singleton.class);
-//        bind(EventDetailPageHandler.class).to(EventDetailPageHandler.class);
-//        bind(OrganizerCrudHandler.class).to(OrganizerCrudHandler.class);
-//        bind(SalesHandler.class).to(SalesHandler.class);
-//        bind(SearchPageHandler.class).to(SearchPageHandler.class);
-//        bind(UserHandler.class).to(UserHandler.class);
-
         // validators
 //        bind(UserRoleValidator.class).to(UserRoleValidator.class);
 
@@ -134,6 +128,9 @@ public class AppModule extends AbstractModule {
         bind(EventRepository.class).to(EventInMemoryRepository.class);
         bind(SaleRepository.class).to(SaleInMemoryRepository.class);
         bind(CheckoutSessionCache.class).to(CheckoutSessionInMemoryCache.class);
-        // Binding para EntityManager / Datasource si usas JPA/Hibernate
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
 }
