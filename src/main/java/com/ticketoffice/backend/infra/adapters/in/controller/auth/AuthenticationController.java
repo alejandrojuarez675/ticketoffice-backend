@@ -7,7 +7,10 @@ import com.ticketoffice.backend.infra.adapters.in.dto.request.UserSignupRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.LoginResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.adapters.in.handlers.AuthenticationHandler;
+import com.ticketoffice.backend.infra.adapters.out.security.JwtTokenProvider;
+import com.ticketoffice.backend.infra.config.SecurityConfig;
 import io.javalin.Javalin;
+import java.util.Map;
 
 public class AuthenticationController implements CustomController {
 
@@ -21,14 +24,36 @@ public class AuthenticationController implements CustomController {
 
     @Override
     public void registeredRoutes(Javalin app) {
+        // Ruta pública para registro de usuarios
         app.post(PATH + "/signup", ctx -> {
             var body = ctx.bodyAsClass(UserSignupRequest.class);
             ctx.json(register(body));
-        });
+        }, SecurityConfig.ANYONE);
+        
+        // Ruta pública para inicio de sesión
         app.post(PATH + "/login", ctx -> {
             var body = ctx.bodyAsClass(UserLoginRequest.class);
-            ctx.json(authenticate(body));
-        });
+            // Autenticar al usuario
+            authenticate(body);
+            
+            // Generar token JWT
+            String token = JwtTokenProvider.generateToken(body.username());
+            
+            // Crear la respuesta con el token y tiempo de expiración
+            var loginResponse = new LoginResponse(
+                token,
+                JwtTokenProvider.getExpirationTime()
+            );
+            
+            ctx.json(loginResponse);
+        }, SecurityConfig.ANYONE);
+        
+        // Ruta de cierre de sesión (el cliente debe eliminar el token)
+        app.post(PATH + "/logout", ctx -> {
+            // El cliente debe eliminar el token del almacenamiento local
+            ctx.json(Map.of("message", "Sesión cerrada exitosamente"));
+            ctx.status(200); // Agregar el código de estado HTTP
+        }, SecurityConfig.AUTHENTICATED);
     }
 
 //    @Operation(
@@ -46,6 +71,10 @@ public class AuthenticationController implements CustomController {
 //            tags = {"Authentication"}
 //    )
     public LoginResponse authenticate(UserLoginRequest loginUserDto) {
-        return authenticationHandler.authenticate(loginUserDto);
+        // Primero autenticamos al usuario
+        var response = authenticationHandler.authenticate(loginUserDto);
+        
+        // Si llegamos aquí, la autenticación fue exitosa
+        return response;
     }
 }
