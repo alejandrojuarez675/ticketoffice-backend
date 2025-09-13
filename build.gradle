@@ -1,6 +1,6 @@
 plugins {
     id 'application'
-//    id 'com.github.johnrengelman.shadow' version '8.1.1' // si necesitas fatJar
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'com.ticketoffice'
@@ -60,15 +60,14 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-// Shadow jar config si quieres zip/jar deploy
-//shadowJar {
-//    archiveClassifier.set('all')
-//}
-
-jar {
+shadowJar {
+    archiveBaseName = 'ticketoffice-backend'
+    archiveClassifier = ''
+    archiveVersion = ''
+    mergeServiceFiles()
     manifest {
-        attributes(
-                'Main-Class': 'com.ticketoffice.backend.Main'
-        )
+        attributes 'Main-Class': 'com.ticketoffice.backend.Main'
     }
 }
+
+build.dependsOn shadowJar
