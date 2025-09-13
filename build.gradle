@@ -64,3 +64,11 @@ tasks.named('test') {
 //shadowJar {
 //    archiveClassifier.set('all')
 //}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.ticketoffice.backend.Main'
+        )
+    }
+}
