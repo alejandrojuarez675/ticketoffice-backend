@@ -1,8 +1,9 @@
 package com.ticketoffice.backend.domain.usecases.users;
 
 import com.ticketoffice.backend.domain.usecases.UseCase;
-import java.util.function.BooleanSupplier;
+import io.javalin.http.Context;
+import java.util.function.Function;
 
 @FunctionalInterface
-public interface IsAnAdminUserUseCase extends BooleanSupplier, UseCase {
+public interface IsAnAdminUserUseCase extends Function<Context, Boolean>, UseCase {
 }

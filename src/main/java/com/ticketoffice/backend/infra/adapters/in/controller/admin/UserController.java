@@ -7,6 +7,9 @@ import com.ticketoffice.backend.infra.adapters.in.dto.response.UserResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.UnauthorizedUserException;
 import com.ticketoffice.backend.infra.adapters.in.handlers.UserHandler;
 import io.javalin.Javalin;
+import io.javalin.http.Context;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class UserController implements CustomController {
@@ -23,8 +26,8 @@ public class UserController implements CustomController {
 
     @Override
     public void registeredRoutes(Javalin app) {
-        app.get(PATH + "/me", context -> context.json(authenticatedUser()));
-        app.get(PATH, ctx -> ctx.json(allUsers()));
+        app.get(PATH + "/me", context -> context.json(authenticatedUser(context)));
+        app.get(PATH, ctx -> ctx.json(allUsers(ctx)));
     }
 
 
@@ -47,9 +50,9 @@ public class UserController implements CustomController {
 //                    )
 //            }
 //    )
-    public UserResponse authenticatedUser() throws UnauthorizedUserException {
-        userRoleValidator.validateThatUserIsLogged();
-        return userHandler.getAuthenticatedUser();
+    public UserResponse authenticatedUser(@NotNull Context context) throws UnauthorizedUserException {
+        userRoleValidator.validateThatUserIsLogged(context);
+        return userHandler.getAuthenticatedUser(context);
     }
 
 //    @Operation(
@@ -71,8 +74,8 @@ public class UserController implements CustomController {
 //                    )
 //            }
 //    )
-    public List<UserResponse> allUsers() throws UnauthorizedUserException {
-        userRoleValidator.validateThatUserIsAdmin();
-        return userHandler.getAllUsers();
+    public List<UserResponse> allUsers(@NotNull Context ctx) throws UnauthorizedUserException {
+        userRoleValidator.validateThatUserIsAdmin(ctx);
+        return userHandler.getAllUsers(ctx);
     }
 }

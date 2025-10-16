@@ -7,6 +7,8 @@ import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.usecases.events.GetEventUseCase;
 import com.ticketoffice.backend.domain.usecases.events.GetMyEventUseCase;
 import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCase;
+import io.javalin.http.Context;
+
 import java.util.Optional;
 
 public class GetMyEventUseCaseImpl implements GetMyEventUseCase {
@@ -24,8 +26,8 @@ public class GetMyEventUseCaseImpl implements GetMyEventUseCase {
     }
 
     @Override
-    public Optional<Event> apply(String id) throws NotAuthenticatedException {
-        User user = getAuthenticatedUserUseCase.get()
+    public Optional<Event> apply(Context context, String id) throws NotAuthenticatedException {
+        User user = getAuthenticatedUserUseCase.apply(context)
                 .orElseThrow(() -> new NotAuthenticatedException("User not authenticated"));
 
         return getEventUseCase.apply(id)

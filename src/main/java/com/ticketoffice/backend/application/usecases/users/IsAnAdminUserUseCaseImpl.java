@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.enums.UserRole;
 import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCase;
 import com.ticketoffice.backend.domain.usecases.users.IsAnAdminUserUseCase;
+import io.javalin.http.Context;
 
 public class IsAnAdminUserUseCaseImpl implements IsAnAdminUserUseCase {
 
@@ -15,8 +16,8 @@ public class IsAnAdminUserUseCaseImpl implements IsAnAdminUserUseCase {
     }
 
     @Override
-    public boolean getAsBoolean() {
-        return getAuthenticatedUserUseCase.get()
+    public Boolean apply(Context ctx) {
+        return getAuthenticatedUserUseCase.apply(ctx)
                 .filter(user -> user.getRole().contains(UserRole.ADMIN))
                 .isPresent();
     }

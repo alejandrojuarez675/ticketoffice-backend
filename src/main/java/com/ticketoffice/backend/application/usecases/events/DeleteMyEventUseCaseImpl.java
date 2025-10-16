@@ -9,6 +9,7 @@ import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.usecases.events.DeleteMyEventUseCase;
 import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCase;
+import io.javalin.http.Context;
 
 public class DeleteMyEventUseCaseImpl implements DeleteMyEventUseCase {
 
@@ -25,8 +26,8 @@ public class DeleteMyEventUseCaseImpl implements DeleteMyEventUseCase {
     }
 
     @Override
-    public void accept(String id) throws NotAuthenticatedException, ErrorOnPersistDataException {
-        User userLogged = getAuthenticatedUserUseCase.get()
+    public void accept(Context context, String id) throws NotAuthenticatedException, ErrorOnPersistDataException {
+        User userLogged = getAuthenticatedUserUseCase.apply(context)
                 .orElseThrow(() -> new NotAuthenticatedException("User not authenticated"));
 
         eventRepository.getById(id)

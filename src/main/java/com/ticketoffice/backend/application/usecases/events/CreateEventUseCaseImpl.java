@@ -9,6 +9,7 @@ import com.ticketoffice.backend.domain.models.Organizer;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.usecases.events.CreateEventUseCase;
 import com.ticketoffice.backend.domain.usecases.organizer.GetOrganizerByUserUseCase;
+import io.javalin.http.Context;
 
 public class CreateEventUseCaseImpl implements CreateEventUseCase {
 
@@ -24,8 +25,8 @@ public class CreateEventUseCaseImpl implements CreateEventUseCase {
     }
 
     @Override
-    public Event apply(Event event) throws NotAuthenticatedException, ResourceDoesntExistException, ErrorOnPersistDataException {
-        Organizer organizer = getOrganizerByUserUseCase.get();
+    public Event apply(Context context, Event event) throws NotAuthenticatedException, ResourceDoesntExistException, ErrorOnPersistDataException {
+        Organizer organizer = getOrganizerByUserUseCase.get(context);
         Event eventToCreate = new Event(
                 null,
                 event.title(),

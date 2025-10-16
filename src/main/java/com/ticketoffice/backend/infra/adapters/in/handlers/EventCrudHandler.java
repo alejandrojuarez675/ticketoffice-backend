@@ -20,6 +20,8 @@ import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventDetai
 import com.ticketoffice.backend.infra.adapters.in.dto.response.events.EventLightResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.adapters.in.exception.NotFoundException;
+import io.javalin.http.Context;
+
 import java.util.List;
 
 public class EventCrudHandler {
@@ -48,9 +50,9 @@ public class EventCrudHandler {
         this.deleteMyEventUseCase = deleteMyEventUseCase;
     }
 
-    public List<EventLightResponse> findAll() {
+    public List<EventLightResponse> findAll(Context context) {
         try {
-            return getAllMyEventsUseCase.get()
+            return getAllMyEventsUseCase.get(context)
                 .stream()
                 .map(EventLightResponseMapper::getFromEvent)
                 .toList();
@@ -59,9 +61,9 @@ public class EventCrudHandler {
         }
     }
 
-    public void create(EventCrudRequest event) throws BadRequestException {
+    public void create(Context context, EventCrudRequest event) throws BadRequestException {
         try {
-            createEventUseCase.apply(EventCrudRequestMapper.toDomain(event));
+            createEventUseCase.apply(context, EventCrudRequestMapper.toDomain(event));
         } catch (NotAuthenticatedException e) {
             throw new BadRequestException("User is not authenticated");
         } catch (ResourceDoesntExistException e) {
@@ -72,12 +74,12 @@ public class EventCrudHandler {
     }
 
     public EventLightResponse updateMyEvent(
-            String id, EventCrudRequest event
+            Context context, String id, EventCrudRequest event
     ) throws BadRequestException {
         Event eventDomain = EventCrudRequestMapper.toDomain(event);
         Event eventResponse;
         try {
-            eventResponse = updateMyEventUseCase.apply(id, eventDomain);
+            eventResponse = updateMyEventUseCase.apply(context, id, eventDomain);
         } catch (NotAuthenticatedException e) {
             throw new BadRequestException("User is not authenticated");
         } catch (ResourceDoesntExistException e) {
@@ -88,8 +90,8 @@ public class EventCrudHandler {
         return EventLightResponseMapper.getFromEvent(eventResponse);
     }
 
-    public EventDetailPageResponse getEventById(String id) throws NotAuthenticatedException, NotFoundException {
-        Event event = getMyEventUseCase.apply(id)
+    public EventDetailPageResponse getEventById(Context context, String id) throws NotAuthenticatedException, NotFoundException {
+        Event event = getMyEventUseCase.apply(context, id)
                 .orElseThrow(() -> new NotFoundException(String.format("Event with id %s not found", id)));
 
         Organizer organizer = getOrganizerByUserIdUseCase.apply(event.organizerId())
@@ -98,9 +100,9 @@ public class EventCrudHandler {
         return EventDetailPageResponseMapper.toResponse(event, organizer);
     }
 
-    public void deleteById(String id) throws NotAuthenticatedException {
+    public void deleteById(Context context, String id) throws NotAuthenticatedException {
         try {
-            deleteMyEventUseCase.accept(id);
+            deleteMyEventUseCase.accept(context, id);
         } catch (ErrorOnPersistDataException e) {
             throw new RuntimeException(e);
         }

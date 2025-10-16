@@ -15,7 +15,9 @@ import com.ticketoffice.backend.infra.adapters.in.exception.UnauthorizedUserExce
 import com.ticketoffice.backend.infra.adapters.in.handlers.EventCrudHandler;
 import com.ticketoffice.backend.infra.adapters.in.utils.IdValidator;
 import io.javalin.Javalin;
+import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import org.jetbrains.annotations.NotNull;
 
 //@Tag(name = "Events Management", description = "Endpoints for managing sales")
 public class EventsController implements CustomController {
@@ -32,24 +34,24 @@ public class EventsController implements CustomController {
 
     @Override
     public void registeredRoutes(Javalin app) {
-        app.get(PATH, context -> context.json(getEvents()));
+        app.get(PATH, context -> context.json(getEvents(context)));
         app.get(PATH + "/{eventId}", context -> {
             String id = context.pathParam("eventId");
-            context.json(getEventById(id));
+            context.json(getEventById(context, id));
         });
         app.post(PATH, context -> {
             EventCrudRequest eventCrudRequest = context.bodyAsClass(EventCrudRequest.class);
-            postEvents(eventCrudRequest);
+            postEvents(context, eventCrudRequest);
             context.status(HttpStatus.CREATED);
         });
         app.put(PATH + "/{eventId}", context -> {
             String id = context.pathParam("eventId");
             EventCrudRequest eventCrudRequest = context.bodyAsClass(EventCrudRequest.class);
-            context.json(putEvents(id, eventCrudRequest));
+            context.json(putEvents(context, id, eventCrudRequest));
         });
         app.delete(PATH + "/{eventId}", context -> {
             String id = context.pathParam("eventId");
-            deleteEvent(id);
+            deleteEvent(context, id);
             context.status(HttpStatus.NO_CONTENT);
         });
     }
@@ -78,9 +80,9 @@ public class EventsController implements CustomController {
 //                                    }
 //                            """)}))
 //    })
-    private EventListResponse getEvents() throws UnauthorizedUserException {
-        userRoleValidator.validateThatUserIsSeller();
-        return new EventListResponse(eventCrudHandler.findAll());
+    private EventListResponse getEvents(@NotNull Context context) throws UnauthorizedUserException {
+        userRoleValidator.validateThatUserIsSeller(context);
+        return new EventListResponse(eventCrudHandler.findAll(context));
     }
 
     //    @GetMapping("/{id}")
@@ -107,10 +109,10 @@ public class EventsController implements CustomController {
 //                            """)}))
 //            }
 //    )
-    private EventDetailPageResponse getEventById(String id) throws UnauthorizedUserException, BadRequestException, NotAuthenticatedException, NotFoundException {
-        userRoleValidator.validateThatUserIsSeller();
+    private EventDetailPageResponse getEventById(@NotNull Context context, String id) throws UnauthorizedUserException, BadRequestException, NotAuthenticatedException, NotFoundException {
+        userRoleValidator.validateThatUserIsSeller(context);
         IdValidator.validateIdFromParams(id, "seler_id", true);
-        return eventCrudHandler.getEventById(id);
+        return eventCrudHandler.getEventById(context, id);
     }
 
     //    @PostMapping()
@@ -161,10 +163,10 @@ public class EventsController implements CustomController {
 //                    }
 //            )
 //    })
-    private void postEvents(EventCrudRequest event) throws BadRequestException, UnauthorizedUserException {
-        userRoleValidator.validateThatUserIsSeller();
+    private void postEvents(@NotNull Context context, EventCrudRequest event) throws BadRequestException, UnauthorizedUserException {
+        userRoleValidator.validateThatUserIsSeller(context);
         new EventCrudRequestValidator().validate(event);
-        eventCrudHandler.create(event);
+        eventCrudHandler.create(context, event);
     }
 
     //    @PutMapping("/{id}")
@@ -221,10 +223,10 @@ public class EventsController implements CustomController {
 //                    )
 //            }
 //    )
-    private EventLightResponse putEvents(String id, EventCrudRequest event) throws BadRequestException, UnauthorizedUserException {
-        userRoleValidator.validateThatUserIsSeller();
+    private EventLightResponse putEvents(@NotNull Context context, String id, EventCrudRequest event) throws BadRequestException, UnauthorizedUserException {
+        userRoleValidator.validateThatUserIsSeller(context);
         IdValidator.validateIdFromParams(id, "id", true);
-        return eventCrudHandler.updateMyEvent(id, event);
+        return eventCrudHandler.updateMyEvent(context, id, event);
     }
 
     //    @DeleteMapping("/{id}")
@@ -254,10 +256,10 @@ public class EventsController implements CustomController {
 //                    )
 //            }
 //    )
-    private void deleteEvent(String id)
+    private void deleteEvent(@NotNull Context context, String id)
             throws UnauthorizedUserException, BadRequestException, NotAuthenticatedException {
-        userRoleValidator.validateThatUserIsSeller();
+        userRoleValidator.validateThatUserIsSeller(context);
         IdValidator.validateIdFromParams(id, "id", true);
-        eventCrudHandler.deleteById(id);
+        eventCrudHandler.deleteById(context, id);
     }
 }

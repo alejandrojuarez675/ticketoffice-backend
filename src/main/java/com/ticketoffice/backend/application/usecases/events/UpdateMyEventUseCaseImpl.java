@@ -9,6 +9,7 @@ import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.usecases.events.UpdateMyEventUseCase;
 import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCase;
+import io.javalin.http.Context;
 
 public class UpdateMyEventUseCaseImpl implements UpdateMyEventUseCase {
 
@@ -26,9 +27,9 @@ public class UpdateMyEventUseCaseImpl implements UpdateMyEventUseCase {
 
     @Override
     public Event apply(
-            String id, Event event
+            Context context, String id, Event event
     ) throws NotAuthenticatedException, ResourceDoesntExistException, ErrorOnPersistDataException {
-        User userLogged = getAuthenticatedUserUseCase.get()
+        User userLogged = getAuthenticatedUserUseCase.apply(context)
                 .orElseThrow(() -> new NotAuthenticatedException("User is not authenticated"));
 
         Event eventToUpdate = (

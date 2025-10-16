@@ -8,6 +8,7 @@ import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.usecases.organizer.CreateOrganizerUseCase;
 import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCase;
 import com.ticketoffice.backend.domain.usecases.users.UpdateOrganizerDataOnUserUseCase;
+import io.javalin.http.Context;
 
 public class CreateOrganizerUseCaseImpl implements CreateOrganizerUseCase {
 
@@ -23,8 +24,8 @@ public class CreateOrganizerUseCaseImpl implements CreateOrganizerUseCase {
     }
 
     @Override
-    public void accept(Organizer organizer) throws NotAuthenticatedException, ErrorOnPersistDataException {
-        User userLogged = getAuthenticatedUserUseCase.get()
+    public void accept(Context context, Organizer organizer) throws NotAuthenticatedException, ErrorOnPersistDataException {
+        User userLogged = getAuthenticatedUserUseCase.apply(context)
                 .orElseThrow(() -> new NotAuthenticatedException("User is not authenticated"));
 
         Organizer organizerDomain = updateOrganizer(organizer, userLogged);

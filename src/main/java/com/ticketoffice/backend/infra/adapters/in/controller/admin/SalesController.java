@@ -11,7 +11,9 @@ import com.ticketoffice.backend.infra.adapters.in.exception.UnauthorizedUserExce
 import com.ticketoffice.backend.infra.adapters.in.handlers.SalesHandler;
 import com.ticketoffice.backend.infra.adapters.in.utils.IdValidator;
 import io.javalin.Javalin;
+import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import org.jetbrains.annotations.NotNull;
 
 //@Tag(name = "Sales Management", description = "Endpoints for managing sales")
 public class SalesController implements CustomController {
@@ -32,12 +34,12 @@ public class SalesController implements CustomController {
     public void registeredRoutes(Javalin app) {
         app.get("/api/v1/events/{eventId}/sales", context -> {
             String eventId = context.pathParam("eventId");
-            context.json(getAllTicketsByEventId(eventId));
+            context.json(getAllTicketsByEventId(context, eventId));
         });
         app.post("/api/v1/events/{eventId}/sales/{saleId}/validate", context -> {
             String saleId = context.pathParam("saleId");
             String eventId = context.pathParam("eventId");
-            validateSale(saleId, eventId);
+            validateSale(context, saleId, eventId);
             context.status(HttpStatus.NO_CONTENT);
         });
     }
@@ -104,11 +106,11 @@ public class SalesController implements CustomController {
 //            }
 //    )
     public SalesListResponse getAllTicketsByEventId(
-            String id
+            @NotNull Context context, String id
     ) throws NotAuthenticatedException, NotFoundException, UnauthorizedUserException, BadRequestException {
         IdValidator.validateIdFromParams(id, "event_id", true);
-        userRoleValidator.validateThatUserIsSeller();
-        return salesHandler.getAllSalesByEventId(id);
+        userRoleValidator.validateThatUserIsSeller(context);
+        return salesHandler.getAllSalesByEventId(context, id);
     }
 
 //    @PostMapping("/{saleId}/validate")
@@ -176,11 +178,11 @@ public class SalesController implements CustomController {
 //                    )
 //            }
 //    )
-    public void validateSale(String saleId, String id)
+    public void validateSale(@NotNull Context context, String saleId, String id)
             throws NotAuthenticatedException, NotFoundException, UnauthorizedUserException, BadRequestException {
         IdValidator.validateIdFromParams(id, "event_id", true);
         IdValidator.validateIdFromParams(saleId, "sale_id", true);
-        userRoleValidator.validateThatUserIsSeller();
-        salesHandler.validateSale(saleId, id);
+        userRoleValidator.validateThatUserIsSeller(context);
+        salesHandler.validateSale(context, saleId, id);
     }
 }

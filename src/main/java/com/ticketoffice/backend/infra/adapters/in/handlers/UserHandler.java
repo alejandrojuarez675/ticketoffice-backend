@@ -10,6 +10,8 @@ import com.ticketoffice.backend.infra.adapters.in.dto.mapper.OrganizerDtoMapper;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.UserResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.shared.OrganizerDTO;
 import com.ticketoffice.backend.infra.adapters.in.exception.UnauthorizedUserException;
+import io.javalin.http.Context;
+
 import java.util.List;
 
 public class UserHandler {
@@ -31,8 +33,8 @@ public class UserHandler {
         this.getOrganizerByUserIdUseCase = getOrganizerByUserIdUseCase;
     }
 
-    public UserResponse getAuthenticatedUser() {
-        return getAuthenticatedUserUseCase.get()
+    public UserResponse getAuthenticatedUser(Context context) {
+        return getAuthenticatedUserUseCase.apply(context)
                 .map(this::createUserResponse)
                 .orElse(null);
     }
@@ -55,8 +57,8 @@ public class UserHandler {
                 .orElse(null);
     }
 
-    public List<UserResponse> getAllUsers() throws UnauthorizedUserException {
-        if (!isAnAdminUserUseCase.getAsBoolean()) {
+    public List<UserResponse> getAllUsers(Context ctx) throws UnauthorizedUserException {
+        if (!isAnAdminUserUseCase.apply(ctx)) {
             throw new UnauthorizedUserException("You do not have permission to access this user");
         }
 

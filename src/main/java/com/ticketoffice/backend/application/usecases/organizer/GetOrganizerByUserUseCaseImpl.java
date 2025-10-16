@@ -8,6 +8,7 @@ import com.ticketoffice.backend.domain.models.Organizer;
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.usecases.organizer.GetOrganizerByUserUseCase;
 import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCase;
+import io.javalin.http.Context;
 
 public class GetOrganizerByUserUseCaseImpl implements GetOrganizerByUserUseCase {
 
@@ -19,8 +20,8 @@ public class GetOrganizerByUserUseCaseImpl implements GetOrganizerByUserUseCase 
     }
 
     @Override
-    public Organizer get() throws NotAuthenticatedException, ResourceDoesntExistException {
-        User userLogged = getAuthenticatedUserUseCase.get()
+    public Organizer get(Context context) throws NotAuthenticatedException, ResourceDoesntExistException {
+        User userLogged = getAuthenticatedUserUseCase.apply(context)
                 .orElseThrow(() -> new NotAuthenticatedException("User is not authenticated"));
 
         if (userLogged.getRole().stream().noneMatch(UserRole.SELLER::equals)) {

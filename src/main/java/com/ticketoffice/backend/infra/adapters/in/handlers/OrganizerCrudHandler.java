@@ -8,6 +8,7 @@ import com.ticketoffice.backend.domain.usecases.organizer.CreateOrganizerUseCase
 import com.ticketoffice.backend.infra.adapters.in.dto.mapper.ImageDtoMapper;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.OrganizerCrudRequest;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
+import io.javalin.http.Context;
 
 public class OrganizerCrudHandler {
 
@@ -18,9 +19,10 @@ public class OrganizerCrudHandler {
         this.createOrganizerUseCase = createOrganizerUseCase;
     }
 
-    public void createOrganizer(OrganizerCrudRequest organizer) throws BadRequestException {
+    public void createOrganizer(Context context, OrganizerCrudRequest organizer) throws BadRequestException {
         try {
             createOrganizerUseCase.accept(
+                    context,
                     new Organizer(
                             null,
                             organizer.name(),
