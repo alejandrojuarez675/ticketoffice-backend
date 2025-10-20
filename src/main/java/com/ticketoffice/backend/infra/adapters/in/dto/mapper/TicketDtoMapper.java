@@ -3,6 +3,9 @@ package com.ticketoffice.backend.infra.adapters.in.dto.mapper;
 import com.ticketoffice.backend.domain.models.Ticket;
 import com.ticketoffice.backend.infra.adapters.in.dto.shared.TicketDTO;
 
+import java.util.Optional;
+import java.util.UUID;
+
 public class TicketDtoMapper {
 
     public static TicketDTO getFromTicket(Ticket price) {
@@ -18,7 +21,7 @@ public class TicketDtoMapper {
 
     public static Ticket getFromTicketDTO(TicketDTO ticketDTO) {
         return new Ticket(
-                ticketDTO.id(),
+                Optional.ofNullable(ticketDTO.id()).orElse(UUID.randomUUID().toString()),
                 ticketDTO.value(),
                 ticketDTO.currency(),
                 ticketDTO.type(),

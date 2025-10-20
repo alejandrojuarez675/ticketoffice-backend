@@ -34,8 +34,14 @@ public class AuthenticationController implements CustomController {
         app.post(PATH + "/login", ctx -> {
             var body = ctx.bodyAsClass(UserLoginRequest.class);
             // Autenticar al usuario
-            authenticate(body);
-            
+            try {
+                authenticate(body);
+            } catch (Exception e) {
+                ctx.status(401);
+                ctx.json(Map.of("message", "Invalid credentials"));
+                return;
+            }
+
             // Generar token JWT
             String token = JwtTokenProvider.generateToken(body.username());
             

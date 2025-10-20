@@ -14,13 +14,13 @@ public class SendTicketEmailToBuyerUseCaseImpl implements SendTicketEmailToBuyer
     private final EmailService emailService;
 
 //    @Value("${email.no-reply-email}")
-    private String from;
+    private String from = "no-reply@ticketoffice.com";
 
 //    @Value("${baseurl.frontend}")
-    private String frontendUrl;
+    private String frontendUrl = "http://localhost:3000";
 
 //    @Value("${url.frontend.confirmation}")
-    private String pathToConfirmationPage;
+    private String pathToConfirmationPage = "/confirmation/{eventId}/{saleId}";
 
     @Inject
     public SendTicketEmailToBuyerUseCaseImpl(EmailService emailService) {
