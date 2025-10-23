@@ -29,16 +29,8 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
 
-    // OpenAPI/Swagger para Javalin
-//    implementation 'io.javalin:javalin-bundle:6.7.0'
-//    implementation 'io.javalin.community.openapi:javalin-openapi-plugin:6.7.0'
-//    implementation 'io.javalin.community.openapi:javalin-swagger-plugin:6.7.0'
-//    implementation 'io.javalin.community.openapi:javalin-redoc-plugin:6.7.0'
-//    annotationProcessor 'io.javalin.community.openapi:openapi-annotation-processor:6.7.0'
-
     // AWS Serverless Java Container (si eliges ZIP/JAR approach)
     implementation 'com.amazonaws.serverless:aws-serverless-java-container-core:2.1.4'
-//    implementation 'com.amazonaws.serverless:aws-serverless-java-container-servlet:2.1.4'
 
     // AWS Lambda Java libs
     implementation 'com.amazonaws:aws-lambda-java-core:1.2.3'
