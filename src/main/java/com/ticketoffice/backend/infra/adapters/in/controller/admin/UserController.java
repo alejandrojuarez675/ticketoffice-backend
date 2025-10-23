@@ -31,49 +31,11 @@ public class UserController implements CustomController {
     }
 
 
-//    @Operation(
-//            summary = "Get authenticated user",
-//            description = "Endpoint to retrieve the currently authenticated user",
-//            tags = {"User Management"},
-//            security = {
-//                    @SecurityRequirement(name = "Authorization")
-//            },
-//            responses = {
-//                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-//                            responseCode = "200",
-//                            description = "User retrieved successfully",
-//                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponse.class))
-//                    ),
-//                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-//                            responseCode = "401",
-//                            description = "Unauthorized"
-//                    )
-//            }
-//    )
     public UserResponse authenticatedUser(@NotNull Context context) throws UnauthorizedUserException {
         userRoleValidator.validateThatUserIsLogged(context);
         return userHandler.getAuthenticatedUser(context);
     }
 
-//    @Operation(
-//            summary = "Get all users of the system",
-//            description = "Endpoint to retrieve all users in the system",
-//            tags = {"SUPER_ADMIN users"},
-//            security = {
-//                    @SecurityRequirement(name = "Authorization"),
-//            },
-//            responses = {
-//                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-//                            responseCode = "200",
-//                            description = "Users retrieved successfully",
-//                            content = @Content(mediaType = "application/json")
-//                    ),
-//                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-//                            responseCode = "401",
-//                            description = "Unauthorized"
-//                    )
-//            }
-//    )
     public List<UserResponse> allUsers(@NotNull Context ctx) throws UnauthorizedUserException {
         userRoleValidator.validateThatUserIsAdmin(ctx);
         return userHandler.getAllUsers(ctx);

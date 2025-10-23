@@ -18,18 +18,7 @@ import io.javalin.Javalin;
 public class Main {
     public static void main(String[] args) {
         Injector injector = Guice.createInjector(new AppModule());
-        Javalin app = Javalin.create(config -> {
-            config.http.defaultContentType = "application/json";
-//            config.registerPlugin(new OpenApiPlugin(pluginConfig ->
-//                    pluginConfig.withDefinitionConfiguration((version, definition) ->
-//                            definition.withInfo(openApiInfo ->
-//                                    openApiInfo.setTitle("Ticket backoffice")
-//                            )
-//                    )
-//            ));
-//            config.registerPlugin(new SwaggerPlugin());
-//            config.registerPlugin(new ReDocPlugin());
-        });
+        Javalin app = Javalin.create(config -> config.http.defaultContentType = "application/json");
 
         // Public
         injector.getInstance(AuthenticationController.class).registeredRoutes(app);

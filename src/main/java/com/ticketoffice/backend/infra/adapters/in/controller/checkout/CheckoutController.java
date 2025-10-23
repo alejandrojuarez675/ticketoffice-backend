@@ -36,48 +36,12 @@ public class CheckoutController implements CustomController {
         });
     }
 
-//    @Operation(
-//            summary = "Create a checkout session to reserve the stock of the sales",
-//            description = "Endpoint to create a checkout session to reserve the stock of the sales.",
-//            tags = { "Checkout", "Public Endpoints" },
-//            responses = {
-//                    @ApiResponse(
-//                            responseCode = "200",
-//                            description = "Session created",
-//                            content = @Content(
-//                                    schema = @Schema(implementation = SessionCreatedResponse.class)
-//                            )
-//                    ),
-//                    @ApiResponse(
-//                            responseCode = "400",
-//                            description = "Bad Request",
-//                            content = @Content(mediaType = "application/json")
-//                    )
-//            }
-//    )
     public SessionCreatedResponse createSession(CreateSessionRequest body
     ) throws BadRequestException {
         new CreateSessionRequestValidator().validate(body);
         return checkoutHandler.createSession(body);
     }
 
-//    @Operation(
-//            summary = "Buy a ticket",
-//            description = "Endpoint to buy a ticket.",
-//            tags = { "Checkout", "Public Endpoints" },
-//            responses = {
-//                    @ApiResponse(
-//                            responseCode = "204",
-//                            description = "Ticket bought",
-//                            content = @Content(mediaType = "application/json")
-//                    ),
-//                    @ApiResponse(
-//                            responseCode = "400",
-//                            description = "Bad Request",
-//                            content = @Content(mediaType = "application/json")
-//                    )
-//            }
-//    )
     public void buyTicket(String sessionId, BuyTicketsRequest request) throws BadRequestException {
         new BuyTicketsRequestValidator().validate(request);
         checkoutHandler.buyTickets(sessionId, request);

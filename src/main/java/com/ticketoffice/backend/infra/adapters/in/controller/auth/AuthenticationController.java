@@ -36,20 +36,12 @@ public class AuthenticationController implements CustomController {
         });
     }
 
-//    @Operation(
-//            summary = "User Signup",
-//            description = "Endpoint to register a new user",
-//            tags = {"Authentication"}
-//    )
+
     public LoginResponse register(UserSignupRequest registerUserDto) throws BadRequestException {
         return authenticationHandler.signup(registerUserDto);
     }
 
-//    @Operation(
-//            summary = "User Login",
-//            description = "Endpoint to authenticate a user",
-//            tags = {"Authentication"}
-//    )
+
     public LoginResponse authenticate(UserLoginRequest loginUserDto) {
         return authenticationHandler.authenticate(loginUserDto);
     }

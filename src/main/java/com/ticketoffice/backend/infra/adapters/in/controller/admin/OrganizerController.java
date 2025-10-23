@@ -32,41 +32,6 @@ public class OrganizerController implements CustomController {
         });
     }
 
-//    @PostMapping
-//    @Operation(
-//            summary = "Create your organizer data",
-//            description = "Endpoint to create an organizer data for a user",
-//            tags = {"User Management"},
-//            security = {
-//                    @SecurityRequirement(name = "Authorization"),
-//            },
-//            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-//                    description = "The organizer data to create",
-//                    required = true,
-//                    content = @io.swagger.v3.oas.annotations.media.Content(
-//                            mediaType = "application/json",
-//                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = OrganizerCrudRequest.class)
-//                    )
-//            ),
-//            responses = {
-//                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-//                            responseCode = "201",
-//                            description = "Organizer created successfully"
-//                    ),
-//                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-//                            responseCode = "400",
-//                            description = "Bad Request"
-//                    ),
-//                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-//                            responseCode = "401",
-//                            description = "Unauthorized"
-//                    ),
-//                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-//                            responseCode = "500",
-//                            description = "Internal Server Error"
-//                    )
-//            }
-//    )
     private void createOrganizer(@NotNull Context context, OrganizerCrudRequest organizer)
             throws BadRequestException, UnauthorizedUserException {
         userRoleValidator.validateThatUserIsSeller(context);

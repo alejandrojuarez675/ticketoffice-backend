@@ -16,7 +16,6 @@ import java.util.UUID;
 
 public class AuthenticationHandler {
 
-    public static final int EXPIRES_IN = 123234;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -48,7 +47,7 @@ public class AuthenticationHandler {
 
         return userRepository.findByUsername(input.username())
                 .map(x -> JwtTokenProvider.generateToken(x.getUsername()))
-                .map(x -> new LoginResponse(x, EXPIRES_IN))
+                .map(x -> new LoginResponse(x, JwtTokenProvider.getExpirationTime()))
                 .orElseThrow();
     }
 
@@ -56,7 +55,7 @@ public class AuthenticationHandler {
         return userRepository.findByUsername(input.username())
                 .filter(x -> passwordEncoder.matches(input.password(), x.getPassword()))
                 .map(x -> JwtTokenProvider.generateToken(x.getUsername()))
-                .map(x -> new LoginResponse(x, EXPIRES_IN))
+                .map(x -> new LoginResponse(x, JwtTokenProvider.getExpirationTime()))
                 .orElseThrow();
     }
 }

@@ -33,22 +33,6 @@ public class SearchPageController implements CustomController {
         });
     }
 
-//    @Operation(
-//        description = "Endpoint to search for events and fill the search page.\n" +
-//                "This endpoint should be called when the user charge the page or types something in the search bar.",
-//        summary = "Get the events for home page",
-//        tags = {"Public Endpoints"},
-//        parameters = {
-//                @Parameter(name = "country", description = "The country to search events in", example = "Colombia"),
-//                @Parameter(name = "city", description = "The city to search events in", example = "Bogotá"),
-//                @Parameter(name = "query", description = "The search query"),
-//                @Parameter(name = "pageSize", description = "The number of results to return per page", example = "9"),
-//                @Parameter(name = "pageNumber", description = "The page number to return. Start at page number 0.", example = "1")
-//        }
-//    )
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "Search performed successfully"),
-//    })
     public SearchResponse search(
             String country,
             String city,
