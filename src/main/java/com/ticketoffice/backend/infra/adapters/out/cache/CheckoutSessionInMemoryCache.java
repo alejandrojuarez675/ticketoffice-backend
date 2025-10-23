@@ -6,9 +6,7 @@ import com.ticketoffice.backend.domain.ports.CheckoutSessionCache;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import org.springframework.stereotype.Service;
 
-@Service
 public class CheckoutSessionInMemoryCache implements CheckoutSessionCache {
 
     private static final Map<String, CheckoutSession> data = new HashMap<>();

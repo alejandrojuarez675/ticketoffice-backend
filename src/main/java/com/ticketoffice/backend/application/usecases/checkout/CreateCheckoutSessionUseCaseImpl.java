@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.checkout;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.application.usecases.tickets.GetAvailableTicketStockIdUseCaseImpl;
 import com.ticketoffice.backend.application.utils.CheckoutSessionIdUtils;
 import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
@@ -12,9 +13,7 @@ import com.ticketoffice.backend.domain.usecases.checkout.CreateCheckoutSessionUs
 import com.ticketoffice.backend.domain.usecases.events.GetEventUseCase;
 import com.ticketoffice.backend.domain.usecases.tickets.GetAvailableTicketStockIdUseCase;
 import java.time.LocalDateTime;
-import org.springframework.stereotype.Service;
 
-@Service
 public class CreateCheckoutSessionUseCaseImpl implements CreateCheckoutSessionUseCase {
 
     public static final Long EXPIRATION_TIME_IN_SECONDS = 600L; // 10 minutes
@@ -23,6 +22,7 @@ public class CreateCheckoutSessionUseCaseImpl implements CreateCheckoutSessionUs
     private final GetEventUseCase getEventUseCase;
     private final GetAvailableTicketStockIdUseCase getAvailableTicketStockIdUseCase;
 
+    @Inject
     public CreateCheckoutSessionUseCaseImpl(
             CheckoutSessionCache checkoutSessionCache,
             GetEventUseCase getEventUseCase,

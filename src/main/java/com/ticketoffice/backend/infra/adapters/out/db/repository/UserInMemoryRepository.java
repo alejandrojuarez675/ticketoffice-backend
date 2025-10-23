@@ -1,5 +1,7 @@
 package com.ticketoffice.backend.infra.adapters.out.db.repository;
 
+import com.google.inject.Inject;
+import com.ticketoffice.backend.application.services.PasswordEncoder;
 import com.ticketoffice.backend.domain.enums.UserRole;
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.UserRepository;
@@ -9,14 +11,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public class UserInMemoryRepository implements InMemoryRepository<User>, UserRepository {
 
     private static final Map<String, User> data = new HashMap<>();
 
+    @Inject
     public UserInMemoryRepository(PasswordEncoder passwordEncoder) {
         User userAdmin = new User(
                 "admin",

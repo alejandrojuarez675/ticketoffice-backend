@@ -1,20 +1,22 @@
 package com.ticketoffice.backend.application.usecases.events;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.usecases.events.GetEventUseCase;
 import com.ticketoffice.backend.domain.usecases.events.GetMyEventUseCase;
 import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCase;
-import java.util.Optional;
-import org.springframework.stereotype.Service;
+import io.javalin.http.Context;
 
-@Service
+import java.util.Optional;
+
 public class GetMyEventUseCaseImpl implements GetMyEventUseCase {
 
     private final GetEventUseCase getEventUseCase;
     private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
 
+    @Inject
     public GetMyEventUseCaseImpl(
             GetEventUseCase getEventUseCase,
             GetAuthenticatedUserUseCase getAuthenticatedUserUseCase
@@ -24,8 +26,8 @@ public class GetMyEventUseCaseImpl implements GetMyEventUseCase {
     }
 
     @Override
-    public Optional<Event> apply(String id) throws NotAuthenticatedException {
-        User user = getAuthenticatedUserUseCase.get()
+    public Optional<Event> apply(Context context, String id) throws NotAuthenticatedException {
+        User user = getAuthenticatedUserUseCase.apply(context)
                 .orElseThrow(() -> new NotAuthenticatedException("User not authenticated"));
 
         return getEventUseCase.apply(id)

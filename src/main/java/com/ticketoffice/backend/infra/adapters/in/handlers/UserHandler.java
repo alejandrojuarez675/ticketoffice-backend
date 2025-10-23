@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.handlers;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.usecases.organizer.GetOrganizerByUserIdUseCase;
 import com.ticketoffice.backend.domain.usecases.users.GetAllUsersUserCase;
@@ -9,10 +10,10 @@ import com.ticketoffice.backend.infra.adapters.in.dto.mapper.OrganizerDtoMapper;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.UserResponse;
 import com.ticketoffice.backend.infra.adapters.in.dto.shared.OrganizerDTO;
 import com.ticketoffice.backend.infra.adapters.in.exception.UnauthorizedUserException;
-import java.util.List;
-import org.springframework.stereotype.Service;
+import io.javalin.http.Context;
 
-@Service
+import java.util.List;
+
 public class UserHandler {
 
     private final GetAllUsersUserCase getAllUsersUserCase;
@@ -20,6 +21,7 @@ public class UserHandler {
     private final IsAnAdminUserUseCase isAnAdminUserUseCase;
     private final GetOrganizerByUserIdUseCase getOrganizerByUserIdUseCase;
 
+    @Inject
     public UserHandler(
             GetAllUsersUserCase getAllUsersUserCase,
             GetAuthenticatedUserUseCase getAuthenticatedUserUseCase,
@@ -31,8 +33,8 @@ public class UserHandler {
         this.getOrganizerByUserIdUseCase = getOrganizerByUserIdUseCase;
     }
 
-    public UserResponse getAuthenticatedUser() {
-        return getAuthenticatedUserUseCase.get()
+    public UserResponse getAuthenticatedUser(Context context) {
+        return getAuthenticatedUserUseCase.apply(context)
                 .map(this::createUserResponse)
                 .orElse(null);
     }
@@ -55,8 +57,8 @@ public class UserHandler {
                 .orElse(null);
     }
 
-    public List<UserResponse> getAllUsers() throws UnauthorizedUserException {
-        if (!isAnAdminUserUseCase.getAsBoolean()) {
+    public List<UserResponse> getAllUsers(Context ctx) throws UnauthorizedUserException {
+        if (!isAnAdminUserUseCase.apply(ctx)) {
             throw new UnauthorizedUserException("You do not have permission to access this user");
         }
 

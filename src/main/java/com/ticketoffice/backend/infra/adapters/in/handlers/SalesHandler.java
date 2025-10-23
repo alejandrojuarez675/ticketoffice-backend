@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.handlers;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
@@ -13,17 +14,17 @@ import com.ticketoffice.backend.infra.adapters.in.dto.mapper.SalesListResponseMa
 import com.ticketoffice.backend.infra.adapters.in.dto.response.tickets.SalesListResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.adapters.in.exception.NotFoundException;
-import org.springframework.stereotype.Service;
+import io.javalin.http.Context;
 
 import java.util.List;
 
-@Service
 public class SalesHandler {
 
     private final GetAllSalesByEventIdUseCase getAllSalesByEventIdUseCase;
     private final GetMyEventUseCase getMyEventUseCase;
     private final ValidateSaleByIdUseCase validateSaleByIdUseCase;
 
+    @Inject
     public SalesHandler(
             GetAllSalesByEventIdUseCase getAllSalesByEventIdUseCase,
             GetMyEventUseCase getMyEventUseCase,
@@ -34,8 +35,8 @@ public class SalesHandler {
         this.validateSaleByIdUseCase = validateSaleByIdUseCase;
     }
 
-    public SalesListResponse getAllSalesByEventId(String eventId) throws NotAuthenticatedException, NotFoundException {
-        Event event = getMyEventUseCase.apply(eventId)
+    public SalesListResponse getAllSalesByEventId(Context context, String eventId) throws NotAuthenticatedException, NotFoundException {
+        Event event = getMyEventUseCase.apply(context, eventId)
                 .orElseThrow(() -> new NotFoundException("Event not found"));
 
         List<Sale> sales = getAllSalesByEventIdUseCase.apply(eventId);
@@ -43,9 +44,9 @@ public class SalesHandler {
         return SalesListResponseMapper.toResponse(sales, event);
     }
 
-    public void validateSale(String saleId, String eventId)
+    public void validateSale(Context context, String saleId, String eventId)
             throws NotAuthenticatedException, NotFoundException, BadRequestException {
-        getMyEventUseCase.apply(eventId)
+        getMyEventUseCase.apply(context, eventId)
                 .orElseThrow(() -> new NotFoundException("Event not found"));
 
         try {

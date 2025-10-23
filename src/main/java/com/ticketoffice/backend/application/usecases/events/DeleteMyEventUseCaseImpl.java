@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.events;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.enums.EventStatus;
 import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
@@ -8,14 +9,14 @@ import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.usecases.events.DeleteMyEventUseCase;
 import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCase;
-import org.springframework.stereotype.Service;
+import io.javalin.http.Context;
 
-@Service
 public class DeleteMyEventUseCaseImpl implements DeleteMyEventUseCase {
 
     private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
     private final EventRepository eventRepository;
 
+    @Inject
     public DeleteMyEventUseCaseImpl(
             GetAuthenticatedUserUseCase getAuthenticatedUserUseCase,
             EventRepository eventRepository
@@ -25,8 +26,8 @@ public class DeleteMyEventUseCaseImpl implements DeleteMyEventUseCase {
     }
 
     @Override
-    public void accept(String id) throws NotAuthenticatedException, ErrorOnPersistDataException {
-        User userLogged = getAuthenticatedUserUseCase.get()
+    public void accept(Context context, String id) throws NotAuthenticatedException, ErrorOnPersistDataException {
+        User userLogged = getAuthenticatedUserUseCase.apply(context)
                 .orElseThrow(() -> new NotAuthenticatedException("User not authenticated"));
 
         eventRepository.getById(id)

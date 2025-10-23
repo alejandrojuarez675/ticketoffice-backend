@@ -1,8 +1,8 @@
 package com.ticketoffice.backend.infra.adapters.in.dto.request.validators;
 
+import com.google.common.base.Strings;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.CreateSessionRequest;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
-import org.apache.commons.lang3.StringUtils;
 
 public class CreateSessionRequestValidator implements RequestValidator<CreateSessionRequest> {
 
@@ -13,10 +13,10 @@ public class CreateSessionRequestValidator implements RequestValidator<CreateSes
         if (request == null) {
             throw new BadRequestException("Request is required");
         }
-        if (StringUtils.isBlank(request.eventId())) {
+        if (Strings.isNullOrEmpty(request.eventId())) {
             throw new BadRequestException("Event id is required");
         }
-        if (StringUtils.isBlank(request.priceId())) {
+        if (Strings.isNullOrEmpty(request.priceId())) {
             throw new BadRequestException("Price id is required");
         }
         if (request.quantity() == null) {

@@ -1,46 +1,48 @@
 package com.ticketoffice.backend.infra.adapters.in.controller.auth;
 
+import com.google.inject.Inject;
+import com.ticketoffice.backend.infra.adapters.in.controller.CustomController;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.UserLoginRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.UserSignupRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.LoginResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.adapters.in.handlers.AuthenticationHandler;
-import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import io.javalin.Javalin;
 
-@RequestMapping("/auth")
-@RestController
-public class AuthenticationController {
+public class AuthenticationController implements CustomController {
 
+    private final static String PATH = "/auth";
     private final AuthenticationHandler authenticationHandler;
 
+    @Inject
     public AuthenticationController(AuthenticationHandler authenticationHandler) {
         this.authenticationHandler = authenticationHandler;
     }
 
-    @Operation(
-            summary = "User Signup",
-            description = "Endpoint to register a new user",
-            tags = {"Authentication"}
-    )
-    @PostMapping("/signup")
-    public ResponseEntity<LoginResponse> register(@RequestBody UserSignupRequest registerUserDto) throws BadRequestException {
-        LoginResponse registeredUser = authenticationHandler.signup(registerUserDto);
-        return ResponseEntity.ok(registeredUser);
+    @Override
+    public void registeredRoutes(Javalin app) {
+        app.post(PATH + "/signup", ctx -> {
+            var body = ctx.bodyAsClass(UserSignupRequest.class);
+            ctx.json(register(body));
+        });
+        app.post(PATH + "/login", ctx -> {
+            var body = ctx.bodyAsClass(UserLoginRequest.class);
+            try {
+                ctx.json(authenticate(body));
+            } catch (Exception e) {
+                ctx.status(401);
+                ctx.json("Invalid credentials");
+            }
+        });
     }
 
-    @Operation(
-            summary = "User Login",
-            description = "Endpoint to authenticate a user",
-            tags = {"Authentication"}
-    )
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody UserLoginRequest loginUserDto) {
-        LoginResponse authenticatedUser = authenticationHandler.authenticate(loginUserDto);
-        return ResponseEntity.ok(authenticatedUser);
+
+    public LoginResponse register(UserSignupRequest registerUserDto) throws BadRequestException {
+        return authenticationHandler.signup(registerUserDto);
+    }
+
+
+    public LoginResponse authenticate(UserLoginRequest loginUserDto) {
+        return authenticationHandler.authenticate(loginUserDto);
     }
 }

@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.handlers;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Organizer;
@@ -16,9 +17,7 @@ import com.ticketoffice.backend.infra.adapters.in.dto.shared.TicketDTO;
 import com.ticketoffice.backend.infra.adapters.in.exception.NotFoundException;
 import java.util.List;
 import java.util.function.Function;
-import org.springframework.stereotype.Service;
 
-@Service
 public class EventDetailPageHandler {
 
     final private GetEventUseCase getEventUseCase;
@@ -26,6 +25,7 @@ public class EventDetailPageHandler {
     private final GetSimilarEventsToAnEventUseCase getSimilarEventsToAnEventUseCase;
     private final GetAvailableTicketStockIdUseCase getAvailableTicketStockIdUseCase;
 
+    @Inject
     public EventDetailPageHandler(
             GetEventUseCase getEventUseCase,
             GetOrganizerByUserIdUseCase getOrganizerByUserIdUseCase,

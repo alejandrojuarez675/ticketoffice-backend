@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.events;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
@@ -8,14 +9,14 @@ import com.ticketoffice.backend.domain.models.Organizer;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.usecases.events.CreateEventUseCase;
 import com.ticketoffice.backend.domain.usecases.organizer.GetOrganizerByUserUseCase;
-import org.springframework.stereotype.Service;
+import io.javalin.http.Context;
 
-@Service
 public class CreateEventUseCaseImpl implements CreateEventUseCase {
 
     final private EventRepository eventRepository;
     final private GetOrganizerByUserUseCase getOrganizerByUserUseCase;
 
+    @Inject
     public CreateEventUseCaseImpl(
             EventRepository eventRepository, GetOrganizerByUserUseCase getOrganizerByUserUseCase
     ) {
@@ -24,8 +25,8 @@ public class CreateEventUseCaseImpl implements CreateEventUseCase {
     }
 
     @Override
-    public Event apply(Event event) throws NotAuthenticatedException, ResourceDoesntExistException, ErrorOnPersistDataException {
-        Organizer organizer = getOrganizerByUserUseCase.get();
+    public Event apply(Context context, Event event) throws NotAuthenticatedException, ResourceDoesntExistException, ErrorOnPersistDataException {
+        Organizer organizer = getOrganizerByUserUseCase.get(context);
         Event eventToCreate = new Event(
                 null,
                 event.title(),

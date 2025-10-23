@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.application.usecases.events;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
@@ -8,14 +9,14 @@ import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.usecases.events.UpdateMyEventUseCase;
 import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCase;
-import org.springframework.stereotype.Service;
+import io.javalin.http.Context;
 
-@Service
 public class UpdateMyEventUseCaseImpl implements UpdateMyEventUseCase {
 
     private final EventRepository eventRepository;
     private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
 
+    @Inject
     public UpdateMyEventUseCaseImpl(
             EventRepository eventRepository,
             GetAuthenticatedUserUseCase getAuthenticatedUserUseCase
@@ -26,9 +27,9 @@ public class UpdateMyEventUseCaseImpl implements UpdateMyEventUseCase {
 
     @Override
     public Event apply(
-            String id, Event event
+            Context context, String id, Event event
     ) throws NotAuthenticatedException, ResourceDoesntExistException, ErrorOnPersistDataException {
-        User userLogged = getAuthenticatedUserUseCase.get()
+        User userLogged = getAuthenticatedUserUseCase.apply(context)
                 .orElseThrow(() -> new NotAuthenticatedException("User is not authenticated"));
 
         Event eventToUpdate = (

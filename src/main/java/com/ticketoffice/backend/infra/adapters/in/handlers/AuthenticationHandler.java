@@ -1,5 +1,7 @@
 package com.ticketoffice.backend.infra.adapters.in.handlers;
 
+import com.google.inject.Inject;
+import com.ticketoffice.backend.application.services.PasswordEncoder;
 import com.ticketoffice.backend.domain.enums.UserRole;
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.UserRepository;
@@ -7,32 +9,23 @@ import com.ticketoffice.backend.infra.adapters.in.dto.request.UserLoginRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.UserSignupRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.LoginResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
-import com.ticketoffice.backend.infra.auth.JwtService;
+import com.ticketoffice.backend.infra.adapters.out.security.JwtTokenProvider;
+
 import java.util.List;
 import java.util.UUID;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
-@Service
 public class AuthenticationHandler {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService;
 
+    @Inject
     public AuthenticationHandler(
-             UserRepository userRepository,
-             PasswordEncoder passwordEncoder,
-             AuthenticationManager authenticationManager,
-             JwtService jwtService
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
-        this.jwtService = jwtService;
     }
 
     public LoginResponse signup(UserSignupRequest input) throws BadRequestException {
@@ -50,24 +43,19 @@ public class AuthenticationHandler {
                 List.of(UserRole.USER, UserRole.SELLER),
                 null
         );
+        userRepository.save(user);
 
-        return userRepository.save(user)
-                .map(jwtService::generateToken)
-                .map(x -> new LoginResponse(x, jwtService.getExpirationTime()))
+        return userRepository.findByUsername(input.username())
+                .map(x -> JwtTokenProvider.generateToken(x.getUsername()))
+                .map(x -> new LoginResponse(x, JwtTokenProvider.getExpirationTime()))
                 .orElseThrow();
     }
 
     public LoginResponse authenticate(UserLoginRequest input) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        input.username(),
-                        input.password()
-                )
-        );
-
         return userRepository.findByUsername(input.username())
-                .map(jwtService::generateToken)
-                .map(x -> new LoginResponse(x, jwtService.getExpirationTime()))
+                .filter(x -> passwordEncoder.matches(input.password(), x.getPassword()))
+                .map(x -> JwtTokenProvider.generateToken(x.getUsername()))
+                .map(x -> new LoginResponse(x, JwtTokenProvider.getExpirationTime()))
                 .orElseThrow();
     }
 }

@@ -1,22 +1,19 @@
 package com.ticketoffice.backend.application.usecases.emails;
 
+import com.google.inject.Inject;
+import com.ticketoffice.backend.domain.constants.EmailConstants;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Sale;
 import com.ticketoffice.backend.domain.ports.EmailService;
 import com.ticketoffice.backend.domain.usecases.emails.SendConfirmationEmailToBuyerUseCase;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
-@Service
 public class SendConfirmationEmailToBuyerUseCaseImpl implements SendConfirmationEmailToBuyerUseCase {
 
     private final EmailService emailService;
 
-    @Value("${email.no-reply-email}")
-    private String from;
-
+    @Inject
     public SendConfirmationEmailToBuyerUseCaseImpl(EmailService emailService) {
         this.emailService = emailService;
     }
@@ -26,7 +23,7 @@ public class SendConfirmationEmailToBuyerUseCaseImpl implements SendConfirmation
         emailService.sendEmail(
                 createConfirmationEmailContent(sale, event),
                 List.of(sale.mainEmail()),
-                from,
+                EmailConstants.FROM,
                 "Confirmación de compra");
     }
 

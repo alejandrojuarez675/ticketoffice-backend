@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.handlers;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.usecases.events.CountEventsByParamsUseCase;
 import com.ticketoffice.backend.domain.usecases.events.GetEventsByParamsUseCase;
@@ -7,14 +8,13 @@ import com.ticketoffice.backend.domain.utils.EventSearchParameters;
 import com.ticketoffice.backend.infra.adapters.in.dto.mapper.EventLightResponseMapper;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.SearchResponse;
 import java.util.List;
-import org.springframework.stereotype.Service;
 
-@Service
 public class SearchPageHandler {
 
     private final GetEventsByParamsUseCase getEventsByParamsUseCase;
     private final CountEventsByParamsUseCase countEventsByParamsUseCase;
 
+    @Inject
     public SearchPageHandler(
             GetEventsByParamsUseCase getEventsByParamsUseCase,
             CountEventsByParamsUseCase countEventsByParamsUseCase

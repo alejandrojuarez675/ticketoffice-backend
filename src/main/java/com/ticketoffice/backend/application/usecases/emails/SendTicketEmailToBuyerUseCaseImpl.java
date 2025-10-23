@@ -1,29 +1,20 @@
 package com.ticketoffice.backend.application.usecases.emails;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.application.utils.QrUtils;
+import com.ticketoffice.backend.domain.constants.EmailConstants;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Sale;
 import com.ticketoffice.backend.domain.ports.EmailService;
 import com.ticketoffice.backend.domain.usecases.emails.SendTicketEmailToBuyerUseCase;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
-@Service
 public class SendTicketEmailToBuyerUseCaseImpl implements SendTicketEmailToBuyerUseCase {
 
     private final EmailService emailService;
 
-    @Value("${email.no-reply-email}")
-    private String from;
-
-    @Value("${baseurl.frontend}")
-    private String frontendUrl;
-
-    @Value("${url.frontend.confirmation}")
-    private String pathToConfirmationPage;
-
+    @Inject
     public SendTicketEmailToBuyerUseCaseImpl(EmailService emailService) {
         this.emailService = emailService;
     }
@@ -33,7 +24,7 @@ public class SendTicketEmailToBuyerUseCaseImpl implements SendTicketEmailToBuyer
         emailService.sendEmail(
                 createConfirmationEmailContent(sale, event),
                 List.of(sale.mainEmail()),
-                from,
+                EmailConstants.FROM,
                 "Felicitaciones compraste un sale para %s".formatted(event.title())
         );
     }
@@ -64,6 +55,7 @@ public class SendTicketEmailToBuyerUseCaseImpl implements SendTicketEmailToBuyer
     }
 
     private String getUrlToConfirmTicket(String eventId, String saleId) {
-        return frontendUrl + pathToConfirmationPage.replace("{eventId}", eventId).replace("{saleId}", saleId);
+        return EmailConstants.FRONTEND_URL
+                + EmailConstants.PATH_TO_CONFIRMATION_PAGE.replace("{eventId}", eventId).replace("{saleId}", saleId);
     }
 }

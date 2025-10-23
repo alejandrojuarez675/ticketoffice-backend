@@ -14,9 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public class EventInMemoryRepository implements InMemoryRepository<Event>, EventRepository {
 
     private static final Map<String, Event> data = new HashMap<>();

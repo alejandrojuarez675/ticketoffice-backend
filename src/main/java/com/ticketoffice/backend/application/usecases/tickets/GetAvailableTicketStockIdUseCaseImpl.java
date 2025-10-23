@@ -1,19 +1,19 @@
 package com.ticketoffice.backend.application.usecases.tickets;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Ticket;
 import com.ticketoffice.backend.domain.usecases.sales.CountSalesByEventIdAndTicketIdUseCase;
 import com.ticketoffice.backend.domain.usecases.tickets.GetAvailableTicketStockIdUseCase;
 import com.ticketoffice.backend.domain.usecases.tickets.GetOnHoldTicketsStockUseCase;
-import org.springframework.stereotype.Service;
 
-@Service
 public class GetAvailableTicketStockIdUseCaseImpl implements GetAvailableTicketStockIdUseCase {
 
     private final GetOnHoldTicketsStockUseCase getOnHoldTicketsStockUseCase;
     private final CountSalesByEventIdAndTicketIdUseCase countSalesByEventIdAndTicketIdUseCase;
 
+    @Inject
     public GetAvailableTicketStockIdUseCaseImpl(
             GetOnHoldTicketsStockUseCase getOnHoldTicketsStockUseCase,
             CountSalesByEventIdAndTicketIdUseCase countSalesByEventIdAndTicketIdUseCase

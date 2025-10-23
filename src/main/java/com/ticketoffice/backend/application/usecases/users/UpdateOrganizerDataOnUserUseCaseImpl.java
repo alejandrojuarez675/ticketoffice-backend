@@ -1,17 +1,17 @@
 package com.ticketoffice.backend.application.usecases.users;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.models.Organizer;
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.UserRepository;
 import com.ticketoffice.backend.domain.usecases.users.UpdateOrganizerDataOnUserUseCase;
 import java.util.Optional;
-import org.springframework.stereotype.Service;
 
-@Service
 public class UpdateOrganizerDataOnUserUseCaseImpl implements UpdateOrganizerDataOnUserUseCase {
 
     private final UserRepository userRepository;
 
+    @Inject
     public UpdateOrganizerDataOnUserUseCaseImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

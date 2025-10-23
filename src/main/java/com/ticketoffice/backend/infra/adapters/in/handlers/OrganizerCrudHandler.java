@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.handlers;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.exception.ErrorOnPersistDataException;
 import com.ticketoffice.backend.domain.exception.NotAuthenticatedException;
 import com.ticketoffice.backend.domain.models.Organizer;
@@ -7,20 +8,21 @@ import com.ticketoffice.backend.domain.usecases.organizer.CreateOrganizerUseCase
 import com.ticketoffice.backend.infra.adapters.in.dto.mapper.ImageDtoMapper;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.OrganizerCrudRequest;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
-import org.springframework.stereotype.Service;
+import io.javalin.http.Context;
 
-@Service
 public class OrganizerCrudHandler {
 
     private final CreateOrganizerUseCase createOrganizerUseCase;
 
+    @Inject
     public OrganizerCrudHandler(CreateOrganizerUseCase createOrganizerUseCase) {
         this.createOrganizerUseCase = createOrganizerUseCase;
     }
 
-    public void createOrganizer(OrganizerCrudRequest organizer) throws BadRequestException {
+    public void createOrganizer(Context context, OrganizerCrudRequest organizer) throws BadRequestException {
         try {
             createOrganizerUseCase.accept(
+                    context,
                     new Organizer(
                             null,
                             organizer.name(),
