@@ -25,7 +25,7 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
                 new Event(
                         "cd85b222-2adf-414d-aa26-6a0fb7c87beb",
                         "Concierto de Trueno",
-                        LocalDateTime.of(2025, 6, 7, 19, 0),
+                        LocalDateTime.of(2027, 6, 7, 19, 0),
                         new Location(
                                 "1",
                                 "Movistar Arena",

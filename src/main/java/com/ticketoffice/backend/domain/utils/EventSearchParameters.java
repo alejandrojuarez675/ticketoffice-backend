@@ -22,9 +22,9 @@ public record EventSearchParameters(
 
     private Stream<Predicate<Event>> getPredicate(String title) {
         return Stream.of(
-                event -> event.location().country().equals(country),
-                event -> Strings.isNullOrEmpty(city) || event.location().city().equals(city),
-                event -> Strings.isNullOrEmpty(title) || event.title().toUpperCase().contains(title),
+                event -> Strings.isNullOrEmpty(country) || event.location().country().equalsIgnoreCase(country),
+                event -> Strings.isNullOrEmpty(city) || event.location().city().equalsIgnoreCase(city),
+                event -> Strings.isNullOrEmpty(title) || event.title().toUpperCase().equalsIgnoreCase(title),
                 event -> event.status().equals(EventStatus.ACTIVE),
                 event -> event.date().isAfter(LocalDateTime.now())
         );
