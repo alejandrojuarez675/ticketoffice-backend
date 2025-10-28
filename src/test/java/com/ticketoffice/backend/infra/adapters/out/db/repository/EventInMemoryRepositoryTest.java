@@ -4,6 +4,7 @@ import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Location;
 import com.ticketoffice.backend.domain.models.Ticket;
 import com.ticketoffice.backend.domain.models.Image;
+import com.ticketoffice.backend.infra.adapters.out.db.repository.event.EventInMemoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;

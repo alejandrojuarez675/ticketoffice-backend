@@ -1,4 +1,4 @@
-package com.ticketoffice.backend.infra.adapters.out.db.repository;
+package com.ticketoffice.backend.infra.adapters.out.db.repository.event;
 
 import com.ticketoffice.backend.domain.enums.EventStatus;
 import com.ticketoffice.backend.domain.models.Event;
@@ -6,6 +6,8 @@ import com.ticketoffice.backend.domain.models.Image;
 import com.ticketoffice.backend.domain.models.Location;
 import com.ticketoffice.backend.domain.models.Ticket;
 import com.ticketoffice.backend.domain.ports.EventRepository;
+import com.ticketoffice.backend.infra.adapters.out.db.repository.InMemoryRepository;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;

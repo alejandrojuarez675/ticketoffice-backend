@@ -17,7 +17,7 @@ WORKDIR /app
 COPY --from=build /home/gradle/project/build/libs/*.jar /app/app.jar
 
 # Set environment variables
-ENV JAVA_OPTS="-Xmx512m -Xms256m"
+ENV JAVA_OPTS="-Xmx512m -Xms256m -Denvironment=prod"
 ENV PORT=8080
 
 # Expose the port the app runs on
