@@ -72,7 +72,7 @@ import com.ticketoffice.backend.domain.usecases.users.GetUserByIdUseCase;
 import com.ticketoffice.backend.domain.usecases.users.IsAnAdminUserUseCase;
 import com.ticketoffice.backend.domain.usecases.users.UpdateOrganizerDataOnUserUseCase;
 import com.ticketoffice.backend.infra.adapters.out.cache.CheckoutSessionInMemoryCache;
-import com.ticketoffice.backend.infra.adapters.out.db.dao.EventDao;
+import com.ticketoffice.backend.infra.adapters.out.db.dao.EventDynamoDao;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.event.EventDynamoRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.event.EventInMemoryRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.SaleInMemoryRepository;
@@ -137,7 +137,7 @@ public class AppModule extends AbstractModule {
         }
 
         // daos
-        bind(EventDao.class).to(EventDao.class);
+        bind(EventDynamoDao.class).to(EventDynamoDao.class);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());

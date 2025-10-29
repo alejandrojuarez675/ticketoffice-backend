@@ -6,6 +6,7 @@ import com.ticketoffice.backend.domain.models.Image;
 import com.ticketoffice.backend.domain.models.Location;
 import com.ticketoffice.backend.domain.models.Ticket;
 import com.ticketoffice.backend.domain.ports.EventRepository;
+import com.ticketoffice.backend.domain.utils.EventSearchParameters;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.InMemoryRepository;
 
 import java.time.LocalDateTime;
@@ -21,7 +22,7 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
 
     private static final Map<String, Event> data = new HashMap<>();
 
-    EventInMemoryRepository() {
+    public EventInMemoryRepository() {
         data.put(
                 "cd85b222-2adf-414d-aa26-6a0fb7c87beb",
                 new Event(
@@ -143,10 +144,15 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
     }
 
     @Override
-    public Integer count(Predicate<Event> predicate) {
+    public Integer count(EventSearchParameters predicate) {
         return findAll().stream()
-                .filter(predicate)
+                .filter(predicate.getPredicate())
                 .toList().size();
+    }
+
+    @Override
+    public List<Event> search(EventSearchParameters eventSearchParameters, Integer pageSize, Integer pageNumber) {
+        return search(eventSearchParameters.getPredicate(), pageSize, pageNumber);
     }
 
     @Override

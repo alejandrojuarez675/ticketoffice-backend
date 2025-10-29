@@ -10,35 +10,32 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeAction;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValueUpdate;
-import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.QueryRequest;
 import software.amazon.awssdk.services.dynamodb.model.QueryResponse;
+import software.amazon.awssdk.services.dynamodb.model.ScanRequest;
+import software.amazon.awssdk.services.dynamodb.model.ScanResponse;
 import software.amazon.awssdk.services.dynamodb.model.UpdateItemRequest;
 
 /**
  * Data Access Object for interacting with EventTable in DynamoDB.
  * Provides CRUD operations and query methods using Global Secondary Indexes.
  */
-public class EventDao {
+public class EventDynamoDao {
     private final DynamoDbClient client;
     private final String tableName = "EventTable";
     
     // Index names
     private static final String COUNTRY_INDEX = "country-index";
-    private static final String CITY_INDEX = "city-index";
-    private static final String TITLE_INDEX = "title-index";
-    private static final String STATUS_INDEX = "status-index";
-    private static final String DATE_INDEX = "date-index";
     private static final String ORGANIZER_INDEX = "organizer-index";
 
     /**
      * Creates a new EventDao with default AWS credentials and region.
      * Uses the default credential provider chain and us-east-1 region.
      */
-    public EventDao() {
+    public EventDynamoDao() {
         this.client = DynamoDbClient.builder()
                 .region(Region.US_EAST_1)
                 .credentialsProvider(DefaultCredentialsProvider.create())
@@ -74,6 +71,15 @@ public class EventDao {
         return response.hasItem() ? response.item() : Collections.emptyMap();
     }
 
+    public List<Map<String, AttributeValue>> getAllEvents() {
+        ScanRequest request = ScanRequest.builder()
+                .tableName(tableName)
+                .build();
+
+        ScanResponse response = client.scan(request);
+        return response.items();
+    }
+
     /**
      * Queries events by country.
      *
@@ -82,46 +88,6 @@ public class EventDao {
      */
     public List<Map<String, AttributeValue>> getEventsByCountry(String country) {
         return queryByIndex(COUNTRY_INDEX, "country", country);
-    }
-
-    /**
-     * Queries events by city.
-     *
-     * @param city The city to query events for
-     * @return List of events in the specified city
-     */
-    public List<Map<String, AttributeValue>> getEventsByCity(String city) {
-        return queryByIndex(CITY_INDEX, "city", city);
-    }
-
-    /**
-     * Queries events by title (case-sensitive).
-     *
-     * @param title The title to search for
-     * @return List of events with the specified title
-     */
-    public List<Map<String, AttributeValue>> getEventsByTitle(String title) {
-        return queryByIndex(TITLE_INDEX, "title", title);
-    }
-
-    /**
-     * Queries events by status.
-     *
-     * @param status The status to filter events by
-     * @return List of events with the specified status
-     */
-    public List<Map<String, AttributeValue>> getEventsByStatus(String status) {
-        return queryByIndex(STATUS_INDEX, "status", status);
-    }
-
-    /**
-     * Queries events by date.
-     *
-     * @param date The date to query events for (format should match your date format)
-     * @return List of events on the specified date
-     */
-    public List<Map<String, AttributeValue>> getEventsByDate(String date) {
-        return queryByIndex(DATE_INDEX, "date", date);
     }
 
     /**
@@ -160,20 +126,6 @@ public class EventDao {
                 .build();
 
         client.updateItem(request);
-    }
-
-    /**
-     * Deletes an event by ID.
-     *
-     * @param eventId The ID of the event to delete
-     */
-    public void deleteEvent(String eventId) {
-        DeleteItemRequest request = DeleteItemRequest.builder()
-                .tableName(tableName)
-                .key(Collections.singletonMap("id", AttributeValue.builder().s(eventId).build()))
-                .build();
-        
-        client.deleteItem(request);
     }
 
     /**

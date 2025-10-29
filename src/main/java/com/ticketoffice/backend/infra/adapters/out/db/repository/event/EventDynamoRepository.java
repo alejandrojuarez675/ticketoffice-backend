@@ -3,10 +3,11 @@ package com.ticketoffice.backend.infra.adapters.out.db.repository.event;
 import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.enums.EventStatus;
 import com.ticketoffice.backend.domain.models.Event;
-import com.ticketoffice.backend.domain.models.Image;
-import com.ticketoffice.backend.domain.models.Location;
 import com.ticketoffice.backend.domain.ports.EventRepository;
-import com.ticketoffice.backend.infra.adapters.out.db.dao.EventDao;
+import com.ticketoffice.backend.domain.utils.EventSearchParameters;
+import com.ticketoffice.backend.infra.adapters.out.db.dao.EventDynamoDao;
+import com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper;
+import org.eclipse.jetty.util.StringUtil;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.time.LocalDateTime;
@@ -17,10 +18,10 @@ import java.util.function.Predicate;
 
 public class EventDynamoRepository implements EventRepository {
 
-    private final EventDao eventDao;
+    private final EventDynamoDao eventDao;
 
     @Inject
-    public EventDynamoRepository(EventDao eventDao) {
+    public EventDynamoRepository(EventDynamoDao eventDao) {
         this.eventDao = eventDao;
     }
 
@@ -29,58 +30,41 @@ public class EventDynamoRepository implements EventRepository {
         Map<String, AttributeValue> eventMap = eventDao.getEventById(id);
         return Optional.ofNullable(eventMap)
                 .filter(map -> map.containsKey("id"))
-                .map(this::fromMap);
-    }
-
-    private Event fromMap(Map<String, AttributeValue> em) {
-        // TODO continue with the map
-        return new Event(
-                em.get("id").s(),
-                em.get("title").s(),
-                LocalDateTime.parse(em.get("date").s()),
-                new Location(
-                       "id-location",
-                       "name-location",
-                       "address-location",
-                       em.get("city").s(),
-                       em.get("country").s()
-                ),
-                new Image(
-                        "id-image",
-                        "url",
-                        "alt"
-                ),
-                List.of(),
-                em.get("description").s(),
-                List.of(),
-                em.get("organizerId").s(),
-                EventStatus.valueOf(em.get("status").s())
-        );
+                .map(EventDynamoDBMapper::fromMap);
     }
 
     @Override
     public Optional<Event> save(Event event) {
-        return Optional.empty();
+        eventDao.saveEvent(EventDynamoDBMapper.toMap(event));
+        return Optional.of(event);
     }
 
     @Override
     public List<Event> findAll() {
-        return List.of();
+        return eventDao.getAllEvents()
+                .stream()
+                .map(EventDynamoDBMapper::fromMap)
+                .toList();
     }
 
     @Override
     public Optional<Event> update(String id, Event event) {
-        return Optional.empty();
+        eventDao.updateEvent(id, EventDynamoDBMapper.toMap(event));
+        return Optional.of(event);
     }
 
     @Override
     public Optional<Event> getByIdAndOrganizerId(String id, String id1) {
-        return Optional.empty();
+        return getById(id)
+                .filter(event -> event.organizerId().equals(id1));
     }
 
     @Override
     public List<Event> findByUserId(String userId) {
-        return List.of();
+        return eventDao.getEventsByOrganizer(userId)
+                .stream()
+                .map(EventDynamoDBMapper::fromMap)
+                .toList();
     }
 
     @Override
@@ -89,7 +73,46 @@ public class EventDynamoRepository implements EventRepository {
     }
 
     @Override
-    public Integer count(Predicate<Event> predicate) {
-        return 0;
+    public Integer count(EventSearchParameters predicate) {
+        return search(predicate).size();
+    }
+
+    @Override
+    public List<Event> search(EventSearchParameters eventSearchParameters, Integer pageSize, Integer pageNumber) {
+        List<Event> search = search(eventSearchParameters);
+        return search.subList(pageNumber * pageSize, Math.min((pageNumber + 1) * pageSize, search.size()));
+    }
+
+    private List<Event> search(EventSearchParameters eventSearchParameters) {
+        return getEventsByCountryOrAll(eventSearchParameters.country())
+                .stream()
+                .filter(e -> {
+                    if (!StringUtil.isBlank(eventSearchParameters.city())) {
+                        return e.location().city().equals(eventSearchParameters.city());
+                    }
+                    return true;
+                })
+                .filter(e -> {
+                    if (!StringUtil.isBlank(eventSearchParameters.query())) {
+                        return e.title().toUpperCase().contains(eventSearchParameters.query().toUpperCase());
+                    }
+                    return true;
+                })
+                .filter(e -> EventStatus.ACTIVE.equals(e.status()))
+                .filter(e -> e.date().isAfter(LocalDateTime.now()))
+                .toList();
+    }
+
+    private List<Event> getEventsByCountryOrAll(String country) {
+        List<Event> eventsByCountry;
+        if (!StringUtil.isBlank(country)) {
+            eventsByCountry = eventDao.getEventsByCountry(country)
+                    .stream()
+                    .map(EventDynamoDBMapper::fromMap)
+                    .toList();
+        } else {
+            eventsByCountry = findAll();
+        }
+        return eventsByCountry;
     }
 }
