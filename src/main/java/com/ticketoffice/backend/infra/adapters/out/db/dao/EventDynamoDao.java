@@ -29,6 +29,7 @@ public class EventDynamoDao {
     
     // Index names
     private static final String COUNTRY_INDEX = "country-index";
+    private static final String CITY_INDEX = "city-index";
     private static final String ORGANIZER_INDEX = "organizer-index";
 
     /**
@@ -185,5 +186,9 @@ public class EventDynamoDao {
      */
     private List<Map<String, AttributeValue>> queryByIndex(String indexName, String keyName, String keyValue) {
         return queryByMultipleIndex(indexName, Collections.singletonMap(keyName, keyValue));
+    }
+
+    public List<Map<String, AttributeValue>> getEventsByCity(String city) {
+        return queryByIndex(CITY_INDEX, "city", city);
     }
 }

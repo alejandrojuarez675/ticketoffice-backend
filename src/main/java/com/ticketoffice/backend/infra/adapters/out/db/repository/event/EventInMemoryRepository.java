@@ -7,6 +7,7 @@ import com.ticketoffice.backend.domain.models.Location;
 import com.ticketoffice.backend.domain.models.Ticket;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.utils.EventSearchParameters;
+import com.ticketoffice.backend.domain.utils.EventSimilarSearchParameters;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.InMemoryRepository;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
+
+import static com.ticketoffice.backend.domain.utils.EventSimilarSearchParameters.getPredicateForPreventDuplicates;
 
 public class EventInMemoryRepository implements InMemoryRepository<Event>, EventRepository {
 
@@ -117,8 +120,7 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
                 .toList();
     }
 
-    @Override
-    public List<Event> search(Predicate<Event> predicate, Integer pageSize, Integer pageNumber) {
+    private List<Event> search(Predicate<Event> predicate, Integer pageSize, Integer pageNumber) {
         List<Event> events = findAll().stream()
                 .filter(predicate)
                 .toList();
@@ -153,6 +155,20 @@ public class EventInMemoryRepository implements InMemoryRepository<Event>, Event
     @Override
     public List<Event> search(EventSearchParameters eventSearchParameters, Integer pageSize, Integer pageNumber) {
         return search(eventSearchParameters.getPredicate(), pageSize, pageNumber);
+    }
+
+    @Override
+    public List<Event> search(EventSimilarSearchParameters parameters, Integer quantity) {
+        List<Event> results = new ArrayList<>();
+        parameters.getPredicates().forEach(predicate -> {
+            if (results.size() < quantity) {
+                ArrayList<Predicate<Event>> completePredicates = new ArrayList<>(predicate);
+                completePredicates.addAll(getPredicateForPreventDuplicates(results));
+                Predicate<Event> predicateToSearch = completePredicates.stream().reduce(Predicate::and).orElse(e -> true);
+                results.addAll(search(predicateToSearch, quantity - results.size(), 0));
+            }
+        });
+        return results;
     }
 
     @Override

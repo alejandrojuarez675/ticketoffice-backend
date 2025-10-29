@@ -5,16 +5,19 @@ import com.ticketoffice.backend.domain.enums.EventStatus;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.utils.EventSearchParameters;
+import com.ticketoffice.backend.domain.utils.EventSimilarSearchParameters;
 import com.ticketoffice.backend.infra.adapters.out.db.dao.EventDynamoDao;
 import com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper;
 import org.eclipse.jetty.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Predicate;
+import java.util.Set;
 
 public class EventDynamoRepository implements EventRepository {
 
@@ -68,11 +71,6 @@ public class EventDynamoRepository implements EventRepository {
     }
 
     @Override
-    public List<Event> search(Predicate<Event> predicate, Integer pageSize, Integer pageNumber) {
-        return List.of();
-    }
-
-    @Override
     public Integer count(EventSearchParameters predicate) {
         return search(predicate).size();
     }
@@ -81,6 +79,52 @@ public class EventDynamoRepository implements EventRepository {
     public List<Event> search(EventSearchParameters eventSearchParameters, Integer pageSize, Integer pageNumber) {
         List<Event> search = search(eventSearchParameters);
         return search.subList(pageNumber * pageSize, Math.min((pageNumber + 1) * pageSize, search.size()));
+    }
+
+    @Override
+    public List<Event> search(EventSimilarSearchParameters parameters, Integer quantity) {
+
+        List<Event> eventsSameSeller = getActiveEventsWithFilteredTheReferenceEvent(
+                eventDao.getEventsByOrganizer(parameters.getEvent().organizerId()), parameters);
+
+        List<Event> eventsSameSellerAndCity = eventsSameSeller.stream()
+                .filter(e -> e.location().city().equals(parameters.getEvent().location().city()))
+                .toList();
+
+        Set<Event> result = new HashSet<>(eventsSameSellerAndCity);
+        if (result.size() >= quantity) {
+            return result.stream().toList().subList(0, quantity);
+        }
+
+        result.addAll(eventsSameSeller);
+        if (result.size() >= quantity) {
+            return result.stream().toList().subList(0, quantity);
+        }
+
+        List<Event> eventsSameCity = getActiveEventsWithFilteredTheReferenceEvent(
+                eventDao.getEventsByCity(parameters.getEvent().location().city()), parameters);
+        result.addAll(eventsSameCity);
+        if (result.size() >= quantity) {
+            return result.stream().toList().subList(0, quantity);
+        }
+
+        List<Event> eventsSameCountry = getActiveEventsWithFilteredTheReferenceEvent(
+                eventDao.getEventsByCountry(parameters.getEvent().location().country()), parameters);
+        result.addAll(eventsSameCountry);
+        if (result.size() >= quantity) {
+            return result.stream().toList().subList(0, quantity);
+        }
+
+        return result.stream().toList();
+    }
+
+    @NotNull
+    private List<Event> getActiveEventsWithFilteredTheReferenceEvent(List<Map<String, AttributeValue>> eventDao, EventSimilarSearchParameters parameters) {
+        return eventDao.stream()
+                .map(EventDynamoDBMapper::fromMap)
+                .filter(EventSimilarSearchParameters.getPredicateByActiveEvents())
+                .filter(e -> !e.id().equals(parameters.getEvent().id()))
+                .toList();
     }
 
     private List<Event> search(EventSearchParameters eventSearchParameters) {
