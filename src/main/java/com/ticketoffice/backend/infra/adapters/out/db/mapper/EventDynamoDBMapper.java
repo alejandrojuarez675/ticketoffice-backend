@@ -131,16 +131,21 @@ public class EventDynamoDBMapper {
 
     public static Map<String, AttributeValue> toMap(Event event) {
         Map<String, AttributeValue> eventMap = new HashMap<>();
-
-        eventMap.put(ID, AttributeValue.builder().s(event.id()).build());
+        if (event.id() != null) {
+            eventMap.put(ID, AttributeValue.builder().s(event.id()).build());
+        }
         eventMap.put(TITLE, AttributeValue.builder().s(event.title()).build());
         eventMap.put(DATE, AttributeValue.builder().s(event.date().toString()).build());
-        eventMap.put(LOCATION_ID, AttributeValue.builder().s(event.location().id()).build());
+        if (event.location().id() != null) {
+            eventMap.put(LOCATION_ID, AttributeValue.builder().s(event.location().id()).build());
+        }
         eventMap.put(LOCATION_NAME, AttributeValue.builder().s(event.location().name()).build());
         eventMap.put(LOCATION_ADDRESS, AttributeValue.builder().s(event.location().address()).build());
         eventMap.put(LOCATION_CITY, AttributeValue.builder().s(event.location().city()).build());
         eventMap.put(LOCATION_COUNTRY, AttributeValue.builder().s(event.location().country()).build());
-        eventMap.put(IMAGE_ID, AttributeValue.builder().s(event.image().id()).build());
+        if (event.image().id() != null) {
+            eventMap.put(IMAGE_ID, AttributeValue.builder().s(event.image().id()).build());
+        }
         eventMap.put(IMAGE_URL, AttributeValue.builder().s(event.image().url()).build());
         eventMap.put(IMAGE_ALT, AttributeValue.builder().s(event.image().alt()).build());
         eventMap.put(DESCRIPTION, AttributeValue.builder().s(event.description()).build());
@@ -150,7 +155,9 @@ public class EventDynamoDBMapper {
         List<AttributeValue> ticketsList = event.tickets().stream()
                 .map(ticket -> {
                     Map<String, AttributeValue> ticketMap = new HashMap<>();
-                    ticketMap.put(TICKETS_ID, AttributeValue.builder().s(ticket.id()).build());
+                    if (ticket.id() != null) {
+                        ticketMap.put(TICKETS_ID, AttributeValue.builder().s(ticket.id()).build());
+                    }
                     ticketMap.put(TICKETS_VALUE, AttributeValue.builder().n(ticket.value().toString()).build());
                     ticketMap.put(TICKETS_CURRENCY, AttributeValue.builder().s(ticket.currency()).build());
                     ticketMap.put(TICKETS_TYPE, AttributeValue.builder().s(ticket.type()).build());
