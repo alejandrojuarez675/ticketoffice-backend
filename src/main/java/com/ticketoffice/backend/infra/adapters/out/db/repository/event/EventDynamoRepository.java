@@ -30,7 +30,7 @@ public class EventDynamoRepository implements EventRepository {
 
     @Override
     public Optional<Event> getById(String id) {
-        Map<String, AttributeValue> eventMap = eventDao.getEventById(id);
+        Map<String, AttributeValue> eventMap = eventDao.getById(id);
         return Optional.ofNullable(eventMap)
                 .filter(map -> map.containsKey("id"))
                 .map(EventDynamoDBMapper::fromMap);
@@ -38,13 +38,13 @@ public class EventDynamoRepository implements EventRepository {
 
     @Override
     public Optional<Event> save(Event event) {
-        eventDao.saveEvent(EventDynamoDBMapper.toMap(event));
+        eventDao.save(EventDynamoDBMapper.toMap(event));
         return Optional.of(event);
     }
 
     @Override
     public List<Event> findAll() {
-        return eventDao.getAllEvents()
+        return eventDao.getAll()
                 .stream()
                 .map(EventDynamoDBMapper::fromMap)
                 .toList();
@@ -52,7 +52,7 @@ public class EventDynamoRepository implements EventRepository {
 
     @Override
     public Optional<Event> update(String id, Event event) {
-        eventDao.updateEvent(id, EventDynamoDBMapper.toMap(event));
+        eventDao.update(id, EventDynamoDBMapper.toMap(event));
         return Optional.of(event);
     }
 
