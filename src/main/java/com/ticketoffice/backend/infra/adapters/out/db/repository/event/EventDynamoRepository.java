@@ -8,6 +8,7 @@ import com.ticketoffice.backend.domain.utils.EventSearchParameters;
 import com.ticketoffice.backend.domain.utils.EventSimilarSearchParameters;
 import com.ticketoffice.backend.infra.adapters.out.db.dao.EventDynamoDao;
 import com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper;
+import java.util.UUID;
 import org.eclipse.jetty.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
@@ -38,6 +39,10 @@ public class EventDynamoRepository implements EventRepository {
 
     @Override
     public Optional<Event> save(Event event) {
+        String id = Optional.ofNullable(event.id()).orElse(UUID.randomUUID().toString());
+        if (event.id() == null || event.id().isEmpty()) {
+            event = event.getCopyWithUpdatedId(id);
+        }
         eventDao.save(EventDynamoDBMapper.toMap(event));
         return Optional.of(event);
     }
