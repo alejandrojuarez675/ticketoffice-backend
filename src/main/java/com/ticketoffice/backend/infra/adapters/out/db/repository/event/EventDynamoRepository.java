@@ -83,6 +83,9 @@ public class EventDynamoRepository implements EventRepository {
     @Override
     public List<Event> search(EventSearchParameters eventSearchParameters, Integer pageSize, Integer pageNumber) {
         List<Event> search = search(eventSearchParameters);
+        if (search.size() < pageSize) {
+            return search;
+        }
         return search.subList(pageNumber * pageSize, Math.min((pageNumber + 1) * pageSize, search.size()));
     }
 
