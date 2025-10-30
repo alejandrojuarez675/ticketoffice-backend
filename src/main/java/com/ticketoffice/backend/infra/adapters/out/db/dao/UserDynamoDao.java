@@ -3,6 +3,7 @@ package com.ticketoffice.backend.infra.adapters.out.db.dao;
 import com.google.inject.Inject;
 import com.ticketoffice.backend.infra.adapters.out.db.mapper.UserDynamoDBMapper;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
@@ -28,11 +29,15 @@ public class UserDynamoDao extends AbstractDynamoDao {
 
     public Optional<Map<String, AttributeValue>> findOneByEmail(String email) {
         return queryByIndex(EMAIL_INDEX, UserDynamoDBMapper.DynamoKeys.EMAIL, email)
-                .stream().findAny();
+                .stream()
+                .filter(x -> Objects.nonNull(x) && !x.isEmpty())
+                .findAny();
     }
 
     public Optional<Map<String, AttributeValue>> findOneByUsername(String username) {
         return queryByIndex(USERNAME_INDEX, UserDynamoDBMapper.DynamoKeys.USERNAME, username)
-                .stream().findAny();
+                .stream()
+                .filter(x -> Objects.nonNull(x) && !x.isEmpty())
+                .findAny();
     }
 }

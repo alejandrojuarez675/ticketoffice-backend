@@ -68,22 +68,24 @@ public class UserDynamoDBMapper {
     }
 
     public static @NotNull User fromMap(@NotNull Map<String, AttributeValue> map) {
+        Organizer organizer = map.containsKey(ORGANIZER_ID)
+                ? new Organizer(
+                    map.get(ORGANIZER_ID).s(),
+                    map.get(ORGANIZER_NAME).s(),
+                    map.get(ORGANIZER_URL).s(),
+                    new Image(
+                            map.get(ORGANIZER_LOGO_ID).s(),
+                            map.get(ORGANIZER_LOGO_URL).s(),
+                            map.get(ORGANIZER_LOGO_ALT).s()
+                    ))
+                : null;
         return new User(
                 map.get(ID).s(),
                 map.get(USERNAME).s(),
                 map.get(EMAIL).s(),
                 map.get(PASSWORD).s(),
                 map.get(ROLES).ss().stream().map(UserRole::valueOf).toList(),
-                new Organizer(
-                        map.get(ORGANIZER_ID).s(),
-                        map.get(ORGANIZER_NAME).s(),
-                        map.get(ORGANIZER_URL).s(),
-                        new Image(
-                                map.get(ORGANIZER_LOGO_ID).s(),
-                                map.get(ORGANIZER_LOGO_URL).s(),
-                                map.get(ORGANIZER_LOGO_ALT).s()
-                        )
-                )
+                organizer
         );
     }
 }
