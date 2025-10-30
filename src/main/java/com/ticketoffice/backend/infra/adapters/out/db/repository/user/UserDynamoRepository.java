@@ -4,6 +4,8 @@ import com.google.inject.Inject;
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.UserRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.dao.UserDynamoDao;
+import com.ticketoffice.backend.infra.adapters.out.db.mapper.UserDynamoDBMapper;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,31 +21,38 @@ public class UserDynamoRepository implements UserRepository {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return Optional.empty();
+        return userDynamoDao.findOneByEmail(email)
+                .map(UserDynamoDBMapper::fromMap);
     }
 
     @Override
     public Optional<User> findByUsername(String username) {
-        return Optional.empty();
+        return userDynamoDao.findOneByUsername(username)
+                .map(UserDynamoDBMapper::fromMap);
     }
 
     @Override
     public Optional<User> save(User user) {
-        return Optional.empty();
+        userDynamoDao.save(UserDynamoDBMapper.toMap(user));
+        return Optional.of(user);
     }
 
     @Override
     public List<User> findAll() {
-        return List.of();
+        return userDynamoDao.getAll().stream()
+                .map(UserDynamoDBMapper::fromMap)
+                .toList();
     }
 
     @Override
     public Optional<User> getById(String id) {
-        return Optional.empty();
+        return Optional.ofNullable(userDynamoDao.getById(id))
+                .map(UserDynamoDBMapper::fromMap);
     }
 
     @Override
-    public Optional<User> update(String id, User user) {
-        return Optional.empty();
+    public Optional<User> update(String id, @NotNull User user) {
+        userDynamoDao.update(id, UserDynamoDBMapper.toMap(user));
+        return Optional.of(user);
     }
 }

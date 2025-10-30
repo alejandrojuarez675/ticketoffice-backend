@@ -1,5 +1,28 @@
 package com.ticketoffice.backend.infra.adapters.out.db.mapper;
 
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.ADDITIONAL_INFO;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.DATE;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.DESCRIPTION;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.ID;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.IMAGE_ALT;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.IMAGE_ID;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.IMAGE_URL;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.LOCATION_ADDRESS;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.LOCATION_CITY;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.LOCATION_COUNTRY;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.LOCATION_ID;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.LOCATION_NAME;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.ORGANIZER_ID;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.STATUS;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.TICKETS;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.TICKETS_CURRENCY;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.TICKETS_ID;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.TICKETS_IS_FREE;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.TICKETS_STOCK;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.TICKETS_TYPE;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.TICKETS_VALUE;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper.DynamoKeys.TITLE;
+
 import com.ticketoffice.backend.domain.enums.EventStatus;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Image;
@@ -15,53 +38,79 @@ import java.util.stream.Collectors;
 
 public class EventDynamoDBMapper {
 
+    public static class DynamoKeys {
+        public static final String ID = "id";
+        public static final String TITLE = "title";
+        public static final String DATE = "date";
+        public static final String DESCRIPTION = "description";
+        public static final String ORGANIZER_ID = "organizerId";
+        public static final String STATUS = "status";
+        public static final String LOCATION_ID = "locationId";
+        public static final String LOCATION_NAME = "locationName";
+        public static final String LOCATION_ADDRESS = "locationAddress";
+        public static final String LOCATION_CITY = "city";
+        public static final String LOCATION_COUNTRY = "country";
+        public static final String ADDITIONAL_INFO = "additionalInfo";
+        public static final String IMAGE_ID = "imageId";
+        public static final String IMAGE_URL = "imageUrl";
+        public static final String IMAGE_ALT = "imageAlt";
+        public static final String TICKETS = "tickets";
+        public static final String TICKETS_ID = "id";
+        public static final String TICKETS_VALUE = "value";
+        public static final String TICKETS_CURRENCY = "currency";
+        public static final String TICKETS_TYPE = "type";
+        public static final String TICKETS_IS_FREE = "isFree";
+        public static final String TICKETS_STOCK = "stock";
+
+    }
+
     private EventDynamoDBMapper() {}
 
     public static Event fromMap(Map<String, AttributeValue> em) {
         // Extract basic fields
-        String id = em.get("id").s();
-        String title = em.get("title").s();
-        LocalDateTime date = LocalDateTime.parse(em.get("date").s());
-        String description = em.get("description").s();
-        String organizerId = em.get("organizerId").s();
-        EventStatus status = EventStatus.valueOf(em.get("status").s());
+        String id = em.get(ID).s();
+        String title = em.get(TITLE).s();
+        LocalDateTime date = LocalDateTime.parse(em.get(DATE).s());
+        String description = em.get(DESCRIPTION).s();
+        String organizerId = em.get(ORGANIZER_ID).s();
+        EventStatus status = EventStatus.valueOf(em.get(STATUS).s());
 
         // Build Location object
         Location location = new Location(
-                em.containsKey("locationId") ? em.get("locationId").s() : "",
-                em.containsKey("locationName") ? em.get("locationName").s() : "",
-                em.containsKey("locationAddress") ? em.get("locationAddress").s() : "",
-                em.get("city").s(),
-                em.get("country").s()
+                em.containsKey(LOCATION_ID) ? em.get(LOCATION_ID).s() : "",
+                em.containsKey(LOCATION_NAME) ? em.get(LOCATION_NAME).s() : "",
+                em.containsKey(LOCATION_ADDRESS) ? em.get(LOCATION_ADDRESS).s() : "",
+                em.get(LOCATION_CITY).s(),
+                em.get(LOCATION_COUNTRY).s()
         );
 
         // Build Image object
         Image image = new Image(
-                em.containsKey("imageId") ? em.get("imageId").s() : "",
-                em.containsKey("imageUrl") ? em.get("imageUrl").s() : "",
-                em.containsKey("imageAlt") ? em.get("imageAlt").s() : ""
+                em.containsKey(IMAGE_ID) ? em.get(IMAGE_ID).s() : "",
+                em.containsKey(IMAGE_URL) ? em.get(IMAGE_URL).s() : "",
+                em.containsKey(IMAGE_URL) ? em.get(IMAGE_ALT).s() : ""
         );
 
         // Handle tickets list
-        List<Ticket> tickets = em.containsKey("tickets") ?
-                em.get("tickets").l().stream()
+        List<Ticket> tickets = em.containsKey(TICKETS) ?
+                em.get(TICKETS).l().stream()
                         .map(av -> {
                             Map<String, AttributeValue> ticketMap = av.m();
                             return new Ticket(
-                                    ticketMap.get("id").s(),
-                                    Double.parseDouble(ticketMap.get("value").n()),
-                                    ticketMap.get("currency").s(),
-                                    ticketMap.get("type").s(),
-                                    Boolean.getBoolean(ticketMap.get("isFree").s()),
-                                    Integer.parseInt(ticketMap.get("stock").n())
+                                    ticketMap.get(TICKETS_ID).s(),
+                                    Double.parseDouble(ticketMap.get(TICKETS_VALUE).n()),
+                                    ticketMap.get(TICKETS_CURRENCY).s(),
+                                    ticketMap.get(TICKETS_TYPE).s(),
+                                    Boolean.getBoolean(ticketMap.get(TICKETS_IS_FREE).s()),
+                                    Integer.parseInt(ticketMap.get(TICKETS_STOCK).n())
                             );
                         })
                         .collect(Collectors.toList()) :
                 List.of();
 
         // Handle additionalInfo list
-        List<String> additionalInfo = em.containsKey("additionalInfo") ?
-                em.get("additionalInfo").l().stream()
+        List<String> additionalInfo = em.containsKey(ADDITIONAL_INFO) ?
+                em.get(ADDITIONAL_INFO).l().stream()
                         .map(AttributeValue::s)
                         .collect(Collectors.toList()) :
                 List.of();
@@ -83,39 +132,39 @@ public class EventDynamoDBMapper {
     public static Map<String, AttributeValue> toMap(Event event) {
         Map<String, AttributeValue> eventMap = new HashMap<>();
 
-        eventMap.put("id", AttributeValue.builder().s(event.id()).build());
-        eventMap.put("title", AttributeValue.builder().s(event.title()).build());
-        eventMap.put("date", AttributeValue.builder().s(event.date().toString()).build());
-        eventMap.put("locationId", AttributeValue.builder().s(event.location().id()).build());
-        eventMap.put("locationName", AttributeValue.builder().s(event.location().name()).build());
-        eventMap.put("locationAddress", AttributeValue.builder().s(event.location().address()).build());
-        eventMap.put("city", AttributeValue.builder().s(event.location().city()).build());
-        eventMap.put("country", AttributeValue.builder().s(event.location().country()).build());
-        eventMap.put("imageId", AttributeValue.builder().s(event.image().id()).build());
-        eventMap.put("imageUrl", AttributeValue.builder().s(event.image().url()).build());
-        eventMap.put("imageAlt", AttributeValue.builder().s(event.image().alt()).build());
-        eventMap.put("description", AttributeValue.builder().s(event.description()).build());
-        eventMap.put("organizerId", AttributeValue.builder().s(event.organizerId()).build());
-        eventMap.put("status", AttributeValue.builder().s(event.status().toString()).build());
+        eventMap.put(ID, AttributeValue.builder().s(event.id()).build());
+        eventMap.put(TITLE, AttributeValue.builder().s(event.title()).build());
+        eventMap.put(DATE, AttributeValue.builder().s(event.date().toString()).build());
+        eventMap.put(LOCATION_ID, AttributeValue.builder().s(event.location().id()).build());
+        eventMap.put(LOCATION_NAME, AttributeValue.builder().s(event.location().name()).build());
+        eventMap.put(LOCATION_ADDRESS, AttributeValue.builder().s(event.location().address()).build());
+        eventMap.put(LOCATION_CITY, AttributeValue.builder().s(event.location().city()).build());
+        eventMap.put(LOCATION_COUNTRY, AttributeValue.builder().s(event.location().country()).build());
+        eventMap.put(IMAGE_ID, AttributeValue.builder().s(event.image().id()).build());
+        eventMap.put(IMAGE_URL, AttributeValue.builder().s(event.image().url()).build());
+        eventMap.put(IMAGE_ALT, AttributeValue.builder().s(event.image().alt()).build());
+        eventMap.put(DESCRIPTION, AttributeValue.builder().s(event.description()).build());
+        eventMap.put(ORGANIZER_ID, AttributeValue.builder().s(event.organizerId()).build());
+        eventMap.put(STATUS, AttributeValue.builder().s(event.status().toString()).build());
 
         List<AttributeValue> ticketsList = event.tickets().stream()
                 .map(ticket -> {
                     Map<String, AttributeValue> ticketMap = new HashMap<>();
-                    ticketMap.put("id", AttributeValue.builder().s(ticket.id()).build());
-                    ticketMap.put("value", AttributeValue.builder().n(ticket.value().toString()).build());
-                    ticketMap.put("currency", AttributeValue.builder().s(ticket.currency()).build());
-                    ticketMap.put("type", AttributeValue.builder().s(ticket.type()).build());
-                    ticketMap.put("isFree", AttributeValue.builder().bool(ticket.isFree()).build());
-                    ticketMap.put("stock", AttributeValue.builder().n(ticket.stock().toString()).build());
+                    ticketMap.put(TICKETS_ID, AttributeValue.builder().s(ticket.id()).build());
+                    ticketMap.put(TICKETS_VALUE, AttributeValue.builder().n(ticket.value().toString()).build());
+                    ticketMap.put(TICKETS_CURRENCY, AttributeValue.builder().s(ticket.currency()).build());
+                    ticketMap.put(TICKETS_TYPE, AttributeValue.builder().s(ticket.type()).build());
+                    ticketMap.put(TICKETS_IS_FREE, AttributeValue.builder().bool(ticket.isFree()).build());
+                    ticketMap.put(TICKETS_STOCK, AttributeValue.builder().n(ticket.stock().toString()).build());
                     return AttributeValue.builder().m(ticketMap).build();
                 })
                 .collect(Collectors.toList());
-        eventMap.put("tickets", AttributeValue.builder().l(ticketsList).build());
+        eventMap.put(TICKETS, AttributeValue.builder().l(ticketsList).build());
 
         List<AttributeValue> additionalInfoList = event.additionalInfo().stream()
                 .map(info -> AttributeValue.builder().s(info).build())
                 .collect(Collectors.toList());
-        eventMap.put("additionalInfo", AttributeValue.builder().l(additionalInfoList).build());
+        eventMap.put(ADDITIONAL_INFO, AttributeValue.builder().l(additionalInfoList).build());
 
         return eventMap;
     }

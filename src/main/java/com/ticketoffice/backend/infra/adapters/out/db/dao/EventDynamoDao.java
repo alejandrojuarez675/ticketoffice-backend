@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
+import com.ticketoffice.backend.infra.adapters.out.db.mapper.EventDynamoDBMapper;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
@@ -42,7 +43,7 @@ public class EventDynamoDao extends AbstractDynamoDao {
      * @return List of events in the specified country
      */
     public List<Map<String, AttributeValue>> getEventsByCountry(String country) {
-        return queryByIndex(COUNTRY_INDEX, "country", country);
+        return queryByIndex(COUNTRY_INDEX, EventDynamoDBMapper.DynamoKeys.LOCATION_COUNTRY, country);
     }
 
     /**
@@ -52,11 +53,11 @@ public class EventDynamoDao extends AbstractDynamoDao {
      * @return List of events organized by the specified organizer
      */
     public List<Map<String, AttributeValue>> getEventsByOrganizer(String organizerId) {
-        return queryByIndex(ORGANIZER_INDEX, "organizerId", organizerId);
+        return queryByIndex(ORGANIZER_INDEX, EventDynamoDBMapper.DynamoKeys.ORGANIZER_ID, organizerId);
     }
 
 
     public List<Map<String, AttributeValue>> getEventsByCity(String city) {
-        return queryByIndex(CITY_INDEX, "city", city);
+        return queryByIndex(CITY_INDEX, EventDynamoDBMapper.DynamoKeys.LOCATION_CITY, city);
     }
 }
