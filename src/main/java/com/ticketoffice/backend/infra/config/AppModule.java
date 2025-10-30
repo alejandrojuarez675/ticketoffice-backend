@@ -72,9 +72,11 @@ import com.ticketoffice.backend.domain.usecases.users.GetUserByIdUseCase;
 import com.ticketoffice.backend.domain.usecases.users.IsAnAdminUserUseCase;
 import com.ticketoffice.backend.domain.usecases.users.UpdateOrganizerDataOnUserUseCase;
 import com.ticketoffice.backend.infra.adapters.out.cache.CheckoutSessionInMemoryCache;
-import com.ticketoffice.backend.infra.adapters.out.db.repository.EventInMemoryRepository;
+import com.ticketoffice.backend.infra.adapters.out.db.repository.event.EventDynamoRepository;
+import com.ticketoffice.backend.infra.adapters.out.db.repository.event.EventInMemoryRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.SaleInMemoryRepository;
-import com.ticketoffice.backend.infra.adapters.out.db.repository.UserInMemoryRepository;
+import com.ticketoffice.backend.infra.adapters.out.db.repository.user.UserDynamoRepository;
+import com.ticketoffice.backend.infra.adapters.out.db.repository.user.UserInMemoryRepository;
 import com.ticketoffice.backend.infra.adapters.out.emails.EmailServiceImpl;
 
 public class AppModule extends AbstractModule {
@@ -124,10 +126,16 @@ public class AppModule extends AbstractModule {
         bind(EmailService.class).to(EmailServiceImpl.class);
 
         // repositories
-        bind(UserRepository.class).to(UserInMemoryRepository.class);
-        bind(EventRepository.class).to(EventInMemoryRepository.class);
+        boolean isLocal = System.getProperty("environment", "local").equals("local");
         bind(SaleRepository.class).to(SaleInMemoryRepository.class);
         bind(CheckoutSessionCache.class).to(CheckoutSessionInMemoryCache.class);
+        if (isLocal) {
+            bind(EventRepository.class).to(EventInMemoryRepository.class);
+            bind(UserRepository.class).to(UserInMemoryRepository.class);
+        } else {
+            bind(UserRepository.class).to(UserDynamoRepository.class);
+            bind(EventRepository.class).to(EventDynamoRepository.class);
+        }
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());

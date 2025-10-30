@@ -1,10 +1,13 @@
-package com.ticketoffice.backend.infra.adapters.out.db.repository;
+package com.ticketoffice.backend.infra.adapters.out.db.repository.user;
 
 import com.google.inject.Inject;
 import com.ticketoffice.backend.application.services.PasswordEncoder;
 import com.ticketoffice.backend.domain.enums.UserRole;
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.UserRepository;
+import com.ticketoffice.backend.infra.adapters.out.db.repository.InMemoryRepository;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +73,7 @@ public class UserInMemoryRepository implements InMemoryRepository<User>, UserRep
     }
 
     @Override
-    public Optional<User> update(String id, User obj) {
+    public Optional<User> update(String id, @NotNull User obj) {
         if (data.containsKey(id)) {
             data.put(id, obj);
             return getById(id);
