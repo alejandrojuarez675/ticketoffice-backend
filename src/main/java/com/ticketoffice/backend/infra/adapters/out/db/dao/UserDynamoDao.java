@@ -12,6 +12,8 @@ import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 public class UserDynamoDao extends AbstractDynamoDao {
 
     private static final String USERNAME_INDEX = "username-index";
+    private static final String EMAIL_INDEX = "email-index";
+    private static final String USER_TABLE = "UserTable";
 
     @Inject
     public UserDynamoDao() {
@@ -20,17 +22,17 @@ public class UserDynamoDao extends AbstractDynamoDao {
                         .region(Region.US_EAST_1)
                         .credentialsProvider(DefaultCredentialsProvider.create())
                         .build(),
-                "UserTable"
+                USER_TABLE
         );
     }
 
     public Optional<Map<String, AttributeValue>> findOneByEmail(String email) {
-        return queryByIndex("email-index", UserDynamoDBMapper.EMAIL, email)
+        return queryByIndex(EMAIL_INDEX, UserDynamoDBMapper.DynamoKeys.EMAIL, email)
                 .stream().findAny();
     }
 
     public Optional<Map<String, AttributeValue>> findOneByUsername(String username) {
-        return queryByIndex(USERNAME_INDEX, UserDynamoDBMapper.USERNAME, username)
+        return queryByIndex(USERNAME_INDEX, UserDynamoDBMapper.DynamoKeys.USERNAME, username)
                 .stream().findAny();
     }
 }

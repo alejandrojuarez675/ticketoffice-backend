@@ -20,6 +20,7 @@ public class EventDynamoDao extends AbstractDynamoDao {
     private static final String COUNTRY_INDEX = "country-index";
     private static final String CITY_INDEX = "city-index";
     private static final String ORGANIZER_INDEX = "organizer-index";
+    private static final String EVENT_TABLE = "EventTable";
 
     /**
      * Creates a new EventDao with default AWS credentials and region.
@@ -32,7 +33,7 @@ public class EventDynamoDao extends AbstractDynamoDao {
                         .region(Region.US_EAST_1)
                         .credentialsProvider(DefaultCredentialsProvider.create())
                         .build(),
-                "EventTable"
+                EVENT_TABLE
         );
     }
 

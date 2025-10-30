@@ -1,5 +1,16 @@
 package com.ticketoffice.backend.infra.adapters.out.db.mapper;
 
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.UserDynamoDBMapper.DynamoKeys.EMAIL;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.UserDynamoDBMapper.DynamoKeys.ID;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.UserDynamoDBMapper.DynamoKeys.ORGANIZER_ID;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.UserDynamoDBMapper.DynamoKeys.ORGANIZER_LOGO_ALT;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.UserDynamoDBMapper.DynamoKeys.ORGANIZER_LOGO_ID;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.UserDynamoDBMapper.DynamoKeys.ORGANIZER_LOGO_URL;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.UserDynamoDBMapper.DynamoKeys.ORGANIZER_NAME;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.UserDynamoDBMapper.DynamoKeys.ORGANIZER_URL;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.UserDynamoDBMapper.DynamoKeys.PASSWORD;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.UserDynamoDBMapper.DynamoKeys.ROLES;
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.UserDynamoDBMapper.DynamoKeys.USERNAME;
 import com.ticketoffice.backend.domain.enums.UserRole;
 import com.ticketoffice.backend.domain.models.Image;
 import com.ticketoffice.backend.domain.models.Organizer;
@@ -12,17 +23,19 @@ import java.util.Map;
 
 public class UserDynamoDBMapper {
 
-    public static final String ID = "id";
-    public static final String USERNAME = "username";
-    public static final String EMAIL = "email";
-    public static final String PASSWORD = "password";
-    public static final String ROLES = "roles";
-    public static final String ORGANIZER_ID = "organizerId";
-    public static final String ORGANIZER_NAME = "organizerName";
-    public static final String ORGANIZER_URL = "organizerUrl";
-    public static final String ORGANIZER_LOGO_ID = "organizerLogoId";
-    public static final String ORGANIZER_LOGO_URL = "organizerLogoUrl";
-    public static final String ORGANIZER_LOGO_ALT = "organizerLogoAlt";
+    public static class DynamoKeys {
+        public static final String ID = "id";
+        public static final String USERNAME = "username";
+        public static final String EMAIL = "email";
+        public static final String PASSWORD = "password";
+        public static final String ROLES = "roles";
+        public static final String ORGANIZER_ID = "organizerId";
+        public static final String ORGANIZER_NAME = "organizerName";
+        public static final String ORGANIZER_URL = "organizerUrl";
+        public static final String ORGANIZER_LOGO_ID = "organizerLogoId";
+        public static final String ORGANIZER_LOGO_URL = "organizerLogoUrl";
+        public static final String ORGANIZER_LOGO_ALT = "organizerLogoAlt";
+    }
 
     private UserDynamoDBMapper() {}
 
