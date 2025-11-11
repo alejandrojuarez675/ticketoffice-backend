@@ -14,11 +14,18 @@ import com.ticketoffice.backend.infra.adapters.in.controller.checkout.SearchPage
 import com.ticketoffice.backend.infra.adapters.in.exception.handler.ApiExceptionHandler;
 import com.ticketoffice.backend.infra.config.AppModule;
 import io.javalin.Javalin;
+import io.javalin.plugin.bundled.CorsPlugin;
+import io.javalin.plugin.bundled.CorsPluginConfig;
 
 public class Main {
     public static void main(String[] args) {
         Injector injector = Guice.createInjector(new AppModule());
-        Javalin app = Javalin.create(config -> config.http.defaultContentType = "application/json");
+        Javalin app = Javalin.create(config -> {
+            config.http.defaultContentType = "application/json";
+            config.registerPlugin(
+                    new CorsPlugin(cors -> cors.addRule(CorsPluginConfig.CorsRule::anyHost))
+            );
+        });
 
         // Public
         injector.getInstance(AuthenticationController.class).registeredRoutes(app);
