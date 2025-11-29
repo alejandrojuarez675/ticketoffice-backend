@@ -14,6 +14,8 @@ public record EventSearchParameters(
         String query
 ) {
 
+    public final static String ALL = "all";
+
     public Predicate<Event> getPredicate() {
         String title = Optional.ofNullable(query).map(String::toUpperCase).orElse("");
 
@@ -22,12 +24,24 @@ public record EventSearchParameters(
 
     private Stream<Predicate<Event>> getPredicate(String title) {
         return Stream.of(
-                event -> event.location().country().equals(country),
-                event -> Strings.isNullOrEmpty(city) || event.location().city().equals(city),
+                event -> event.location().country().equalsIgnoreCase(country) || isAll(country),
+                event -> Strings.isNullOrEmpty(city) || event.location().city().equalsIgnoreCase(city) || isAll(city),
                 event -> Strings.isNullOrEmpty(title) || event.title().toUpperCase().contains(title),
                 event -> event.status().equals(EventStatus.ACTIVE),
                 event -> event.date().isAfter(LocalDateTime.now())
         );
+    }
+
+    public boolean hasSpecificCity() {
+        return !Strings.isNullOrEmpty(city) && !ALL.equalsIgnoreCase(city);
+    }
+
+    public boolean hasSpecificCountry() {
+        return !Strings.isNullOrEmpty(country) && !ALL.equalsIgnoreCase(country);
+    }
+
+    private boolean isAll(String value) {
+        return ALL.equalsIgnoreCase(value);
     }
 
 }
