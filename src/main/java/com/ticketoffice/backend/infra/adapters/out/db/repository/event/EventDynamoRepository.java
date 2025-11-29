@@ -136,11 +136,11 @@ public class EventDynamoRepository implements EventRepository {
     }
 
     private List<Event> search(EventSearchParameters eventSearchParameters) {
-        return getEventsByCountryOrAll(eventSearchParameters.country())
+        return getEventsByCountryOrAll(eventSearchParameters)
                 .stream()
                 .filter(e -> {
-                    if (!StringUtil.isBlank(eventSearchParameters.city())) {
-                        return e.location().city().equals(eventSearchParameters.city());
+                    if (eventSearchParameters.hasSpecificCity()) {
+                        return e.location().city().equalsIgnoreCase(eventSearchParameters.city());
                     }
                     return true;
                 })
@@ -155,10 +155,10 @@ public class EventDynamoRepository implements EventRepository {
                 .toList();
     }
 
-    private List<Event> getEventsByCountryOrAll(String country) {
+    private List<Event> getEventsByCountryOrAll(EventSearchParameters eventSearchParameters) {
         List<Event> eventsByCountry;
-        if (!StringUtil.isBlank(country)) {
-            eventsByCountry = eventDao.getEventsByCountry(country)
+        if (eventSearchParameters.hasSpecificCountry()) {
+            eventsByCountry = eventDao.getEventsByCountry(eventSearchParameters.country())
                     .stream()
                     .map(EventDynamoDBMapper::fromMap)
                     .toList();
