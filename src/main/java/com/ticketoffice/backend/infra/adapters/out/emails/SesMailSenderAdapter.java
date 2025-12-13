@@ -45,7 +45,7 @@ public class SesMailSenderAdapter implements MailSenderPort {
         var request = SendTemplatedEmailRequest.builder()
             .source(senderEmail)
             .destination(b -> b.toAddresses(mailMessage.getTo()))
-            .template(mailMessage.getTemplateName())
+            .template(mailMessage.getTemplateName().getTemplate())
             .templateData(templateDataJson)
             .build();
 

@@ -1,6 +1,7 @@
 package com.ticketoffice.backend.application.usecases.emails;
 
 import com.google.inject.Inject;
+import com.ticketoffice.backend.domain.enums.MailTemplates;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.MailMessage;
 import com.ticketoffice.backend.domain.models.Sale;
@@ -21,7 +22,7 @@ public class SendConfirmationEmailToBuyerUseCaseImpl implements SendConfirmation
     @Override
     public void accept(Sale sale, Event event) {
         mailSender.sendEmail(new MailMessage(
-                "confirm-email-template",
+                MailTemplates.CONFIRMATION_EMAIL_TEMPLATE,
                 sale.mainEmail(),
                 Map.of(
                         "buyer-name", sale.buyer().getFirst().name(),

@@ -3,6 +3,7 @@ package com.ticketoffice.backend.application.usecases.emails;
 import com.google.inject.Inject;
 import com.ticketoffice.backend.application.utils.QrUtils;
 import com.ticketoffice.backend.domain.constants.EmailConstants;
+import com.ticketoffice.backend.domain.enums.MailTemplates;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.MailMessage;
 import com.ticketoffice.backend.domain.models.Sale;
@@ -23,7 +24,7 @@ public class SendTicketEmailToBuyerUseCaseImpl implements SendTicketEmailToBuyer
     @Override
     public void accept(Sale sale, Event event) {
         mailSenderPort.sendEmail(new MailMessage(
-                "send-ticket",
+                MailTemplates.SEND_TICKET,
                 sale.mainEmail(),
                 Map.of(
                         "buyer-name", sale.buyer().getFirst().name(),
