@@ -1,48 +1,35 @@
 package com.ticketoffice.backend.application.usecases.emails;
 
 import com.google.inject.Inject;
-import com.ticketoffice.backend.domain.constants.EmailConstants;
+import com.ticketoffice.backend.domain.enums.MailTemplates;
 import com.ticketoffice.backend.domain.models.Event;
+import com.ticketoffice.backend.domain.models.MailMessage;
 import com.ticketoffice.backend.domain.models.Sale;
-import com.ticketoffice.backend.domain.ports.EmailService;
+import com.ticketoffice.backend.domain.ports.MailSenderPort;
 import com.ticketoffice.backend.domain.usecases.emails.SendConfirmationEmailToBuyerUseCase;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.Map;
 
 public class SendConfirmationEmailToBuyerUseCaseImpl implements SendConfirmationEmailToBuyerUseCase {
 
-    private final EmailService emailService;
+    private final MailSenderPort mailSender;
 
     @Inject
-    public SendConfirmationEmailToBuyerUseCaseImpl(EmailService emailService) {
-        this.emailService = emailService;
+    public SendConfirmationEmailToBuyerUseCaseImpl(MailSenderPort mailSender) {
+        this.mailSender = mailSender;
     }
 
     @Override
     public void accept(Sale sale, Event event) {
-        emailService.sendEmail(
-                createConfirmationEmailContent(sale, event),
-                List.of(sale.mainEmail()),
-                EmailConstants.FROM,
-                "Confirmación de compra");
-    }
-
-    private String createConfirmationEmailContent(Sale sale, Event event) {
-        return """
-                <html>
-                <body>
-                <p>Hi, <b>%s</b></p>
-                <p>Thanks for your purchase. Here is your confirmation email.</p>
-                <p>Event: %s</p>
-                <p>Date: %s</p>
-                <p>Location: %s</p>
-                </body>
-                </html>
-                """.formatted(
-                        sale.buyer().getFirst().name(),
-                        event.title(),
-                        event.date().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
-                        event.location().name()
-                );
+        mailSender.sendEmail(new MailMessage(
+                MailTemplates.CONFIRMATION_EMAIL_TEMPLATE,
+                sale.mainEmail(),
+                Map.of(
+                        "buyer-name", sale.buyer().getFirst().name(),
+                        "event-name", event.title(),
+                        "event-date", event.date().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+                        "event-location", event.location().name()
+                )
+        )).join();
     }
 }
