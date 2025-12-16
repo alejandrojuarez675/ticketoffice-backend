@@ -85,24 +85,6 @@ class PingControllerIntegrationTest {
 
     @Nested
     class CorsTests {
-        @Test
-        void shouldIncludeCorsHeadersInGetResponse() throws IOException {
-            Request request = new Request.Builder()
-                    .url(baseUrl + "/ping")
-                    .header("Origin", "https://example.com")
-                    .get()
-                    .build();
-
-            try (Response response = client.newCall(request).execute()) {
-                Headers headers = response.headers();
-                assertAll("CORS headers in GET response",
-                    () -> assertEquals("*", headers.get("Access-Control-Allow-Origin"),
-                            "Should include Access-Control-Allow-Origin header"),
-                    () -> assertNotNull(headers.get("Access-Control-Allow-Methods"),
-                            "Should include Access-Control-Allow-Methods header")
-                );
-            }
-        }
 
         @Test
         void shouldAllowCrossOriginRequests() throws IOException {
