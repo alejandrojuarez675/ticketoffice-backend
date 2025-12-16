@@ -79,6 +79,7 @@ import com.ticketoffice.backend.infra.adapters.out.db.repository.user.UserDynamo
 import com.ticketoffice.backend.infra.adapters.out.db.repository.user.UserInMemoryRepository;
 import com.ticketoffice.backend.infra.adapters.out.emails.LogMailSenderAdapter;
 import com.ticketoffice.backend.infra.adapters.out.emails.SesMailSenderAdapter;
+import com.ticketoffice.backend.infra.adapters.in.controller.TestEmailController;
 
 public class AppModule extends AbstractModule {
 
@@ -122,6 +123,9 @@ public class AppModule extends AbstractModule {
 
         // TODO review user usecases
         bind(GetAuthenticatedUserUseCase.class).to(GetAuthenticatedUserUseCaseImpl.class);
+
+        // controllers
+        bind(TestEmailController.class);
 
         // service
         boolean isLocal = System.getProperty("environment", "local").equals("local");

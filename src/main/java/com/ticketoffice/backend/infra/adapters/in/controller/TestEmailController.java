@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.controller;
 
+import com.google.inject.Inject;
 import com.ticketoffice.backend.application.dto.TestEmailRequest;
 import com.ticketoffice.backend.domain.models.MailMessage;
 import com.ticketoffice.backend.domain.ports.MailSenderPort;
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class TestEmailController implements CustomController {
     private final MailSenderPort mailSenderPort;
 
+    @Inject
     public TestEmailController(MailSenderPort mailSenderPort) {
         this.mailSenderPort = mailSenderPort;
     }
