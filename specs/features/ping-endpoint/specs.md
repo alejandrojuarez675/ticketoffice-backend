@@ -18,8 +18,8 @@ Como administrador del sistema, quiero verificar que el servicio de la API esté
    - **Given** El servicio está en ejecución
    - **When** Se realiza una petición GET a /ping
    - **Then** Debe retornar status 200
-   - **And** El cuerpo de la respuesta debe ser "pong"
-   - **And** El Content-Type debe ser text/plain
+   - **And** El cuerpo de la respuesta debe ser "pong" en formato JSON
+   - **And** El Content-Type debe ser application/json
    - **And** El tiempo de respuesta debe ser menor a 100ms
 
 2. **Scenario**: Verificación sin autenticación
@@ -33,7 +33,7 @@ Como administrador del sistema, quiero verificar que el servicio de la API esté
 ### Functional Requirements
 
 - **FR-001**: El sistema DEBE proveer un endpoint GET /ping que responda con status 200
-- **FR-002**: La respuesta DEBE ser de tipo text/plain con el contenido "pong"
+- **FR-002**: La respuesta DEBE ser de tipo application/json con el contenido "pong" en formato JSON
 - **FR-003**: El endpoint NO DEBE requerir autenticación
 - **FR-004**: El tiempo de respuesta DEBE ser menor a 100ms
 - **FR-005**: El endpoint DEBE ser accesible desde cualquier origen (CORS)
@@ -41,7 +41,7 @@ Como administrador del sistema, quiero verificar que el servicio de la API esté
 ### Success Criteria
 
 - [X] El endpoint responde con status 200 cuando el servicio está en línea
-- [X] La respuesta tiene el formato correcto (text/plain con contenido "pong")
+- [X] La respuesta tiene el formato correcto (application/json con contenido "pong" en formato JSON)
 - [X] No se requiere autenticación para acceder al endpoint
 - [X] El tiempo de respuesta es consistente y menor a 100ms
 - [X] El endpoint está documentado en la especificación de la API
@@ -52,5 +52,5 @@ Como administrador del sistema, quiero verificar que el servicio de la API esté
   - Balanceadores de carga para health checks
   - Sistemas de monitoreo
   - Verificación manual del estado del servicio
-- La respuesta es intencionalmente simple para minimizar el procesamiento
+- La respuesta es intencionalmente simple en formato JSON para facilitar el procesamiento en el cliente
 - No debe realizar comprobaciones de dependencias externas para mantener la simplicidad y rapidez

@@ -20,8 +20,8 @@ public class PingController implements CustomController {
                 return;
             }
             
-            ctx.contentType(ContentType.TEXT_PLAIN);
-            ctx.result("pong");
+            ctx.contentType(ContentType.JSON);
+            ctx.json("pong");
         });
     }
 }

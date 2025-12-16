@@ -71,7 +71,7 @@ class PingControllerTest {
     }
     
     @Test
-    void ping_shouldReturnPlainTextContentType() throws Exception {
+    void ping_shouldReturnJsonContentType() throws Exception {
         // Given
         int port = app.port();
         String url = String.format("http://localhost:%d/ping", port);
@@ -88,8 +88,8 @@ class PingControllerTest {
         String contentType = response.headers().firstValue("Content-Type")
                 .orElse("<missing>");
                 
-        assertTrue(contentType.startsWith("text/plain"),
-                String.format("Content-Type should start with 'text/plain' but was '%s'", 
+        assertTrue(contentType.startsWith("application/json"),
+                String.format("Content-Type should start with 'application/json' but was '%s'", 
                         contentType));
     }
 }

@@ -5,7 +5,7 @@
 
 ## Summary
 
-Implementar un endpoint de health check simple y rápido que permita verificar la disponibilidad del servicio. El endpoint responderá con un mensaje de texto plano "pong" y un código de estado 200 cuando el servicio esté disponible.
+Implementar un endpoint de health check simple y rápido que permita verificar la disponibilidad del servicio. El endpoint responderá con un mensaje JSON "pong" y un código de estado 200 cuando el servicio esté disponible.
 
 ## Technical Context
 
@@ -67,7 +67,7 @@ src/
 **Propósito**: Implementar el endpoint de health check según especificaciones
 
 - [x] T004 Implementar HealthCheckController con el endpoint GET /ping
-- [x] T005 Configurar respuesta con Content-Type: text/plain
+- [x] T005 Configurar respuesta con Content-Type: application/json
 - [x] T006 Implementar manejo de CORS para permitir cualquier origen
 - [x] T007 Asegurar que el endpoint no requiera autenticación
 
@@ -77,8 +77,8 @@ src/
 
 ### Pruebas Unitarias
 - [x] T008 [P] [US1] Prueba de respuesta exitosa (200 OK)
-- [x] T009 [P] [US1] Verificar contenido de la respuesta ("pong")
-- [x] T010 [P] [US1] Verificar Content-Type (text/plain)
+- [x] T009 [P] [US1] Verificar contenido de la respuesta ("pong" en JSON)
+- [x] T010 [P] [US1] Verificar Content-Type (application/json)
 - [x] T011 [P] [US1] Verificar que no requiere autenticación
 - [ ] T012 [P] [US1] Verificar tiempo de respuesta < 100ms (marcado como opcional por ser inconsistente en entornos de prueba)
 
