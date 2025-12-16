@@ -20,31 +20,38 @@ import io.javalin.plugin.bundled.CorsPluginConfig;
 
 public class Main {
     public static void main(String[] args) {
-        Injector injector = Guice.createInjector(new AppModule());
-        Javalin app = Javalin.create(config -> {
-            config.http.defaultContentType = "application/json";
-            config.registerPlugin(
-                    new CorsPlugin(cors -> cors.addRule(CorsPluginConfig.CorsRule::anyHost))
-            );
-        });
+        try {
 
-        // Public
-        injector.getInstance(AuthenticationController.class).registeredRoutes(app);
-        injector.getInstance(CheckoutController.class).registeredRoutes(app);
-        injector.getInstance(SearchPageController.class).registeredRoutes(app);
-        injector.getInstance(EventDetailPageController.class).registeredRoutes(app);
+            Injector injector = Guice.createInjector(new AppModule());
+            Javalin app = Javalin.create(config -> {
+                config.http.defaultContentType = "application/json";
+                config.registerPlugin(
+                        new CorsPlugin(cors -> cors.addRule(CorsPluginConfig.CorsRule::anyHost))
+                );
+            });
 
-        // Authenticated
-        injector.getInstance(PingController.class).registeredRoutes(app);
-        injector.getInstance(EventsController.class).registeredRoutes(app);
-        injector.getInstance(OrganizerController.class).registeredRoutes(app);
-        injector.getInstance(SalesController.class).registeredRoutes(app);
-        injector.getInstance(UserController.class).registeredRoutes(app);
-        injector.getInstance(TestEmailController.class).registeredRoutes(app);
-        
-        // Register exception handler
-        app.exception(Exception.class, new ApiExceptionHandler());
-        
-        app.start(8080);
+            // Public
+            injector.getInstance(AuthenticationController.class).registeredRoutes(app);
+            injector.getInstance(CheckoutController.class).registeredRoutes(app);
+            injector.getInstance(SearchPageController.class).registeredRoutes(app);
+            injector.getInstance(EventDetailPageController.class).registeredRoutes(app);
+
+            // Authenticated
+            injector.getInstance(PingController.class).registeredRoutes(app);
+            injector.getInstance(EventsController.class).registeredRoutes(app);
+            injector.getInstance(OrganizerController.class).registeredRoutes(app);
+            injector.getInstance(SalesController.class).registeredRoutes(app);
+            injector.getInstance(UserController.class).registeredRoutes(app);
+            injector.getInstance(TestEmailController.class).registeredRoutes(app);
+
+            // Register exception handler
+            app.exception(Exception.class, new ApiExceptionHandler());
+
+            app.start(8080);
+        } catch (Exception e) {
+            System.err.println("Error al iniciar la aplicación: " + e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 }
