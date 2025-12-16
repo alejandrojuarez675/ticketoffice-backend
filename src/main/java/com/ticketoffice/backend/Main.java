@@ -3,6 +3,7 @@ package com.ticketoffice.backend;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.ticketoffice.backend.infra.adapters.in.controller.PingController;
+import com.ticketoffice.backend.infra.adapters.in.controller.TestEmailController;
 import com.ticketoffice.backend.infra.adapters.in.controller.admin.EventsController;
 import com.ticketoffice.backend.infra.adapters.in.controller.admin.OrganizerController;
 import com.ticketoffice.backend.infra.adapters.in.controller.admin.SalesController;
@@ -39,6 +40,7 @@ public class Main {
         injector.getInstance(OrganizerController.class).registeredRoutes(app);
         injector.getInstance(SalesController.class).registeredRoutes(app);
         injector.getInstance(UserController.class).registeredRoutes(app);
+        injector.getInstance(TestEmailController.class).registeredRoutes(app);
         
         // Register exception handler
         app.exception(Exception.class, new ApiExceptionHandler());
