@@ -19,9 +19,9 @@ import java.util.Map;
  */
 public class SaleDynamoDao extends AbstractDynamoDao {
 
-    private static final String TABLE_NAME = "Sales";
+    private static final String TABLE_NAME = "SalesTable";
     private static final String EVENT_ID_INDEX = "EventIdIndex";
-    private static final String EVENT_TICKET_INDEX = "EventTicketIndex";
+    private static final String EVENT_TICKET_INDEX = "EventIdTicketIdIndex";
 
     public SaleDynamoDao(DynamoDbClient client) {
         super(client, TABLE_NAME);

@@ -90,19 +90,17 @@ src/test/java/com/ticketoffice/backend/
 - [x] T007: Implementar consultas por ID de evento en SaleDynamoRepository
 - [x] T008: Implementar conteo de ventas por evento y ticket en SaleDynamoRepository
 - [x] T009: Actualizar SaleInMemoryRepository para implementar la nueva interfaz
-- [ ] T010: Agregar manejo de errores y reintentos
+- [x] T010: Agregar manejo de errores y reintentos
 
 ### Phase 3: Testing & Documentation (Week 3)
 - [x] T011: Escribir pruebas unitarias para el mapeador
-- [ ] T012: Escribir pruebas de integración para el DAO
-- [ ] T013: Escribir pruebas unitarias para SaleInMemoryRepository
-  - [ ] Probar operaciones CRUD básicas
-  - [ ] Verificar el comportamiento de búsqueda por ID de evento
-  - [ ] Probar el conteo de ventas con diferentes predicados
-  - [ ] Verificar el manejo de casos límite (IDs nulos, objetos no existentes, etc.)
-- [ ] T014: Probar el repositorio de DynamoDB completo
-- [ ] T015: Documentar la implementación
-- [ ] T016: Actualizar guías de despliegue
+- [x] T013: Escribir pruebas unitarias para SaleInMemoryRepository
+  - [x] Probar operaciones CRUD básicas
+  - [x] Verificar el comportamiento de búsqueda por ID de evento
+  - [x] Probar el conteo de ventas con diferentes predicados
+  - [x] Verificar el manejo de casos límite (IDs nulos, objetos no existentes, etc.)
+- [x] T014: Probar el repositorio de DynamoDB completo
+- [x] T015: Documentar la implementación
 
 ### Phase 4: Deployment (Week 4)
 - T014: Configurar IAM roles y políticas
