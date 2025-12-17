@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.out.db.dao;
 
+import com.google.inject.Inject;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.QueryRequest;
@@ -23,6 +24,7 @@ public class SaleDynamoDao extends AbstractDynamoDao {
     private static final String EVENT_ID_INDEX = "EventIdIndex";
     private static final String EVENT_TICKET_INDEX = "EventIdTicketIdIndex";
 
+    @Inject
     public SaleDynamoDao(DynamoDbClient client) {
         super(client, TABLE_NAME);
     }
