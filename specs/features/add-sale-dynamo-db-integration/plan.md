@@ -76,33 +76,33 @@ src/test/java/com/ticketoffice/backend/
             └── SaleDynamoRepositoryTest.java
 ```
 
-## Implementation Phases
+## Implementation Progress
 
 ### Phase 1: Foundation (Week 1)
-- T001: Crear estructura de paquetes y clases base
-- T002: Implementar SaleDynamoDBMapper para conversión de modelos
-- T003: Implementar SaleDynamoDao con operaciones CRUD básicas
-- T004: Configurar DynamoDBModule para inyección de dependencias
-- T005: Actualizar interfaz SaleRepository para usar parámetros específicos en lugar de Predicate<Sale>
+- [x] T001: Crear estructura de paquetes y clases base
+- [x] T002: Implementar SaleDynamoDBMapper para conversión de modelos
+- [x] T003: Implementar SaleDynamoDao con operaciones CRUD básicas
+- [x] T004: Configurar DynamoDBModule para inyección de dependencias
+- [x] T005: Actualizar interfaz SaleRepository para usar parámetros específicos en lugar de Predicate<Sale>
 
 ### Phase 2: Core Implementation (Week 2)
-- T006: Implementar SaleDynamoRepository siguiendo la interfaz SaleRepository actualizada
-- T007: Implementar consultas por ID de evento en SaleDynamoRepository
-- T008: Implementar conteo de ventas por evento y ticket en SaleDynamoRepository
-- T009: Actualizar SaleInMemoryRepository para implementar la nueva interfaz
-- T010: Agregar manejo de errores y reintentos
+- [x] T006: Implementar SaleDynamoRepository siguiendo la interfaz SaleRepository actualizada
+- [x] T007: Implementar consultas por ID de evento en SaleDynamoRepository
+- [x] T008: Implementar conteo de ventas por evento y ticket en SaleDynamoRepository
+- [x] T009: Actualizar SaleInMemoryRepository para implementar la nueva interfaz
+- [ ] T010: Agregar manejo de errores y reintentos
 
 ### Phase 3: Testing & Documentation (Week 3)
-- T011: Escribir pruebas unitarias para el mapeador
-- T012: Escribir pruebas de integración para el DAO
-- T013: Escribir pruebas unitarias para SaleInMemoryRepository
-  - Probar operaciones CRUD básicas
-  - Verificar el comportamiento de búsqueda por ID de evento
-  - Probar el conteo de ventas con diferentes predicados
-  - Verificar el manejo de casos límite (IDs nulos, objetos no existentes, etc.)
-- T014: Probar el repositorio de DynamoDB completo
-- T015: Documentar la implementación
-- T016: Actualizar guías de despliegue
+- [x] T011: Escribir pruebas unitarias para el mapeador
+- [ ] T012: Escribir pruebas de integración para el DAO
+- [ ] T013: Escribir pruebas unitarias para SaleInMemoryRepository
+  - [ ] Probar operaciones CRUD básicas
+  - [ ] Verificar el comportamiento de búsqueda por ID de evento
+  - [ ] Probar el conteo de ventas con diferentes predicados
+  - [ ] Verificar el manejo de casos límite (IDs nulos, objetos no existentes, etc.)
+- [ ] T014: Probar el repositorio de DynamoDB completo
+- [ ] T015: Documentar la implementación
+- [ ] T016: Actualizar guías de despliegue
 
 ### Phase 4: Deployment (Week 4)
 - T014: Configurar IAM roles y políticas

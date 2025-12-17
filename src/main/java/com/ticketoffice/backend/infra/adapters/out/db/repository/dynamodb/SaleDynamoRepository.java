@@ -4,6 +4,7 @@ import com.ticketoffice.backend.domain.models.Sale;
 import com.ticketoffice.backend.domain.ports.SaleRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.dao.SaleDynamoDao;
 import com.ticketoffice.backend.infra.adapters.out.db.mapper.SaleDynamoDBMapper;
+import com.ticketoffice.backend.infra.adapters.out.db.utils.RetryUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
@@ -14,15 +15,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * DynamoDB implementation of the SaleRepository interface.
  * Handles all data access operations for Sale entities using Amazon DynamoDB.
+ * Includes retry logic for transient failures and comprehensive error handling.
  */
 @Singleton
 public class SaleDynamoRepository implements SaleRepository {
     private static final Logger logger = LoggerFactory.getLogger(SaleDynamoRepository.class);
+    private static final RetryUtil.RetryConfig RETRY_CONFIG = new RetryUtil.RetryConfig();
 
     private final SaleDynamoDao saleDynamoDao;
     private final SaleDynamoDBMapper saleDynamoDBMapper;
@@ -36,9 +38,9 @@ public class SaleDynamoRepository implements SaleRepository {
     @Override
     public Optional<Sale> save(Sale sale) {
         try {
-            // Generate a new ID if one doesn't exist
+            // Generate ID if not provided
             Sale saleToSave = sale;
-            if (sale.id() == null || sale.id().isEmpty()) {
+            if (sale.id() == null) {
                 saleToSave = new Sale(
                     UUID.randomUUID().toString(),
                     sale.eventId(),
@@ -52,8 +54,12 @@ public class SaleDynamoRepository implements SaleRepository {
             }
             
             Map<String, AttributeValue> item = saleDynamoDBMapper.toDynamoDB(saleToSave);
-            saleDynamoDao.save(item);
+            
+            // Execute with retry logic
+            RetryUtil.executeWithRetry("save", () -> saleDynamoDao.save(item), RETRY_CONFIG);
+            
             return Optional.of(saleToSave);
+            
         } catch (Exception e) {
             logger.error("Error saving sale: {}", e.getMessage(), e);
             return Optional.empty();
@@ -63,10 +69,15 @@ public class SaleDynamoRepository implements SaleRepository {
     @Override
     public Integer countByEventIdAndTicketId(String eventId, String ticketId) {
         try {
-            return saleDynamoDao.countByEventIdAndTicketId(eventId, ticketId);
+            return RetryUtil.executeWithRetry(
+                "countByEventIdAndTicketId",
+                () -> saleDynamoDao.countByEventIdAndTicketId(eventId, ticketId),
+                0,
+                RETRY_CONFIG
+            );
         } catch (Exception e) {
-            // Log the error
-            logger.error("Error counting sales for eventId: {} and ticketId: {} - {}", eventId, ticketId, e.getMessage(), e);
+            logger.error("Error counting sales by eventId: {} and ticketId: {} - {}", 
+                eventId, ticketId, e.getMessage(), e);
             return 0;
         }
     }
@@ -74,12 +85,19 @@ public class SaleDynamoRepository implements SaleRepository {
     @Override
     public List<Sale> findByEventId(String eventId) {
         try {
-            return saleDynamoDao.findByEventId(eventId).stream()
-                    .map(saleDynamoDBMapper::toDomain)
-                    .collect(Collectors.toList());
+            List<Map<String, AttributeValue>> items = RetryUtil.executeWithRetry(
+                "findByEventId",
+                () -> saleDynamoDao.findByEventId(eventId),
+                List.of(),
+                RETRY_CONFIG
+            );
+            
+            return items.stream()
+                .map(saleDynamoDBMapper::toDomain)
+                .toList();
+                
         } catch (Exception e) {
-            // Log the error
-            logger.error("Error finding sales for eventId: {} - {}", eventId, e.getMessage(), e);
+            logger.error("Error finding sales by eventId: {} - {}", eventId, e.getMessage(), e);
             return List.of();
         }
     }
@@ -87,15 +105,21 @@ public class SaleDynamoRepository implements SaleRepository {
     @Override
     public Optional<Sale> getById(String id) {
         try {
-            Map<String, AttributeValue> item = saleDynamoDao.getById(id);
+            Map<String, AttributeValue> item = RetryUtil.executeWithRetry(
+                "getById",
+                () -> saleDynamoDao.getById(id),
+                Map.of(),
+                RETRY_CONFIG
+            );
+            
             if (item == null || item.isEmpty()) {
                 return Optional.empty();
             }
-
+            
             return Optional.ofNullable(saleDynamoDBMapper.toDomain(item));
+            
         } catch (Exception e) {
-            // Log the error
-            logger.error("Error finding sale by id: {} - {}", id, e.getMessage(), e);
+            logger.error("Error getting sale by id: {} - {}", id, e.getMessage(), e);
             return Optional.empty();
         }
     }
@@ -104,7 +128,13 @@ public class SaleDynamoRepository implements SaleRepository {
     public Optional<Sale> update(String id, Sale sale) {
         try {
             // First check if the sale exists
-            Map<String, AttributeValue> existingItem = saleDynamoDao.getById(id);
+            Map<String, AttributeValue> existingItem = RetryUtil.executeWithRetry(
+                "getByIdForUpdate",
+                () -> saleDynamoDao.getById(id),
+                Map.of(),
+                RETRY_CONFIG
+            );
+            
             if (existingItem == null || existingItem.isEmpty()) {
                 return Optional.empty();
             }
@@ -122,12 +152,16 @@ public class SaleDynamoRepository implements SaleRepository {
             );
             
             Map<String, AttributeValue> updatedItem = saleDynamoDBMapper.toDynamoDB(updatedSale);
-            saleDynamoDao.save(updatedItem);
+            
+            // Execute with retry logic
+            RetryUtil.executeWithRetry("saveUpdate", () -> saleDynamoDao.save(updatedItem), RETRY_CONFIG);
+            
             return Optional.of(updatedSale);
+            
         } catch (Exception e) {
-            // Log the error
             logger.error("Error updating sale by id: {} - {}", id, e.getMessage(), e);
             return Optional.empty();
         }
     }
+    
 }
