@@ -47,7 +47,7 @@ public class Main {
             // Register exception handler
             app.exception(Exception.class, new ApiExceptionHandler());
 
-            int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"));
+            int port = Integer.parseInt(System.getenv("PORT"));
             System.out.println("Starting server on port: " + port);
             app.start(port);
         } catch (Exception e) {
