@@ -8,8 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Predicate;
 
+/**
+ * In-memory implementation of the SaleRepository interface for testing and development purposes.
+ * This implementation is not thread-safe and is not suitable for production use.
+ */
 public class SaleInMemoryRepository implements SaleRepository, InMemoryRepository<Sale> {
     private static final Map<String, Sale> data = new HashMap<>();
 
@@ -39,13 +42,18 @@ public class SaleInMemoryRepository implements SaleRepository, InMemoryRepositor
     }
 
     @Override
-    public Integer count(Predicate<Sale> predicate) {
-        return findAll().stream().filter(predicate).toList().size();
+    public Integer countByEventIdAndTicketId(String eventId, String ticketId) {
+        return (int) findAll().stream()
+                .filter(sale -> sale.eventId().equals(eventId) 
+                        && (ticketId == null || sale.ticketId().equals(ticketId)))
+                .count();
     }
 
     @Override
     public List<Sale> findByEventId(String eventId) {
-        return findAll().stream().filter(ticket -> ticket.eventId().equals(eventId)).toList();
+        return findAll().stream()
+                .filter(sale -> sale.eventId().equals(eventId))
+                .toList();
     }
 
     @Override
