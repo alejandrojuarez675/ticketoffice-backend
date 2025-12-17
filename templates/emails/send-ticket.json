@@ -1,8 +1,8 @@
 {
   "Template": {
     "TemplateName": "send-ticket",
-    "SubjectPart": "Envío de ticket para {{event-name}}",
-    "HtmlPart": "<p>Hola {{buyer-name}} gracias por tu compra a {{event-name}}. Recuerda que el evento es el {{event-date}} en {{event-location}}.</p><p></p><h2>Para ingresar, mostrá este QR</h2><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><image href=\"https://api.qrserver.com/v1/create-qr-code/?data={{qr-code}}\" x=\"0\" y=\"0\" width=\"100\" height=\"100\" /></svg>",
+    "SubjectPart": "Ticket para {{event-name}}",
+    "HtmlPart": "<p>Hola {{buyer-name}} gracias por tu compra a {{event-name}}. Recuerda que el evento es el {{event-date}} en {{event-location}}.</p><p></p><h2>Para ingresar, muestra este QR</h2><image href=\"https://api.qrserver.com/v1/create-qr-code/?data={{qr-code}}\" x=\"0\" y=\"0\" width=\"100\" height=\"100\" /><spam href=\"{{qr-code}}\">{{qr-code}}</spam>",
     "TextPart": "Envío de ticket para {{event-name}}"
   }
 }
