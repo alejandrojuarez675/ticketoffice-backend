@@ -14,7 +14,7 @@
 ### 2. Crear una Nueva Tabla
 1. Haz clic en "Create table"
 2. Configura los parámetros básicos:
-   - **Table name**: `ticketoffice-sales`
+   - **Table name**: `SalesTable`
    - **Partition key**: `saleId` (String)
    - **Sort key**: No es necesario para esta implementación
    - Configuración:
@@ -72,8 +72,8 @@ Crea los siguientes índices secundarios para soportar las consultas requeridas:
                    "dynamodb:BatchWriteItem"
                ],
                "Resource": [
-                   "arn:aws:dynamodb:REGION:ACCOUNT_ID:table/ticketoffice-sales",
-                   "arn:aws:dynamodb:REGION:ACCOUNT_ID:table/ticketoffice-sales/index/*"
+                   "arn:aws:dynamodb:REGION:ACCOUNT_ID:table/SalesTable",
+                   "arn:aws:dynamodb:REGION:ACCOUNT_ID:table/SalesTable/index/*"
                ]
            }
        ]
@@ -94,7 +94,7 @@ Crea los siguientes índices secundarios para soportar las consultas requeridas:
 1. Configura las variables de entorno necesarias en tu aplicación:
    ```
    AWS_REGION=tu-region
-   DYNAMODB_TABLE_NAME=ticketoffice-sales
+   DYNAMODB_TABLE_NAME=SalesTable
    ```
 
 ## Pruebas
