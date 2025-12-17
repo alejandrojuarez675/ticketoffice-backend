@@ -1,0 +1,8 @@
+{
+  "Template": {
+    "TemplateName": "confirm-email-template",
+    "SubjectPart": "Hemos confirmado tu compra a {{event-name}}",
+    "HtmlPart": "<p>Hola {{buyer-name}} tu compra a {{event-name}} ha sido confirmada.</p><p>Recuerda que el evento es el {{event-date}} en {{event-location}}.</p><p>En breve generaremos tu ticket para poder ingresar al evento.</p><p>Gracias por tu compra.</p>",
+    "TextPart": "Hemos confirmado tu compra a {{event-name}}"
+  }
+}

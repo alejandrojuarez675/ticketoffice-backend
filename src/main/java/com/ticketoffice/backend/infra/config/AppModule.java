@@ -36,8 +36,8 @@ import com.ticketoffice.backend.application.usecases.users.GetUserByIdUseCaseImp
 import com.ticketoffice.backend.application.usecases.users.IsAnAdminUserUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.users.UpdateOrganizerDataOnUserUseCaseImpl;
 import com.ticketoffice.backend.domain.ports.CheckoutSessionCache;
-import com.ticketoffice.backend.domain.ports.EmailService;
 import com.ticketoffice.backend.domain.ports.EventRepository;
+import com.ticketoffice.backend.domain.ports.MailSenderPort;
 import com.ticketoffice.backend.domain.ports.SaleRepository;
 import com.ticketoffice.backend.domain.ports.UserRepository;
 import com.ticketoffice.backend.domain.usecases.checkout.CreateCheckoutSessionUseCase;
@@ -77,7 +77,9 @@ import com.ticketoffice.backend.infra.adapters.out.db.repository.event.EventInMe
 import com.ticketoffice.backend.infra.adapters.out.db.repository.SaleInMemoryRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.user.UserDynamoRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.user.UserInMemoryRepository;
-import com.ticketoffice.backend.infra.adapters.out.emails.EmailServiceImpl;
+import com.ticketoffice.backend.infra.adapters.out.emails.LogMailSenderAdapter;
+import com.ticketoffice.backend.infra.adapters.out.emails.SesMailSenderAdapter;
+import com.ticketoffice.backend.infra.adapters.in.controller.TestEmailController;
 
 public class AppModule extends AbstractModule {
 
@@ -122,11 +124,19 @@ public class AppModule extends AbstractModule {
         // TODO review user usecases
         bind(GetAuthenticatedUserUseCase.class).to(GetAuthenticatedUserUseCaseImpl.class);
 
+        // controllers
+        bind(TestEmailController.class);
+
         // service
-        bind(EmailService.class).to(EmailServiceImpl.class);
+        boolean isLocal = System.getProperty("environment", "local").equals("local");
+        if (isLocal) {
+            bind(MailSenderPort.class).to(LogMailSenderAdapter.class);
+        } else {
+            install(new SesModule());
+            bind(MailSenderPort.class).to(SesMailSenderAdapter.class);
+        }
 
         // repositories
-        boolean isLocal = System.getProperty("environment", "local").equals("local");
         bind(SaleRepository.class).to(SaleInMemoryRepository.class);
         bind(CheckoutSessionCache.class).to(CheckoutSessionInMemoryCache.class);
         if (isLocal) {

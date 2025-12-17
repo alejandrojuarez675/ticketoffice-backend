@@ -18,9 +18,15 @@ repositories {
 }
 
 dependencies {
-// Javalin (usa la versión estable más reciente)
-    implementation 'io.javalin:javalin:6.7.0'
-
+    // Javalin
+    implementation 'io.javalin:javalin:6.1.3'
+    
+    // Javalin Test Tools
+    testImplementation 'io.javalin:javalin-testtools:6.1.3'
+    
+    // HTTP Client for testing
+    testImplementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    
     // Guice (DI)
     implementation 'com.google.inject:guice:7.0.0'
 
@@ -36,8 +42,14 @@ dependencies {
     implementation 'software.amazon.awssdk:dynamodb:2.20.0' // verificá versión
     implementation 'software.amazon.awssdk:regions:2.20.0'
 
+    // AWS SDK for SES
+    implementation 'software.amazon.awssdk:ses:2.20.0'
+
     // Testing
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
+    testImplementation 'io.javalin:javalin-testtools:6.1.3'
+    testImplementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    testImplementation 'org.assertj:assertj-core:3.24.2'
 
     // logger
     implementation("org.slf4j:slf4j-simple:2.0.16")
