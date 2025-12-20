@@ -1,7 +1,13 @@
 package com.ticketoffice.backend.interfaces.dto;
 
+import java.util.List;
+
 public record CountryConfigDto(
 
-        CountryDto build, java.util.List<CityDto> list, String language, java.util.List<CurrencyDto> currencyDtos,
-        java.util.List<DocumentTypeDto> documentTypeDtos) {
+        CountryDto data,
+        List<CityDto> cities,
+        String language,
+        List<CurrencyDto> availableCurrencies,
+        List<DocumentTypeDto> documentType
+) {
 }

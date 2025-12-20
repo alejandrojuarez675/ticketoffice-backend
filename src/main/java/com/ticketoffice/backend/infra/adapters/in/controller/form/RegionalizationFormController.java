@@ -27,18 +27,18 @@ public class RegionalizationFormController implements CustomController {
         app.get("/api/public/v1/form/country/{countryId}/config", this::getCountryConfig);
     }
 
-    private void getCountryConfig(@NotNull Context ctx) {
+    private void getCountryList(@NotNull Context ctx) {
         List<CountryDto> countries = regionalizationHandler.getCountryList();
         ctx.json(countries);
     }
 
-    private void getCountryList(@NotNull Context ctx) {
+    private void getCountryConfig(@NotNull Context ctx) {
         String countryCode = ctx.pathParam("countryId");
         Optional<CountryConfigDto> countryConfigDto = regionalizationHandler.getCountryConfig(countryCode);
         if (countryConfigDto.isEmpty()) {
             ctx.status(HttpStatus.NOT_FOUND);
             return;
         }
-        ctx.json(countryConfigDto);
+        ctx.json(countryConfigDto.get());
     }
 }
