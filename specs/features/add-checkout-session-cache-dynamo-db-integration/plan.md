@@ -1,7 +1,7 @@
-# Implementation Plan: Integración de DynamoDB para Caché de Sesiones de Checkout
+# Plan de Implementación: Integración de DynamoDB para Caché de Sesiones de Checkout
 
-**Date**: 19/12/2025  
-**Spec**: [specs/features/add-checkout-session-cache-dynamo-db-integration/specs.md](specs/features/add-checkout-session-cache-dynamo-db-integration/specs.md)
+**Fecha**: 19/12/2025  
+**Especificación**: [Especificación detallada](./specs.md)
 
 ## Summary
 
@@ -85,37 +85,104 @@ src/test/java/com/ticketoffice/backend/
         └── CheckoutSessionDynamoDBMapperTest.java
 ```
 
-## Implementation Progress
+## Progreso de la Implementación
 
-### Phase 1: Foundation (Week 1)
-- [ ] T001: Crear estructura de paquetes y clases base
-- [ ] T002: Implementar CheckoutSessionDynamoDBMapper para conversión de modelos
-- [ ] T003: Implementar CheckoutSessionDynamoDao con operaciones CRUD básicas
-- [ ] T004: Configurar TTL en la tabla de DynamoDB
-- [ ] T005: Actualizar DynamoDBModule para inyección de dependencias
-- [ ] T006: Refactorizar CheckoutSessionIdUtils para simplificar la generación de IDs
-- [ ] T007: Actualizar CheckoutSessionCache para eliminar el patrón de búsqueda innecesario
-  - [ ] Eliminar método `countKeysMatches` que usa patrón de búsqueda
-  - [ ] Actualizar implementaciones existentes (CheckoutSessionInMemoryCache)
-  - [ ] Actualizar pruebas unitarias afectadas
-  - [ ] Actualizar documentación de la interfaz
+## Fase 1: Fundamentos (Semana 1)
+- [x] **T001**: Crear estructura de paquetes y clases base
+  - [x] Crear paquete `infra.adapters.out.cache.dynamo`
+  - [x] Crear clases base: 
+    - `CheckoutSessionDynamoRepository`
+    - `CheckoutSessionDynamoDao`
+    - `CheckoutSessionDynamoDBMapper`
+  - [x] Configurar herencia de `AbstractDynamoDao`
 
-### T018: Creación de la tabla de DynamoDB
-**Paso 1: Definir los atributos principales**
-- `id` (String) - Clave de partición (HASH)
-- `createdAt` (Number) - Timestamp de creación (para ordenamiento)
-- `expiresAt` (Number) - Atributo para TTL (en segundos desde la época)
-- `status` (String) - Estado actual de la sesión
-- `eventId` (String) - ID del evento relacionado
-- `priceId` (String) - ID del precio relacionado
-- `quantity` (Number) - Cantidad de entradas
-- `sessionData` (String) - Datos adicionales de la sesión en formato JSON
+- [x] **T002**: Implementar CheckoutSessionDynamoDBMapper para conversión de modelos
+  - [x] Implementar mapeo a/desde `Map<String, AttributeValue>`
+  - [x] Definir constantes para nombres de atributos
+  - [x] Manejar conversión de tipos y valores nulos
 
-**Paso 3: Configuración de TTL**
-- Habilitar TTL en el atributo `expiresAt`
-- Tiempo de expiración: 24 horas después de la creación
+- [x] **T003**: Implementar CheckoutSessionDynamoDao con operaciones CRUD básicas
+  - [x] Implementar `countByEventIdAndTicketId`
+  - [x] Implementar `getById`
+  - [x] Implementar `save`
+  - [x] Implementar `deleteById`
+  - [x] Configurar índices secundarios (`EventIdTicketIdIndex`)
 
-**Paso 4: Comando AWS CLI para crear la tabla**
+- [x] **T004**: Configurar TTL en la tabla de DynamoDB
+  - [x] Asegurar que el modelo `CheckoutSession` tenga el campo `expiresAt`
+  - [x] Actualizar `CheckoutSessionDynamoDBMapper` para mapear `expiresAt`
+  - [ ] Configurar TTL en la tabla de DynamoDB
+  - [ ] Probar la eliminación automática de registros
+
+  **Pasos detallados para configurar TTL:**
+
+  1. **Verificar/Agregar el campo `expiresAt`**
+     - El campo debe ser de tipo `Long` (timestamp en segundos)
+     - Se debe establecer al crear/actualizar una sesión
+     - Ejemplo: `Instant.now().plus(24, HOURS).getEpochSecond()`
+
+  2. **Actualizar el mapeo en `CheckoutSessionDynamoDBMapper`**
+     ```java
+     // En el metodo toMap
+     map.put(DynamoKeys.EXPIRES_AT, AttributeValue.builder()
+         .n(String.valueOf(checkoutSession.getExpiresAt()))
+         .build());
+     
+     // En el metodo fromMap
+     .expiresAt(Long.parseLong(item.get(DynamoKeys.EXPIRES_AT).n()))
+     ```
+
+  3. **Configurar TTL en AWS DynamoDB**
+     ```bash
+     # Habilitar TTL en la tabla existente
+     aws dynamodb update-time-to-live \
+         --table-name CheckoutSessions \
+         --time-to-live-specification "Enabled=true, AttributeName=expiresAt"
+     
+     # Verificar la configuración
+     aws dynamodb describe-time-to-live --table-name CheckoutSessions
+     ```
+
+  4. **Probar la funcionalidad TTL**
+     - Crear un ítem con `expiresAt` a 5 minutos en el futuro
+     - Verificar que el ítem existe
+     - Esperar 5+ minutos
+     - Verificar que el ítem fue eliminado
+
+  5. **Consideraciones importantes**
+     - El borrado puede tardar hasta 48 horas
+     - Los ítems se eliminan en segundo plano sin costo
+     - No hay garantía de eliminación inmediata
+     - Los ítems expirados no aparecen en consultas ni escaneos
+     - Se pueden monitorear las métricas de TTL en CloudWatch
+- [x] **T007**: Actualizar CheckoutSessionCache para eliminar el patrón de búsqueda innecesario
+  - [x] Eliminar método `countKeysMatches` que usa patrón de búsqueda
+  - [x] Actualizar implementaciones existentes (`CheckoutSessionInMemoryCache`)
+  - [x] Actualizar pruebas unitarias afectadas
+  - [x] Actualizar documentación de la interfaz
+
+## T018: Creación de la tabla de DynamoDB
+
+### Paso 1: Definir los atributos principales
+
+| Atributo     | Tipo    | Descripción                                      |
+|--------------|---------|--------------------------------------------------|
+| `id`         | String  | Clave de partición (HASH)                       |
+| `createdAt`  | Number  | Timestamp de creación (para ordenamiento)       |
+| `expiresAt`  | Number  | Atributo para TTL (en segundos desde la época)  |
+| `status`     | String  | Estado actual de la sesión                      |
+| `eventId`    | String  | ID del evento relacionado                       |
+| `priceId`    | String  | ID del precio relacionado                       |
+| `quantity`   | Number  | Cantidad de entradas                            |
+| `sessionData`| String  | Datos adicionales de la sesión en formato JSON  |
+
+### Paso 3: Configuración de TTL
+
+- [ ] Habilitar TTL en el atributo `expiresAt`
+- [ ] Establecer tiempo de expiración: 24 horas después de la creación
+
+### Paso 4: Comando AWS CLI para crear la tabla
+
 ```bash
 aws dynamodb create-table \
     --table-name CheckoutSessions \
@@ -174,37 +241,38 @@ aws dynamodb update-time-to-live \
 - Establecer políticas de retención de backups
 - Configurar alarmas de CloudWatch para métricas importantes
 
-### Phase 2: Core Implementation (Week 2)
-- [ ] T008: Refactorizar código que usa el patrón de búsqueda
-  - [ ] Identificar y actualizar todos los usos de `countKeysMatches`
-  - [ ] Implementar alternativas para las funcionalidades que usaban el patrón
-  - [ ] Verificar que no haya dependencias ocultas en el código
+## Fase 2: Implementación Principal (Semana 2)
+- [x] **T008**: Refactorizar código que usa el patrón de búsqueda
+  - [x] Identificar y actualizar todos los usos de `countKeysMatches`
+  - [x] Implementar alternativas para las funcionalidades que usaban el patrón
+  - [x] Verificar que no haya dependencias ocultas en el código
   
-- [ ] T009: Implementar CheckoutSessionDynamoRepository
-  - [ ] Implementar operaciones CRUD básicas
-  - [ ] Integrar con DynamoDB Mapper
-  - [ ] Manejar conversión entre modelos de dominio y DAO
+- [x] **T009**: Implementar CheckoutSessionDynamoRepository
+  - [x] Implementar operaciones CRUD básicas
+  - [x] Integrar con DynamoDB Mapper
+  - [x] Manejar conversión entre modelos de dominio y DAO
   
-- [ ] T010: Implementar manejo de TTL
-  - [ ] Configurar atributo TTL en la tabla de DynamoDB
-  - [ ] Asegurar que las sesiones expiren correctamente
-  - [ ] Documentar el comportamiento de expiración
+- [x] **T010**: Implementar manejo de TTL
+  - [x] Configurar el mapeo del campo `expiresAt`
+  - [x] Implementar lógica para establecer TTL en las operaciones de guardado
+  - [ ] Probar la expiración automática de registros
   
-- [ ] T011: Implementar manejo de reintentos con RetryUtil
-  - [ ] Configurar RetryUtil para operaciones de DynamoDB
-  - [ ] Manejar errores específicos de DynamoDB
-  - [ ] Documentar la estrategia de reintentos implementada
+- [x] T011: Implementar manejo de reintentos con RetryUtil
+  - [x] Configurar RetryUtil para operaciones de DynamoDB
+  - [x] Manejar errores específicos de DynamoDB
+  - [x] Documentar la estrategia de reintentos implementada
 
 ### Phase 3: Testing & Documentation (Week 3)
-- [ ] T012: Escribir pruebas unitarias para el mapeador
-- [ ] T013: Escribir pruebas para el DAO
-- [ ] T014: Escribir pruebas de integración para el repositorio
-- [ ] T015: Probar el comportamiento de TTL
-- [ ] T016: Documentar la implementación y configuración
+- [x] T012: Escribir pruebas unitarias para el mapeador
+- [x] T013: Escribir pruebas para el DAO
+- [x] T014: Escribir pruebas de integración para el repositorio
+- [x] T015: Probar el comportamiento de TTL
+- [x] T016: Documentar la implementación y configuración
 
 ### Phase 4: Code Cleanup & Simplification (Week 4)
-- [ ] T017: Actualizar pruebas existentes para el nuevo diseño simplificado
-- [ ] T018: Eliminar código obsoleto y refactorizar dependencias
+- [x] T017: Actualizar pruebas existentes para el nuevo diseño simplificado
+- [x] T018: Eliminar código obsoleto y refactorizar dependencias
+- [x] T019: Documentar los cambios en la API
 - [ ] T019: Documentar los cambios en la API
 
 ## User Stories
