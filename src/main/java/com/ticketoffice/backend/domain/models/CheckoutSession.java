@@ -6,16 +6,16 @@ public class CheckoutSession {
 
     private String id;
     private String eventId;
-    private String priceId;
+    private String ticketId;
     private Integer quantity;
     private Double price;
     private Status status;
     private LocalDateTime expirationTime;
 
-    public CheckoutSession(String id, String eventId, String priceId, Integer quantity, Double price, Status status, LocalDateTime expirationTime) {
+    public CheckoutSession(String id, String eventId, String ticketId, Integer quantity, Double price, Status status, LocalDateTime expirationTime) {
         this.id = id;
         this.eventId = eventId;
-        this.priceId = priceId;
+        this.ticketId = ticketId;
         this.quantity = quantity;
         this.price = price;
         this.status = status;
@@ -59,11 +59,11 @@ public class CheckoutSession {
     }
 
     public String getPriceId() {
-        return priceId;
+        return ticketId;
     }
 
     public void setPriceId(String priceId) {
-        this.priceId = priceId;
+        this.ticketId = priceId;
     }
 
     public Status getStatus() {

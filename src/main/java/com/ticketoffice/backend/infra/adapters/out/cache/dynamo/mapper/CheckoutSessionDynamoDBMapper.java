@@ -24,7 +24,7 @@ public class CheckoutSessionDynamoDBMapper {
         public static final String TTL = "ttl";
     }
 
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     private CheckoutSessionDynamoDBMapper() {
         // Private constructor to prevent instantiation
