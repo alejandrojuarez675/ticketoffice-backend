@@ -72,6 +72,7 @@ import com.ticketoffice.backend.domain.usecases.users.GetUserByIdUseCase;
 import com.ticketoffice.backend.domain.usecases.users.IsAnAdminUserUseCase;
 import com.ticketoffice.backend.domain.usecases.users.UpdateOrganizerDataOnUserUseCase;
 import com.ticketoffice.backend.infra.adapters.out.cache.CheckoutSessionInMemoryCache;
+import com.ticketoffice.backend.infra.adapters.out.cache.dynamo.CheckoutSessionDynamoRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.dynamodb.SaleDynamoRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.event.EventDynamoRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.event.EventInMemoryRepository;
@@ -138,15 +139,16 @@ public class AppModule extends AbstractModule {
         }
 
         // repositories
-        bind(CheckoutSessionCache.class).to(CheckoutSessionInMemoryCache.class);
         if (isLocal) {
             bind(EventRepository.class).to(EventInMemoryRepository.class);
             bind(UserRepository.class).to(UserInMemoryRepository.class);
             bind(SaleRepository.class).to(SaleInMemoryRepository.class);
+            bind(CheckoutSessionCache.class).to(CheckoutSessionInMemoryCache.class);
         } else {
             bind(UserRepository.class).to(UserDynamoRepository.class);
             bind(EventRepository.class).to(EventDynamoRepository.class);
             bind(SaleRepository.class).to(SaleDynamoRepository.class);
+            bind(CheckoutSessionCache.class).to(CheckoutSessionDynamoRepository.class);
         }
 
         ObjectMapper objectMapper = new ObjectMapper();

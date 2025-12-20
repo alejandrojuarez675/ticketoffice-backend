@@ -22,8 +22,9 @@ public class CheckoutSessionInMemoryCache implements CheckoutSessionCache {
     }
 
     @Override
-    public Integer countKeysMatches(String pattern) {
+    public Integer countByEventIdAndTicketId(String eventId, String ticketId) {
         removeExpiredSessions();
+        String pattern = CheckoutSessionIdUtils.getCheckoutSessionPattern(eventId, ticketId);
         return data.keySet().stream()
                 .filter(key -> key.matches(pattern))
                 .map(CheckoutSessionIdUtils::getQuantity)

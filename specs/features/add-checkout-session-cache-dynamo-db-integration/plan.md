@@ -121,7 +121,28 @@ aws dynamodb create-table \
     --table-name CheckoutSessions \
     --attribute-definitions \
         AttributeName=id,AttributeType=S \
+        AttributeName=eventId,AttributeType=S \
+        AttributeName=ticketId,AttributeType=S \
     --key-schema \
+        AttributeName=id,KeyType=HASH \
+    --global-secondary-indexes \
+        '[
+            {
+                "IndexName": "EventIdTicketIdIndex",
+                "KeySchema": [
+                    {"AttributeName": "eventId", "KeyType": "HASH"},
+                    {"AttributeName": "ticketId", "KeyType": "RANGE"}
+                ],
+                "Projection": {
+                    "ProjectionType": "ALL"
+                },
+                "ProvisionedThroughput": {
+                    "ReadCapacityUnits": 5,
+                    "WriteCapacityUnits": 5
+                }
+            }
+        ]' \
+    --billing-mode PAY_PER_REQUEST
         AttributeName=id,KeyType=HASH \
     --billing-mode PAY_PER_REQUEST \
     --tags \
