@@ -3,6 +3,7 @@ package com.ticketoffice.backend.infra.config;
 import com.ticketoffice.backend.domain.models.City;
 import com.ticketoffice.backend.domain.models.Country;
 import com.ticketoffice.backend.domain.models.Currency;
+import com.ticketoffice.backend.domain.models.DocumentType;
 import java.util.List;
 
 public enum AvailableSites {
@@ -13,7 +14,7 @@ public enum AvailableSites {
     ///
     /// --------------------------------------------------------------------------------------------------------------
     ARGENTINA(
-            new Country("ARGENTINA", "Argentina"),
+            new Country("ARG", "Argentina"),
             List.of(
                     new City("BUENOS_AIRES", "Buenos Aires"),
                     new City("CORDOBA", "Córdoba"),
@@ -24,6 +25,22 @@ public enum AvailableSites {
             "es",
             List.of(
                     new Currency("ARS", "Pesos", "$")
+            ),
+            List.of(
+                    new DocumentType(
+                            "ARG_DNI",
+                            "DNI",
+                            "Documento Nacional de Identidad",
+                            "xx.xxx.xxx",
+                            "^\\d{8}$"
+                    ),
+                    new DocumentType(
+                            "ARG_CUIT",
+                            "CUIT",
+                            "Código Único de Identificación Tributaria",
+                            "xx-xx.xxx.xxx-x",
+                            "^[\\d]{1,3}\\.?[\\d]{3,3}\\.?[\\d]{3,3}$"
+                    )
             )
     ),
 
@@ -33,7 +50,7 @@ public enum AvailableSites {
     ///
     /// --------------------------------------------------------------------------------------------------------------
     COLOMBIA(
-            new Country("COLOMBIA", "Colombia"),
+            new Country("COL", "Colombia"),
             List.of(
                     new City("BOGOTA", "Bogotá"),
                     new City("MEDELLIN", "Medellín"),
@@ -44,6 +61,15 @@ public enum AvailableSites {
             "es",
             List.of(
                     new Currency("COP", "Pesos", "$")
+            ),
+            List.of(
+                    new DocumentType(
+                            "COL_DNI",
+                            "DNI",
+                            "Documento Nacional de Identidad",
+                            "xx.xxx.xxx",
+                            "^[\\d]{1,3}\\.?[\\d]{3,3}\\.?[\\d]{3,3}$"
+                    )
             )
     );
 
@@ -51,17 +77,20 @@ public enum AvailableSites {
     private final List<City> cities;
     private final String language;
     private final List<Currency> currencies;
+    private final List<DocumentType> documentTypes;
 
     AvailableSites(
             Country country,
             List<City> cities,
             String language,
-            List<Currency> currencies
+            List<Currency> currencies,
+            List<DocumentType> documentTypes
     ) {
         this.country = country;
         this.cities = cities;
         this.language = language;
         this.currencies = currencies;
+        this.documentTypes = documentTypes;
     }
 
     public Country getCountry() {
@@ -78,5 +107,9 @@ public enum AvailableSites {
 
     public List<Currency> getCurrencies() {
         return currencies;
+    }
+
+    public List<DocumentType> getDocumentTypes() {
+        return documentTypes;
     }
 }
