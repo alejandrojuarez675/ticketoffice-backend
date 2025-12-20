@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.ticketoffice.backend.application.dto.TestEmailRequest;
 import com.ticketoffice.backend.domain.models.MailMessage;
 import com.ticketoffice.backend.domain.ports.MailSenderPort;
+import com.ticketoffice.backend.domain.usecases.users.IsAnAdminUserUseCase;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -12,10 +13,15 @@ import org.jetbrains.annotations.NotNull;
 
 public class TestEmailController implements CustomController {
     private final MailSenderPort mailSenderPort;
+    private final IsAnAdminUserUseCase isAnAdminUserUseCase;
 
     @Inject
-    public TestEmailController(MailSenderPort mailSenderPort) {
+    public TestEmailController(
+            MailSenderPort mailSenderPort,
+            IsAnAdminUserUseCase isAnAdminUserUseCase
+    ) {
         this.mailSenderPort = mailSenderPort;
+        this.isAnAdminUserUseCase = isAnAdminUserUseCase;
     }
 
     @Override
@@ -24,6 +30,11 @@ public class TestEmailController implements CustomController {
     }
 
     public void handle(@NotNull Context ctx) {
+        if (!isAnAdminUserUseCase.apply(ctx.sessionAttribute("user"))) {
+            ctx.status(403).json(Map.of("error", "Unauthorized"));
+            return;
+        }
+
         TestEmailRequest request = ctx.bodyAsClass(TestEmailRequest.class);
         
         // Validate required fields

@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface CheckoutSessionCache {
 
-    Integer countKeysMatches(String pattern);
+    Integer countByEventIdAndTicketId(String eventId, String ticketId);
 
     Optional<CheckoutSession> getById(String sessionId);
 

@@ -22,8 +22,9 @@ public class CheckoutSessionInMemoryCache implements CheckoutSessionCache {
     }
 
     @Override
-    public Integer countKeysMatches(String pattern) {
+    public Integer countByEventIdAndTicketId(String eventId, String ticketId) {
         removeExpiredSessions();
+        String pattern = CheckoutSessionIdUtils.getCheckoutSessionPattern(eventId, ticketId);
         return data.keySet().stream()
                 .filter(key -> key.matches(pattern))
                 .map(CheckoutSessionIdUtils::getQuantity)
@@ -32,9 +33,7 @@ public class CheckoutSessionInMemoryCache implements CheckoutSessionCache {
 
     @Override
     public Optional<CheckoutSession> getById(String sessionId) {
-        System.out.println("[Before expering] Getting checkout session by id: " + sessionId + " on " + data);
         removeExpiredSessions();
-        System.out.println("[After expering] Getting checkout session by id: " + sessionId + " on " + data);
         return Optional.ofNullable(data.get(sessionId));
     }
 
@@ -54,6 +53,8 @@ public class CheckoutSessionInMemoryCache implements CheckoutSessionCache {
     public Optional<CheckoutSession> updateStatus(String sessionId, CheckoutSession.Status status) {
         return getById(sessionId)
                 .map(session -> session.getCopyWithUpdatedStatus(status))
-                .map(session -> data.replace(sessionId, session));
+                .map(session -> data.replace(sessionId, session))
+                .map(CheckoutSession::getId)
+                .flatMap(this::getById);
     }
 }

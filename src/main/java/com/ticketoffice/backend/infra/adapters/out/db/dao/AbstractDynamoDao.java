@@ -4,6 +4,7 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeAction;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValueUpdate;
+import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
@@ -137,4 +138,16 @@ public abstract class AbstractDynamoDao {
         return queryByMultipleIndex(indexName, Collections.singletonMap(keyName, keyValue));
     }
 
+    /**
+     * Helper method to delete an item by its ID.
+     *
+     * @param id The ID of the item to delete
+     */
+    public void deleteById(String id) {
+        DeleteItemRequest request = DeleteItemRequest.builder()
+                .tableName(tableName)
+                .key(Collections.singletonMap("id", AttributeValue.builder().s(id).build()))
+                .build();
+        client.deleteItem(request);
+    }
 }
