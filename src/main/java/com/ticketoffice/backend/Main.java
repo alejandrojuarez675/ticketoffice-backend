@@ -12,6 +12,7 @@ import com.ticketoffice.backend.infra.adapters.in.controller.auth.Authentication
 import com.ticketoffice.backend.infra.adapters.in.controller.checkout.CheckoutController;
 import com.ticketoffice.backend.infra.adapters.in.controller.checkout.EventDetailPageController;
 import com.ticketoffice.backend.infra.adapters.in.controller.checkout.SearchPageController;
+import com.ticketoffice.backend.infra.adapters.in.controller.form.RegionalizationFormController;
 import com.ticketoffice.backend.infra.adapters.in.exception.handler.ApiExceptionHandler;
 import com.ticketoffice.backend.infra.config.AppModule;
 import io.javalin.Javalin;
@@ -43,6 +44,7 @@ public class Main {
             injector.getInstance(SalesController.class).registeredRoutes(app);
             injector.getInstance(UserController.class).registeredRoutes(app);
             injector.getInstance(TestEmailController.class).registeredRoutes(app);
+            injector.getInstance(RegionalizationFormController.class).registeredRoutes(app);
 
             // Register exception handler
             app.exception(Exception.class, new ApiExceptionHandler());
