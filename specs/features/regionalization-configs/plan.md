@@ -69,10 +69,7 @@ src/main/java/com/ticketoffice/backend/
 │          └── GetCitiesUseCase.java
 ├── infrastructure/
 │   └── config/
-│       └── RegionalizationConfig.java
-└── interfaces/
-    └── controllers/
-        └── RegionalizationController.java
+│       └── RegionalizationInMemoryRepository.java
 
 src/test/java/com/ticketoffice/backend/
 ├── application/
