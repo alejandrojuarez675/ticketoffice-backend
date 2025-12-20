@@ -21,7 +21,7 @@ import software.amazon.awssdk.services.dynamodb.model.QueryResponse;
  */
 public class CheckoutSessionDynamoDao extends AbstractDynamoDao {
 
-    private static final String TABLE_NAME = "CheckoutSessions";
+    private static final String TABLE_NAME = "CheckoutSessionsTable";
     private static final String EVENT_TICKET_INDEX = "EventIdTicketIdIndex";
 
     /**
