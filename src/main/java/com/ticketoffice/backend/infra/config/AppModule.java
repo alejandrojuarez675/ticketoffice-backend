@@ -23,6 +23,11 @@ import com.ticketoffice.backend.application.usecases.events.UpdateMyEventUseCase
 import com.ticketoffice.backend.application.usecases.organizer.CreateOrganizerUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.organizer.GetOrganizerByUserIdUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.organizer.GetOrganizerByUserUseCaseImpl;
+import com.ticketoffice.backend.application.usecases.regionalization.GetAvailableCountriesUseCaseImpl;
+import com.ticketoffice.backend.application.usecases.regionalization.GetCitiesUseCaseImpl;
+import com.ticketoffice.backend.application.usecases.regionalization.GetCountryConfigUseCaseImpl;
+import com.ticketoffice.backend.application.usecases.regionalization.GetCurrenciesUseCaseImpl;
+import com.ticketoffice.backend.application.usecases.regionalization.GetDocumentTypesUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.sales.CountSalesByEventIdAndTicketIdUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.sales.GetAllSalesByEventIdUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.sales.GetSaleByIdUseCaseImpl;
@@ -38,6 +43,7 @@ import com.ticketoffice.backend.application.usecases.users.UpdateOrganizerDataOn
 import com.ticketoffice.backend.domain.ports.CheckoutSessionCache;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.ports.MailSenderPort;
+import com.ticketoffice.backend.domain.ports.RegionalizationRepository;
 import com.ticketoffice.backend.domain.ports.SaleRepository;
 import com.ticketoffice.backend.domain.ports.UserRepository;
 import com.ticketoffice.backend.domain.usecases.checkout.CreateCheckoutSessionUseCase;
@@ -59,6 +65,11 @@ import com.ticketoffice.backend.domain.usecases.events.UpdateMyEventUseCase;
 import com.ticketoffice.backend.domain.usecases.organizer.CreateOrganizerUseCase;
 import com.ticketoffice.backend.domain.usecases.organizer.GetOrganizerByUserIdUseCase;
 import com.ticketoffice.backend.domain.usecases.organizer.GetOrganizerByUserUseCase;
+import com.ticketoffice.backend.domain.usecases.regionalization.GetAvailableCountriesUseCase;
+import com.ticketoffice.backend.domain.usecases.regionalization.GetCitiesUseCase;
+import com.ticketoffice.backend.domain.usecases.regionalization.GetCountryConfigUseCase;
+import com.ticketoffice.backend.domain.usecases.regionalization.GetCurrenciesUseCase;
+import com.ticketoffice.backend.domain.usecases.regionalization.GetDocumentTypesUseCase;
 import com.ticketoffice.backend.domain.usecases.sales.CountSalesByEventIdAndTicketIdUseCase;
 import com.ticketoffice.backend.domain.usecases.sales.GetAllSalesByEventIdUseCase;
 import com.ticketoffice.backend.domain.usecases.sales.GetSaleByIdUseCase;
@@ -82,6 +93,7 @@ import com.ticketoffice.backend.infra.adapters.out.db.repository.user.UserInMemo
 import com.ticketoffice.backend.infra.adapters.out.emails.LogMailSenderAdapter;
 import com.ticketoffice.backend.infra.adapters.out.emails.SesMailSenderAdapter;
 import com.ticketoffice.backend.infra.adapters.in.controller.TestEmailController;
+import com.ticketoffice.backend.infrastructure.config.RegionalizationInMemoryRepository;
 
 public class AppModule extends AbstractModule {
 
@@ -122,6 +134,11 @@ public class AppModule extends AbstractModule {
         bind(GetUserByIdUseCase.class).to(GetUserByIdUseCaseImpl.class);
         bind(IsAnAdminUserUseCase.class).to(IsAnAdminUserUseCaseImpl.class);
         bind(UpdateOrganizerDataOnUserUseCase.class).to(UpdateOrganizerDataOnUserUseCaseImpl.class);
+        bind(GetAvailableCountriesUseCase.class).to(GetAvailableCountriesUseCaseImpl.class);
+        bind(GetCitiesUseCase.class).to(GetCitiesUseCaseImpl.class);
+        bind(GetCurrenciesUseCase.class).to(GetCurrenciesUseCaseImpl.class);
+        bind(GetDocumentTypesUseCase.class).to(GetDocumentTypesUseCaseImpl.class);
+        bind(GetCountryConfigUseCase.class).to(GetCountryConfigUseCaseImpl.class);
 
         // TODO review user usecases
         bind(GetAuthenticatedUserUseCase.class).to(GetAuthenticatedUserUseCaseImpl.class);
@@ -150,6 +167,8 @@ public class AppModule extends AbstractModule {
             bind(SaleRepository.class).to(SaleDynamoRepository.class);
             bind(CheckoutSessionCache.class).to(CheckoutSessionDynamoRepository.class);
         }
+
+        bind(RegionalizationRepository.class).to(RegionalizationInMemoryRepository.class);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
