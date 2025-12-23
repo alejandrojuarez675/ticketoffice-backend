@@ -1,11 +1,10 @@
-package com.ticketoffice.backend.infrastructure.config;
+package com.ticketoffice.backend.infra.config;
 
 import com.ticketoffice.backend.domain.models.City;
 import com.ticketoffice.backend.domain.models.Country;
 import com.ticketoffice.backend.domain.models.Currency;
 import com.ticketoffice.backend.domain.models.DocumentType;
 import com.ticketoffice.backend.domain.ports.RegionalizationRepository;
-import com.ticketoffice.backend.infra.config.AvailableSites;
 
 import java.util.List;
 import java.util.Optional;

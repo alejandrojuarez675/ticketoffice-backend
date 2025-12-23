@@ -1,14 +1,16 @@
-package com.ticketoffice.backend.interfaces.dto;
+package com.ticketoffice.backend.infra.adapters.in.dto.response.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class CityDto {
+public class CurrencyDto {
     private final String code;
     private final String name;
+    private final String symbol;
     
-    private CityDto(Builder builder) {
+    private CurrencyDto(Builder builder) {
         this.code = builder.code;
         this.name = builder.name;
+        this.symbol = builder.symbol;
     }
     
     @JsonProperty("code")
@@ -21,6 +23,11 @@ public class CityDto {
         return name;
     }
     
+    @JsonProperty("symbol")
+    public String getSymbol() {
+        return symbol;
+    }
+    
     public static Builder builder() {
         return new Builder();
     }
@@ -28,6 +35,7 @@ public class CityDto {
     public static class Builder {
         private String code;
         private String name;
+        private String symbol;
         
         public Builder code(String code) {
             this.code = code;
@@ -39,8 +47,13 @@ public class CityDto {
             return this;
         }
         
-        public CityDto build() {
-            return new CityDto(this);
+        public Builder symbol(String symbol) {
+            this.symbol = symbol;
+            return this;
+        }
+        
+        public CurrencyDto build() {
+            return new CurrencyDto(this);
         }
     }
 }

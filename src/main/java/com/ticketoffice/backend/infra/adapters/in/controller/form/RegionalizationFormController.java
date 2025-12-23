@@ -2,8 +2,8 @@ package com.ticketoffice.backend.infra.adapters.in.controller.form;
 
 import com.ticketoffice.backend.infra.adapters.in.controller.CustomController;
 import com.ticketoffice.backend.infra.adapters.in.handlers.RegionalizationHandler;
-import com.ticketoffice.backend.interfaces.dto.CountryConfigDto;
-import com.ticketoffice.backend.interfaces.dto.CountryDto;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.config.CountryConfigDto;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.config.CountryDto;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;

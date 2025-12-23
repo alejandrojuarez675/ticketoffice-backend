@@ -93,7 +93,6 @@ import com.ticketoffice.backend.infra.adapters.out.db.repository.user.UserInMemo
 import com.ticketoffice.backend.infra.adapters.out.emails.LogMailSenderAdapter;
 import com.ticketoffice.backend.infra.adapters.out.emails.SesMailSenderAdapter;
 import com.ticketoffice.backend.infra.adapters.in.controller.TestEmailController;
-import com.ticketoffice.backend.infrastructure.config.RegionalizationInMemoryRepository;
 
 public class AppModule extends AbstractModule {
 

@@ -1,12 +1,12 @@
-package com.ticketoffice.backend.interfaces.dto;
+package com.ticketoffice.backend.infra.adapters.in.dto.response.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class CountryDto {
+public class CityDto {
     private final String code;
     private final String name;
     
-    private CountryDto(Builder builder) {
+    private CityDto(Builder builder) {
         this.code = builder.code;
         this.name = builder.name;
     }
@@ -39,8 +39,8 @@ public class CountryDto {
             return this;
         }
         
-        public CountryDto build() {
-            return new CountryDto(this);
+        public CityDto build() {
+            return new CityDto(this);
         }
     }
 }

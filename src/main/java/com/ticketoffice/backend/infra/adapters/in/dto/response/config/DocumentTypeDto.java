@@ -1,4 +1,4 @@
-package com.ticketoffice.backend.interfaces.dto;
+package com.ticketoffice.backend.infra.adapters.in.dto.response.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

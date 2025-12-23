@@ -2,11 +2,11 @@ package com.ticketoffice.backend.infra.adapters.in.handlers;
 
 import com.ticketoffice.backend.domain.usecases.regionalization.GetAvailableCountriesUseCase;
 import com.ticketoffice.backend.domain.usecases.regionalization.GetCountryConfigUseCase;
-import com.ticketoffice.backend.interfaces.dto.CityDto;
-import com.ticketoffice.backend.interfaces.dto.CountryConfigDto;
-import com.ticketoffice.backend.interfaces.dto.CountryDto;
-import com.ticketoffice.backend.interfaces.dto.CurrencyDto;
-import com.ticketoffice.backend.interfaces.dto.DocumentTypeDto;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.config.CityDto;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.config.CountryConfigDto;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.config.CountryDto;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.config.CurrencyDto;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.config.DocumentTypeDto;
 import jakarta.inject.Inject;
 import java.util.List;
 import java.util.Optional;
