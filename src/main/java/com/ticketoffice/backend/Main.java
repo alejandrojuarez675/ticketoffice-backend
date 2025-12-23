@@ -27,9 +27,7 @@ public class Main {
             Injector injector = Guice.createInjector(new AppModule());
             Javalin app = Javalin.create(config -> {
                 config.http.defaultContentType = "application/json";
-                config.registerPlugin(
-                        new CorsPlugin(cors -> cors.addRule(CorsPluginConfig.CorsRule::anyHost))
-                );
+                config.registerPlugin(new CorsPlugin(cors -> cors.addRule(CorsPluginConfig.CorsRule::anyHost)));
             });
 
             // Public
