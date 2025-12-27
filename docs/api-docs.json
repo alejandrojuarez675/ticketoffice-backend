@@ -217,8 +217,15 @@
           }
         },
         "responses": {
-          "204": {
-            "description": "No Content"
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CongratsCheckout"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
@@ -858,6 +865,20 @@
           "token",
           "expiresIn"
         ]
+      },
+      "CongratsCheckout": {
+        "type": "object",
+        "properties": {
+          "qrCodes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "description": "URL to the QR code image",
+              "example": "https://www.tuentradaya.com/admin/events/cd85b222-2adf-414d-aa26-6a0fb7c87beb/validate?sale-id=327a6f02-ac6f-49ed-b403-5ccdf9600d88"
+            }
+          }
+        }
       },
       "CreateSessionRequest": {
         "type": "object",
