@@ -13,6 +13,7 @@ import com.ticketoffice.backend.domain.usecases.checkout.RegisterPurchaseUseCase
 import com.ticketoffice.backend.infra.adapters.in.dto.mapper.TicketMapper;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.BuyTicketsRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.CreateSessionRequest;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.CongratsCheckout;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.SessionCreatedResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 
@@ -53,7 +54,7 @@ public class CheckoutHandler {
         );
     }
 
-    public void buyTickets(String sessionId, BuyTicketsRequest request) throws BadRequestException {
+    public CongratsCheckout buyTickets(String sessionId, BuyTicketsRequest request) throws BadRequestException {
         CheckoutSession checkoutSession = getCheckoutSessionUseCase.apply(sessionId)
                 .orElseThrow(() -> new BadRequestException("Session not found"));
 
@@ -67,6 +68,6 @@ public class CheckoutHandler {
 
         Sale sale = TicketMapper.getTicketFromBuyTickets(checkoutSession, request);
 
-        registerPurchaseUseCase.accept(sessionId, sale);
+        return registerPurchaseUseCase.apply(sessionId, sale);
     }
 }
