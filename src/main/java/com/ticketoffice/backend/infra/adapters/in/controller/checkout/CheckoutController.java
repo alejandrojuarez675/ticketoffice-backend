@@ -6,11 +6,11 @@ import com.ticketoffice.backend.infra.adapters.in.dto.request.BuyTicketsRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.CreateSessionRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.validators.BuyTicketsRequestValidator;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.validators.CreateSessionRequestValidator;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.CongratsCheckout;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.SessionCreatedResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
 import com.ticketoffice.backend.infra.adapters.in.handlers.CheckoutHandler;
 import io.javalin.Javalin;
-import io.javalin.http.HttpStatus;
 
 public class CheckoutController implements CustomController {
 
@@ -31,8 +31,7 @@ public class CheckoutController implements CustomController {
         app.post(PATH + "/session/{sessionId}/buy", ctx -> {
             String id = ctx.pathParam("sessionId");
             var body = ctx.bodyAsClass(BuyTicketsRequest.class);
-            buyTicket(id, body);
-            ctx.status(HttpStatus.NO_CONTENT);
+            ctx.json(buyTicket(id, body));
         });
     }
 
@@ -42,8 +41,8 @@ public class CheckoutController implements CustomController {
         return checkoutHandler.createSession(body);
     }
 
-    public void buyTicket(String sessionId, BuyTicketsRequest request) throws BadRequestException {
+    public CongratsCheckout buyTicket(String sessionId, BuyTicketsRequest request) throws BadRequestException {
         new BuyTicketsRequestValidator().validate(request);
-        checkoutHandler.buyTickets(sessionId, request);
+        return checkoutHandler.buyTickets(sessionId, request);
     }
 }

@@ -2,7 +2,6 @@ package com.ticketoffice.backend.application.usecases.emails;
 
 import com.google.inject.Inject;
 import com.ticketoffice.backend.application.utils.QrUtils;
-import com.ticketoffice.backend.domain.constants.EmailConstants;
 import com.ticketoffice.backend.domain.enums.MailTemplates;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.MailMessage;
@@ -33,13 +32,8 @@ public class SendTicketEmailToBuyerUseCaseImpl implements SendTicketEmailToBuyer
                         "event-date", event.date().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                         "event-location", event.location().name(),
                         "sale-id", sale.id(),
-                        "qr-code", QrUtils.generateSvgOfQrCode(getUrlToConfirmTicket(event.id(), sale.id()))
+                        "qr-code", QrUtils.generateSvgOfQrCodeWithTicket(event.id(), sale.id())
                 )
         )).join();
-    }
-
-    private String getUrlToConfirmTicket(String eventId, String saleId) {
-        return EmailConstants.FRONTEND_URL
-                + EmailConstants.PATH_TO_CONFIRMATION_PAGE.replace("{eventId}", eventId).replace("{saleId}", saleId);
     }
 }

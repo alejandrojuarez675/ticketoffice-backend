@@ -1,6 +1,7 @@
 package com.ticketoffice.backend.application.usecases.checkout;
 
 import com.google.inject.Inject;
+import com.ticketoffice.backend.application.utils.QrUtils;
 import com.ticketoffice.backend.domain.exception.ResourceDoesntExistException;
 import com.ticketoffice.backend.domain.models.Event;
 import com.ticketoffice.backend.domain.models.Sale;
@@ -12,6 +13,7 @@ import com.ticketoffice.backend.domain.usecases.emails.SendConfirmationEmailToBu
 import com.ticketoffice.backend.domain.usecases.emails.SendTicketEmailToBuyerUseCase;
 import com.ticketoffice.backend.domain.usecases.events.GetEventUseCase;
 import com.ticketoffice.backend.domain.usecases.tickets.GetAvailableTicketStockIdUseCase;
+import com.ticketoffice.backend.infra.adapters.in.dto.response.CongratsCheckout;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -43,7 +45,7 @@ public class RegisterPurchaseUseCaseImpl implements RegisterPurchaseUseCase {
     }
 
     @Override
-    public void accept(String sessionId, Sale sale) {
+    public CongratsCheckout apply(String sessionId, Sale sale) {
         Event event = getEventUseCase.apply(sale.eventId())
                 .orElseThrow(() -> new RuntimeException("Event cannot be found"));
 
@@ -63,7 +65,7 @@ public class RegisterPurchaseUseCaseImpl implements RegisterPurchaseUseCase {
                 .map(Ticket::value)
                 .orElseThrow(() -> new RuntimeException("Ticket cannot be found"));
 
-        sale.buyer()
+        var qrCodes = sale.buyer()
                 .stream()
                 .map(buyer -> new Sale(
                         UUID.randomUUID().toString(),
@@ -78,9 +80,15 @@ public class RegisterPurchaseUseCaseImpl implements RegisterPurchaseUseCase {
                 .map(saleRepository::save)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .forEach(t -> sendTicketEmailToBuyerUseCase.accept(t, event));
+                .map(t -> {
+                    sendTicketEmailToBuyerUseCase.accept(t, event);
+                    return QrUtils.getUrlToConfirmTicket(event.id(), t.id());
+                })
+                .toList();
 
         sendConfirmationEmailToBuyerUseCase.accept(sale, event);
         deleteCheckoutSessionUseCase.accept(sessionId);
+
+        return new CongratsCheckout(qrCodes);
     }
 }
