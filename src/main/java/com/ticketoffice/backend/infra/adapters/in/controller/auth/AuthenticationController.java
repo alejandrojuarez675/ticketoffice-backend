@@ -3,6 +3,7 @@ package com.ticketoffice.backend.infra.adapters.in.controller.auth;
 import com.google.inject.Inject;
 import com.ticketoffice.backend.infra.adapters.in.controller.CustomController;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.ForgotPasswordRequest;
+import com.ticketoffice.backend.infra.adapters.in.dto.request.ResetPasswordWithTokenRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.UserLoginRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.UserSignupRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.LoginResponse;
@@ -45,6 +46,15 @@ public class AuthenticationController implements CustomController {
         app.post(PATH + "/forgot-password", ctx -> {
             var body = ctx.bodyAsClass(ForgotPasswordRequest.class);
             ctx.json(forgotPassword(body));
+        });
+        app.post(PATH + "/reset-password-with-token", ctx -> {
+            var body = ctx.bodyAsClass(ResetPasswordWithTokenRequest.class);
+            boolean success = forgotPasswordHandler.resetPassword(body);
+            if (success) {
+                ctx.json(Map.of("msg", "The password had been updated correctly"));
+            } else {
+                ctx.status(404).json(Map.of("msg", "The token is invalid or expired"));
+            }
         });
     }
 

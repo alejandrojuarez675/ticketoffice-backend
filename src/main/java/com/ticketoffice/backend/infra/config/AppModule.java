@@ -25,6 +25,8 @@ import com.ticketoffice.backend.application.usecases.organizer.GetOrganizerByUse
 import com.ticketoffice.backend.application.usecases.organizer.GetOrganizerByUserUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.password.ForgotPasswordUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.password.GeneratePasswordResetTokenUseCaseImpl;
+import com.ticketoffice.backend.application.usecases.password.ResetPasswordWithTokenUseCaseImpl;
+import com.ticketoffice.backend.application.usecases.password.UpdatePasswordUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.regionalization.GetAvailableCountriesUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.regionalization.GetCitiesUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.regionalization.GetCountryConfigUseCaseImpl;
@@ -70,6 +72,8 @@ import com.ticketoffice.backend.domain.usecases.organizer.GetOrganizerByUserIdUs
 import com.ticketoffice.backend.domain.usecases.organizer.GetOrganizerByUserUseCase;
 import com.ticketoffice.backend.domain.usecases.password.ForgotPasswordUseCase;
 import com.ticketoffice.backend.domain.usecases.password.GeneratePasswordResetTokenUseCase;
+import com.ticketoffice.backend.domain.usecases.password.ResetPasswordWithTokenUseCase;
+import com.ticketoffice.backend.domain.usecases.password.UpdatePasswordUseCase;
 import com.ticketoffice.backend.domain.usecases.regionalization.GetAvailableCountriesUseCase;
 import com.ticketoffice.backend.domain.usecases.regionalization.GetCitiesUseCase;
 import com.ticketoffice.backend.domain.usecases.regionalization.GetCountryConfigUseCase;
@@ -146,6 +150,8 @@ public class AppModule extends AbstractModule {
         bind(GetCountryConfigUseCase.class).to(GetCountryConfigUseCaseImpl.class);
         bind(ForgotPasswordUseCase.class).to(ForgotPasswordUseCaseImpl.class);
         bind(GeneratePasswordResetTokenUseCase.class).to(GeneratePasswordResetTokenUseCaseImpl.class);
+        bind(ResetPasswordWithTokenUseCase.class).to(ResetPasswordWithTokenUseCaseImpl.class);
+        bind(UpdatePasswordUseCase.class).to(UpdatePasswordUseCaseImpl.class);
 
         // TODO review user usecases
         bind(GetAuthenticatedUserUseCase.class).to(GetAuthenticatedUserUseCaseImpl.class);
