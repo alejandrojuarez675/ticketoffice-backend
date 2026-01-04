@@ -4,6 +4,7 @@ import com.ticketoffice.backend.domain.models.Buyer;
 import com.ticketoffice.backend.domain.models.Sale;
 import com.ticketoffice.backend.infra.adapters.out.db.dao.SaleDynamoDao;
 import com.ticketoffice.backend.infra.adapters.out.db.mapper.SaleDynamoDBMapper;
+import com.ticketoffice.backend.infra.adapters.out.db.repository.sale.SaleDynamoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

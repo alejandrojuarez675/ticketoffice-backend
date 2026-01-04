@@ -38,7 +38,7 @@ public class ForgotPasswordUseCaseImpl implements ForgotPasswordUseCase {
                 passwordResetToken.email(),
                 Map.of(
                         "username", passwordResetToken.username(),
-                        "url", generateUrlToForgotPassword(passwordResetToken.tokenHash())
+                        "reset-url", generateUrlToForgotPassword(passwordResetToken.tokenHash())
                 ));
 
         mailSenderPort.sendEmail(mailMessage);
