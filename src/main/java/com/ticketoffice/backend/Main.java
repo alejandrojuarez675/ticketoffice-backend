@@ -3,7 +3,7 @@ package com.ticketoffice.backend;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.ticketoffice.backend.infra.adapters.in.controller.PingController;
-import com.ticketoffice.backend.infra.adapters.in.controller.TestEmailController;
+import com.ticketoffice.backend.infra.adapters.in.controller.admin.TestEmailController;
 import com.ticketoffice.backend.infra.adapters.in.controller.admin.EventsController;
 import com.ticketoffice.backend.infra.adapters.in.controller.admin.OrganizerController;
 import com.ticketoffice.backend.infra.adapters.in.controller.admin.SalesController;
@@ -12,6 +12,7 @@ import com.ticketoffice.backend.infra.adapters.in.controller.auth.Authentication
 import com.ticketoffice.backend.infra.adapters.in.controller.checkout.CheckoutController;
 import com.ticketoffice.backend.infra.adapters.in.controller.checkout.EventDetailPageController;
 import com.ticketoffice.backend.infra.adapters.in.controller.checkout.SearchPageController;
+import com.ticketoffice.backend.infra.adapters.in.controller.form.ContactUsController;
 import com.ticketoffice.backend.infra.adapters.in.controller.form.RegionalizationFormController;
 import com.ticketoffice.backend.infra.adapters.in.exception.handler.ApiExceptionHandler;
 import com.ticketoffice.backend.infra.config.AppModule;
@@ -46,6 +47,7 @@ public class Main {
             injector.getInstance(UserController.class).registeredRoutes(app);
             injector.getInstance(TestEmailController.class).registeredRoutes(app);
             injector.getInstance(RegionalizationFormController.class).registeredRoutes(app);
+            injector.getInstance(ContactUsController.class).registeredRoutes(app);
 
             // Register exception handler
             app.exception(Exception.class, new ApiExceptionHandler());
