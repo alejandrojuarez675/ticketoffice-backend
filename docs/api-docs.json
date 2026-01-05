@@ -33,9 +33,39 @@
     },
     {
       "name": "Regionalization"
+    },
+    {
+      "name": "Forms"
     }
   ],
   "paths": {
+    "/api/public/v1/form/contact-us": {
+      "post": {
+        "tags": ["Forms"],
+        "summary": "Submit a contact form",
+        "description": "Allows users to submit a contact form with their message, which will be sent to the administrators.",
+        "operationId": "submitContactForm",
+        "requestBody": {
+          "description": "Contact form data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactUsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Contact form submitted successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/ping": {
       "get": {
         "tags": [
@@ -923,6 +953,29 @@
       }
     },
     "schemas": {
+      "ContactUsRequest": {
+        "type": "object",
+        "required": ["name", "email", "message", "subject"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Full name of the person contacting"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email address for response"
+          },
+          "message": {
+            "type": "string",
+            "description": "The main content of the contact message"
+          },
+          "subject": {
+            "type": "string",
+            "description": "Subject of the contact message"
+          }
+        }
+      },
       "UserSignupRequest": {
         "type": "object",
         "properties": {
