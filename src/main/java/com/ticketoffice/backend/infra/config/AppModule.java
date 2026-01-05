@@ -93,6 +93,7 @@ import com.ticketoffice.backend.domain.usecases.users.IsAnAdminUserUseCase;
 import com.ticketoffice.backend.domain.usecases.users.UpdateOrganizerDataOnUserUseCase;
 import com.ticketoffice.backend.infra.adapters.out.cache.CheckoutSessionInMemoryCache;
 import com.ticketoffice.backend.infra.adapters.out.cache.dynamo.CheckoutSessionDynamoRepository;
+import com.ticketoffice.backend.infra.adapters.out.db.repository.passwordresettoken.PasswordResetTokenDynamoRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.sale.SaleDynamoRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.event.EventDynamoRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.event.EventInMemoryRepository;
@@ -174,13 +175,14 @@ public class AppModule extends AbstractModule {
             bind(UserRepository.class).to(UserInMemoryRepository.class);
             bind(SaleRepository.class).to(SaleInMemoryRepository.class);
             bind(CheckoutSessionCache.class).to(CheckoutSessionInMemoryCache.class);
+            bind(PasswordResetTokenRepository.class).to(PasswordResetTokenInMemoryRepository.class);
         } else {
             bind(UserRepository.class).to(UserDynamoRepository.class);
             bind(EventRepository.class).to(EventDynamoRepository.class);
             bind(SaleRepository.class).to(SaleDynamoRepository.class);
             bind(CheckoutSessionCache.class).to(CheckoutSessionDynamoRepository.class);
+            bind(PasswordResetTokenRepository.class).to(PasswordResetTokenDynamoRepository.class);
         }
-        bind(PasswordResetTokenRepository.class).to(PasswordResetTokenInMemoryRepository.class);
 
         bind(RegionalizationRepository.class).to(RegionalizationInMemoryRepository.class);
 
