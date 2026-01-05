@@ -20,6 +20,7 @@ import com.ticketoffice.backend.application.usecases.events.GetEventsByParamsUse
 import com.ticketoffice.backend.application.usecases.events.GetMyEventUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.events.GetSimilarEventsToAnEventUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.events.UpdateMyEventUseCaseImpl;
+import com.ticketoffice.backend.application.usecases.notifications.NotificateToAdminUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.organizer.CreateOrganizerUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.organizer.GetOrganizerByUserIdUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.organizer.GetOrganizerByUserUseCaseImpl;
@@ -67,6 +68,7 @@ import com.ticketoffice.backend.domain.usecases.events.GetEventsByParamsUseCase;
 import com.ticketoffice.backend.domain.usecases.events.GetMyEventUseCase;
 import com.ticketoffice.backend.domain.usecases.events.GetSimilarEventsToAnEventUseCase;
 import com.ticketoffice.backend.domain.usecases.events.UpdateMyEventUseCase;
+import com.ticketoffice.backend.domain.usecases.notifications.NotificateToAdminUseCase;
 import com.ticketoffice.backend.domain.usecases.organizer.CreateOrganizerUseCase;
 import com.ticketoffice.backend.domain.usecases.organizer.GetOrganizerByUserIdUseCase;
 import com.ticketoffice.backend.domain.usecases.organizer.GetOrganizerByUserUseCase;
@@ -103,7 +105,7 @@ import com.ticketoffice.backend.infra.adapters.out.db.repository.user.UserDynamo
 import com.ticketoffice.backend.infra.adapters.out.db.repository.user.UserInMemoryRepository;
 import com.ticketoffice.backend.infra.adapters.out.emails.LogMailSenderAdapter;
 import com.ticketoffice.backend.infra.adapters.out.emails.SesMailSenderAdapter;
-import com.ticketoffice.backend.infra.adapters.in.controller.TestEmailController;
+import com.ticketoffice.backend.infra.adapters.in.controller.admin.TestEmailController;
 
 public class AppModule extends AbstractModule {
 
@@ -153,6 +155,7 @@ public class AppModule extends AbstractModule {
         bind(GeneratePasswordResetTokenUseCase.class).to(GeneratePasswordResetTokenUseCaseImpl.class);
         bind(ResetPasswordWithTokenUseCase.class).to(ResetPasswordWithTokenUseCaseImpl.class);
         bind(UpdatePasswordUseCase.class).to(UpdatePasswordUseCaseImpl.class);
+        bind(NotificateToAdminUseCase.class).to(NotificateToAdminUseCaseImpl.class);
 
         // TODO review user usecases
         bind(GetAuthenticatedUserUseCase.class).to(GetAuthenticatedUserUseCaseImpl.class);

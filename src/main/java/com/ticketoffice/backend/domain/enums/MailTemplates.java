@@ -5,7 +5,8 @@ public enum MailTemplates {
     SEND_TICKET("send-ticket"),
     WELCOME_USER("welcome-user"),
     FORGOT_PASSWORD("forgot-password"),
-    PASSWORD_UPDATED("password-updated");
+    PASSWORD_UPDATED("password-updated"),
+    NOTIFICATION_TO_ADMIN("notification-to-admin");
 
     private final String template;
 

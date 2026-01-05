@@ -1,10 +1,11 @@
-package com.ticketoffice.backend.infra.adapters.in.controller;
+package com.ticketoffice.backend.infra.adapters.in.controller.admin;
 
 import com.google.inject.Inject;
 import com.ticketoffice.backend.application.dto.TestEmailRequest;
 import com.ticketoffice.backend.domain.models.MailMessage;
 import com.ticketoffice.backend.domain.ports.MailSenderPort;
 import com.ticketoffice.backend.domain.usecases.users.IsAnAdminUserUseCase;
+import com.ticketoffice.backend.infra.adapters.in.controller.CustomController;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 

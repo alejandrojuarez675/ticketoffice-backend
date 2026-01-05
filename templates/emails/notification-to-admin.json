@@ -1,0 +1,8 @@
+{
+  "Template": {
+    "TemplateName": "notification-to-admin",
+    "SubjectPart": "[TuEntradaYa][New Notification]{{subject}}",
+    "HtmlPart": "{{msg}}",
+    "TextPart": "{{msg}}"
+  }
+}
