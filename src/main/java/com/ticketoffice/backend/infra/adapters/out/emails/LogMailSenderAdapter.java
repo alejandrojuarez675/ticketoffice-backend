@@ -13,6 +13,7 @@ public class LogMailSenderAdapter implements MailSenderPort {
     @Override
     public CompletableFuture<Void> sendEmail(MailMessage mailMessage) {
         logger.info("Sending email to {} with template {}", mailMessage.getTo(), mailMessage.getTemplateName());
+        logger.info("The data are: {}", mailMessage.getTemplateData());
         return CompletableFuture.completedFuture(null);
     }
 }

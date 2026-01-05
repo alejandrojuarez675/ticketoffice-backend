@@ -1,4 +1,4 @@
-package com.ticketoffice.backend.infra.adapters.out.db.repository.dynamodb;
+package com.ticketoffice.backend.infra.adapters.out.db.repository.sale;
 
 import com.ticketoffice.backend.domain.models.Sale;
 import com.ticketoffice.backend.domain.ports.SaleRepository;

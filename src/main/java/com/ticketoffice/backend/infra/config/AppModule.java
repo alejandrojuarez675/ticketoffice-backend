@@ -23,6 +23,10 @@ import com.ticketoffice.backend.application.usecases.events.UpdateMyEventUseCase
 import com.ticketoffice.backend.application.usecases.organizer.CreateOrganizerUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.organizer.GetOrganizerByUserIdUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.organizer.GetOrganizerByUserUseCaseImpl;
+import com.ticketoffice.backend.application.usecases.password.ForgotPasswordUseCaseImpl;
+import com.ticketoffice.backend.application.usecases.password.GeneratePasswordResetTokenUseCaseImpl;
+import com.ticketoffice.backend.application.usecases.password.ResetPasswordWithTokenUseCaseImpl;
+import com.ticketoffice.backend.application.usecases.password.UpdatePasswordUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.regionalization.GetAvailableCountriesUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.regionalization.GetCitiesUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.regionalization.GetCountryConfigUseCaseImpl;
@@ -43,6 +47,7 @@ import com.ticketoffice.backend.application.usecases.users.UpdateOrganizerDataOn
 import com.ticketoffice.backend.domain.ports.CheckoutSessionCache;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.ports.MailSenderPort;
+import com.ticketoffice.backend.domain.ports.PasswordResetTokenRepository;
 import com.ticketoffice.backend.domain.ports.RegionalizationRepository;
 import com.ticketoffice.backend.domain.ports.SaleRepository;
 import com.ticketoffice.backend.domain.ports.UserRepository;
@@ -65,6 +70,10 @@ import com.ticketoffice.backend.domain.usecases.events.UpdateMyEventUseCase;
 import com.ticketoffice.backend.domain.usecases.organizer.CreateOrganizerUseCase;
 import com.ticketoffice.backend.domain.usecases.organizer.GetOrganizerByUserIdUseCase;
 import com.ticketoffice.backend.domain.usecases.organizer.GetOrganizerByUserUseCase;
+import com.ticketoffice.backend.domain.usecases.password.ForgotPasswordUseCase;
+import com.ticketoffice.backend.domain.usecases.password.GeneratePasswordResetTokenUseCase;
+import com.ticketoffice.backend.domain.usecases.password.ResetPasswordWithTokenUseCase;
+import com.ticketoffice.backend.domain.usecases.password.UpdatePasswordUseCase;
 import com.ticketoffice.backend.domain.usecases.regionalization.GetAvailableCountriesUseCase;
 import com.ticketoffice.backend.domain.usecases.regionalization.GetCitiesUseCase;
 import com.ticketoffice.backend.domain.usecases.regionalization.GetCountryConfigUseCase;
@@ -84,10 +93,12 @@ import com.ticketoffice.backend.domain.usecases.users.IsAnAdminUserUseCase;
 import com.ticketoffice.backend.domain.usecases.users.UpdateOrganizerDataOnUserUseCase;
 import com.ticketoffice.backend.infra.adapters.out.cache.CheckoutSessionInMemoryCache;
 import com.ticketoffice.backend.infra.adapters.out.cache.dynamo.CheckoutSessionDynamoRepository;
-import com.ticketoffice.backend.infra.adapters.out.db.repository.dynamodb.SaleDynamoRepository;
+import com.ticketoffice.backend.infra.adapters.out.db.repository.passwordresettoken.PasswordResetTokenDynamoRepository;
+import com.ticketoffice.backend.infra.adapters.out.db.repository.sale.SaleDynamoRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.event.EventDynamoRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.event.EventInMemoryRepository;
-import com.ticketoffice.backend.infra.adapters.out.db.repository.SaleInMemoryRepository;
+import com.ticketoffice.backend.infra.adapters.out.db.repository.sale.SaleInMemoryRepository;
+import com.ticketoffice.backend.infra.adapters.out.db.repository.password.PasswordResetTokenInMemoryRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.user.UserDynamoRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.user.UserInMemoryRepository;
 import com.ticketoffice.backend.infra.adapters.out.emails.LogMailSenderAdapter;
@@ -138,6 +149,10 @@ public class AppModule extends AbstractModule {
         bind(GetCurrenciesUseCase.class).to(GetCurrenciesUseCaseImpl.class);
         bind(GetDocumentTypesUseCase.class).to(GetDocumentTypesUseCaseImpl.class);
         bind(GetCountryConfigUseCase.class).to(GetCountryConfigUseCaseImpl.class);
+        bind(ForgotPasswordUseCase.class).to(ForgotPasswordUseCaseImpl.class);
+        bind(GeneratePasswordResetTokenUseCase.class).to(GeneratePasswordResetTokenUseCaseImpl.class);
+        bind(ResetPasswordWithTokenUseCase.class).to(ResetPasswordWithTokenUseCaseImpl.class);
+        bind(UpdatePasswordUseCase.class).to(UpdatePasswordUseCaseImpl.class);
 
         // TODO review user usecases
         bind(GetAuthenticatedUserUseCase.class).to(GetAuthenticatedUserUseCaseImpl.class);
@@ -160,11 +175,13 @@ public class AppModule extends AbstractModule {
             bind(UserRepository.class).to(UserInMemoryRepository.class);
             bind(SaleRepository.class).to(SaleInMemoryRepository.class);
             bind(CheckoutSessionCache.class).to(CheckoutSessionInMemoryCache.class);
+            bind(PasswordResetTokenRepository.class).to(PasswordResetTokenInMemoryRepository.class);
         } else {
             bind(UserRepository.class).to(UserDynamoRepository.class);
             bind(EventRepository.class).to(EventDynamoRepository.class);
             bind(SaleRepository.class).to(SaleDynamoRepository.class);
             bind(CheckoutSessionCache.class).to(CheckoutSessionDynamoRepository.class);
+            bind(PasswordResetTokenRepository.class).to(PasswordResetTokenDynamoRepository.class);
         }
 
         bind(RegionalizationRepository.class).to(RegionalizationInMemoryRepository.class);

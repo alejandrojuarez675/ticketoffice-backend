@@ -1,7 +1,8 @@
-package com.ticketoffice.backend.infra.adapters.out.db.repository;
+package com.ticketoffice.backend.infra.adapters.out.db.repository.sale;
 
 import com.ticketoffice.backend.domain.models.Sale;
 import com.ticketoffice.backend.domain.ports.SaleRepository;
+import com.ticketoffice.backend.infra.adapters.out.db.repository.InMemoryRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -32,7 +32,7 @@ public class SendTicketEmailToBuyerUseCaseImpl implements SendTicketEmailToBuyer
                         "event-date", event.date().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                         "event-location", event.location().name(),
                         "sale-id", sale.id(),
-                        "qr-code", QrUtils.generateSvgOfQrCodeWithTicket(event.id(), sale.id())
+                        "qr-code", QrUtils.getUrlToConfirmTicket(event.id(), sale.id())
                 )
         )).join();
     }
