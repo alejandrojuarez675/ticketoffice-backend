@@ -9,7 +9,7 @@ import com.ticketoffice.backend.infra.config.framework.UseCaseModule;
 import io.javalin.testtools.JavalinTest;
 import io.javalin.testtools.TestCase;
 
-public class MyJavalinTest {
+public class JavalinIntegrationTest {
     public static void test(TestCase testFunc) {
         Injector injector = Guice.createInjector(
                 new UseCaseModule(),
