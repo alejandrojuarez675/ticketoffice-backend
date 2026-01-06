@@ -10,7 +10,7 @@ import io.javalin.testtools.JavalinTest;
 import io.javalin.testtools.TestCase;
 
 public class MyJavalinTest {
-    public static  void test(TestCase testFunc) {
+    public static void test(TestCase testFunc) {
         Injector injector = Guice.createInjector(
                 new UseCaseModule(),
                 new MockedPortsModule(),
