@@ -1,11 +1,22 @@
 package com.ticketoffice.backend.infra.adapters.in.dto.response.config;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CurrencyDto {
     private final String code;
     private final String name;
     private final String symbol;
+    
+    @JsonCreator
+    public CurrencyDto(
+            @JsonProperty("code") String code,
+            @JsonProperty("name") String name,
+            @JsonProperty("symbol") String symbol) {
+        this.code = code;
+        this.name = name;
+        this.symbol = symbol;
+    }
     
     private CurrencyDto(Builder builder) {
         this.code = builder.code;

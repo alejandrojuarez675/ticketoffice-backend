@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.in.dto.response.config;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class DocumentTypeDto {
@@ -8,7 +9,23 @@ public class DocumentTypeDto {
     private final String description;
     private final String format;
     private final String regex;
-    
+
+    @JsonCreator
+    public static DocumentTypeDto create(
+            @JsonProperty("code") String code,
+            @JsonProperty("name") String name,
+            @JsonProperty("description") String description,
+            @JsonProperty("format") String format,
+            @JsonProperty("regex") String regex) {
+        return builder()
+                .code(code)
+                .name(name)
+                .description(description)
+                .format(format)
+                .regex(regex)
+                .build();
+    }
+
     private DocumentTypeDto(Builder builder) {
         this.code = builder.code;
         this.name = builder.name;
