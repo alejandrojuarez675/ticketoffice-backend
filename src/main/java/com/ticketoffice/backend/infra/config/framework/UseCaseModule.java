@@ -1,8 +1,5 @@
-package com.ticketoffice.backend.infra.config;
+package com.ticketoffice.backend.infra.config.framework;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.inject.AbstractModule;
 import com.ticketoffice.backend.application.usecases.checkout.CreateCheckoutSessionUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.checkout.DeleteCheckoutSessionUseCaseImpl;
@@ -45,13 +42,6 @@ import com.ticketoffice.backend.application.usecases.users.GetAuthenticatedUserU
 import com.ticketoffice.backend.application.usecases.users.GetUserByIdUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.users.IsAnAdminUserUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.users.UpdateOrganizerDataOnUserUseCaseImpl;
-import com.ticketoffice.backend.domain.ports.CheckoutSessionCache;
-import com.ticketoffice.backend.domain.ports.EventRepository;
-import com.ticketoffice.backend.domain.ports.MailSenderPort;
-import com.ticketoffice.backend.domain.ports.PasswordResetTokenRepository;
-import com.ticketoffice.backend.domain.ports.RegionalizationRepository;
-import com.ticketoffice.backend.domain.ports.SaleRepository;
-import com.ticketoffice.backend.domain.ports.UserRepository;
 import com.ticketoffice.backend.domain.usecases.checkout.CreateCheckoutSessionUseCase;
 import com.ticketoffice.backend.domain.usecases.checkout.DeleteCheckoutSessionUseCase;
 import com.ticketoffice.backend.domain.usecases.checkout.GetCheckoutSessionUseCase;
@@ -93,28 +83,11 @@ import com.ticketoffice.backend.domain.usecases.users.GetAuthenticatedUserUseCas
 import com.ticketoffice.backend.domain.usecases.users.GetUserByIdUseCase;
 import com.ticketoffice.backend.domain.usecases.users.IsAnAdminUserUseCase;
 import com.ticketoffice.backend.domain.usecases.users.UpdateOrganizerDataOnUserUseCase;
-import com.ticketoffice.backend.infra.adapters.out.cache.CheckoutSessionInMemoryCache;
-import com.ticketoffice.backend.infra.adapters.out.cache.dynamo.CheckoutSessionDynamoRepository;
-import com.ticketoffice.backend.infra.adapters.out.db.repository.passwordresettoken.PasswordResetTokenDynamoRepository;
-import com.ticketoffice.backend.infra.adapters.out.db.repository.sale.SaleDynamoRepository;
-import com.ticketoffice.backend.infra.adapters.out.db.repository.event.EventDynamoRepository;
-import com.ticketoffice.backend.infra.adapters.out.db.repository.event.EventInMemoryRepository;
-import com.ticketoffice.backend.infra.adapters.out.db.repository.sale.SaleInMemoryRepository;
-import com.ticketoffice.backend.infra.adapters.out.db.repository.password.PasswordResetTokenInMemoryRepository;
-import com.ticketoffice.backend.infra.adapters.out.db.repository.user.UserDynamoRepository;
-import com.ticketoffice.backend.infra.adapters.out.db.repository.user.UserInMemoryRepository;
-import com.ticketoffice.backend.infra.adapters.out.emails.LogMailSenderAdapter;
-import com.ticketoffice.backend.infra.adapters.out.emails.SesMailSenderAdapter;
-import com.ticketoffice.backend.infra.adapters.in.controller.admin.TestEmailController;
 
-public class AppModule extends AbstractModule {
+public class UseCaseModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        // validators
-//        bind(UserRoleValidator.class).to(UserRoleValidator.class);
-
-        // usecases
         bind(GetAuthenticatedUserUseCase.class).to(GetAuthenticatedUserUseCaseImpl.class);
         bind(CreateCheckoutSessionUseCase.class).to(CreateCheckoutSessionUseCaseImpl.class);
         bind(DeleteCheckoutSessionUseCase.class).to(DeleteCheckoutSessionUseCaseImpl.class);
@@ -156,41 +129,6 @@ public class AppModule extends AbstractModule {
         bind(ResetPasswordWithTokenUseCase.class).to(ResetPasswordWithTokenUseCaseImpl.class);
         bind(UpdatePasswordUseCase.class).to(UpdatePasswordUseCaseImpl.class);
         bind(NotificateToAdminUseCase.class).to(NotificateToAdminUseCaseImpl.class);
-
-        // TODO review user usecases
         bind(GetAuthenticatedUserUseCase.class).to(GetAuthenticatedUserUseCaseImpl.class);
-
-        // controllers
-        bind(TestEmailController.class);
-
-        // service
-        boolean isLocal = System.getProperty("environment", "local").equals("local");
-        if (isLocal) {
-            bind(MailSenderPort.class).to(LogMailSenderAdapter.class);
-        } else {
-            install(new SesModule());
-            bind(MailSenderPort.class).to(SesMailSenderAdapter.class);
-        }
-
-        // repositories
-        if (isLocal) {
-            bind(EventRepository.class).to(EventInMemoryRepository.class);
-            bind(UserRepository.class).to(UserInMemoryRepository.class);
-            bind(SaleRepository.class).to(SaleInMemoryRepository.class);
-            bind(CheckoutSessionCache.class).to(CheckoutSessionInMemoryCache.class);
-            bind(PasswordResetTokenRepository.class).to(PasswordResetTokenInMemoryRepository.class);
-        } else {
-            bind(UserRepository.class).to(UserDynamoRepository.class);
-            bind(EventRepository.class).to(EventDynamoRepository.class);
-            bind(SaleRepository.class).to(SaleDynamoRepository.class);
-            bind(CheckoutSessionCache.class).to(CheckoutSessionDynamoRepository.class);
-            bind(PasswordResetTokenRepository.class).to(PasswordResetTokenDynamoRepository.class);
-        }
-
-        bind(RegionalizationRepository.class).to(RegionalizationInMemoryRepository.class);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
 }

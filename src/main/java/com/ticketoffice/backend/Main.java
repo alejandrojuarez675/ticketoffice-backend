@@ -15,7 +15,9 @@ import com.ticketoffice.backend.infra.adapters.in.controller.checkout.SearchPage
 import com.ticketoffice.backend.infra.adapters.in.controller.form.ContactUsController;
 import com.ticketoffice.backend.infra.adapters.in.controller.form.RegionalizationFormController;
 import com.ticketoffice.backend.infra.adapters.in.exception.handler.ApiExceptionHandler;
-import com.ticketoffice.backend.infra.config.AppModule;
+import com.ticketoffice.backend.infra.config.framework.AppModule;
+import com.ticketoffice.backend.infra.config.framework.PortsModule;
+import com.ticketoffice.backend.infra.config.framework.UseCaseModule;
 import io.javalin.Javalin;
 import io.javalin.plugin.bundled.CorsPlugin;
 import io.javalin.plugin.bundled.CorsPluginConfig;
@@ -25,7 +27,12 @@ public class Main {
     public static void main(String[] args) {
         try {
 
-            Injector injector = Guice.createInjector(new AppModule());
+            Injector injector = Guice.createInjector(
+                    new UseCaseModule(),
+                    new PortsModule(),
+                    new AppModule()
+            );
+
             Javalin app = Javalin.create(config -> {
                 config.http.defaultContentType = "application/json";
                 config.registerPlugin(
@@ -33,24 +40,8 @@ public class Main {
                 );
             });
 
-            // Public
-            injector.getInstance(AuthenticationController.class).registeredRoutes(app);
-            injector.getInstance(CheckoutController.class).registeredRoutes(app);
-            injector.getInstance(SearchPageController.class).registeredRoutes(app);
-            injector.getInstance(EventDetailPageController.class).registeredRoutes(app);
-
-            // Authenticated
-            injector.getInstance(PingController.class).registeredRoutes(app);
-            injector.getInstance(EventsController.class).registeredRoutes(app);
-            injector.getInstance(OrganizerController.class).registeredRoutes(app);
-            injector.getInstance(SalesController.class).registeredRoutes(app);
-            injector.getInstance(UserController.class).registeredRoutes(app);
-            injector.getInstance(TestEmailController.class).registeredRoutes(app);
-            injector.getInstance(RegionalizationFormController.class).registeredRoutes(app);
-            injector.getInstance(ContactUsController.class).registeredRoutes(app);
-
-            // Register exception handler
-            app.exception(Exception.class, new ApiExceptionHandler());
+            registerRoutes(injector, app);
+            registerExceptionHandler(app);
 
             int port = Integer.parseInt(Optional.ofNullable(System.getenv("PORT")).orElse("8080"));
             System.out.println("Starting server on port: " + port);
@@ -60,5 +51,28 @@ public class Main {
             e.printStackTrace();
             System.exit(1);
         }
+    }
+
+    private static void registerRoutes(Injector injector, Javalin app) {
+        // Public
+        injector.getInstance(AuthenticationController.class).registeredRoutes(app);
+        injector.getInstance(CheckoutController.class).registeredRoutes(app);
+        injector.getInstance(SearchPageController.class).registeredRoutes(app);
+        injector.getInstance(EventDetailPageController.class).registeredRoutes(app);
+
+        // Authenticated
+        injector.getInstance(PingController.class).registeredRoutes(app);
+        injector.getInstance(EventsController.class).registeredRoutes(app);
+        injector.getInstance(OrganizerController.class).registeredRoutes(app);
+        injector.getInstance(SalesController.class).registeredRoutes(app);
+        injector.getInstance(UserController.class).registeredRoutes(app);
+        injector.getInstance(TestEmailController.class).registeredRoutes(app);
+        injector.getInstance(RegionalizationFormController.class).registeredRoutes(app);
+        injector.getInstance(ContactUsController.class).registeredRoutes(app);
+    }
+
+    private static void registerExceptionHandler(Javalin app) {
+        // Register exception handler
+        app.exception(Exception.class, new ApiExceptionHandler());
     }
 }
