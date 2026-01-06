@@ -127,7 +127,7 @@ class RegionalizationHandlerTest {
         
         // Verify document types
         assertEquals(1, dto.documentType().size());
-        assertEquals("PASSPORT", dto.documentType().getFirst().getCode());
+        assertEquals("PASSPORT", dto.documentType().getFirst().code());
     }
 
     @Test

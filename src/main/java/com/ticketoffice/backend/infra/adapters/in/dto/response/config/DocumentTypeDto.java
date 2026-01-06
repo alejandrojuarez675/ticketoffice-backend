@@ -1,64 +1,12 @@
 package com.ticketoffice.backend.infra.adapters.in.dto.response.config;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-public class DocumentTypeDto {
-    private final String code;
-    private final String name;
-    private final String description;
-    private final String format;
-    private final String regex;
-
-    @JsonCreator
-    public static DocumentTypeDto create(
-            @JsonProperty("code") String code,
-            @JsonProperty("name") String name,
-            @JsonProperty("description") String description,
-            @JsonProperty("format") String format,
-            @JsonProperty("regex") String regex) {
-        return builder()
-                .code(code)
-                .name(name)
-                .description(description)
-                .format(format)
-                .regex(regex)
-                .build();
-    }
-
-    private DocumentTypeDto(Builder builder) {
-        this.code = builder.code;
-        this.name = builder.name;
-        this.description = builder.description;
-        this.format = builder.format;
-        this.regex = builder.regex;
-    }
-    
-    @JsonProperty("code")
-    public String getCode() {
-        return code;
-    }
-    
-    @JsonProperty("name")
-    public String getName() {
-        return name;
-    }
-    
-    @JsonProperty("description")
-    public String getDescription() {
-        return description;
-    }
-    
-    @JsonProperty("format")
-    public String getFormat() {
-        return format;
-    }
-    
-    @JsonProperty("regex")
-    public String getRegex() {
-        return regex;
-    }
-    
+public record DocumentTypeDto(
+    String code,
+    String name,
+    String description,
+    String format,
+    String regex
+) {
     public static Builder builder() {
         return new Builder();
     }
@@ -96,7 +44,7 @@ public class DocumentTypeDto {
         }
         
         public DocumentTypeDto build() {
-            return new DocumentTypeDto(this);
+            return new DocumentTypeDto(code, name, description, format, regex);
         }
     }
 }
