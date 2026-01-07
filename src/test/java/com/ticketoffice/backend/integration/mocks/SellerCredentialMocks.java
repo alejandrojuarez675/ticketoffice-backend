@@ -1,6 +1,6 @@
 package com.ticketoffice.backend.integration.mocks;
 
-public class SellerMocks {
+public class SellerCredentialMocks {
 
     public final static String SELLER_USERNAME_FOR_LOGIN = "seller_FOR_LOGIN";
     public final static String SELLER_PASSWORD_FOR_LOGIN = "seller1234";

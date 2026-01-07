@@ -1,8 +1,8 @@
 package com.ticketoffice.backend.integration;
 
-import static com.ticketoffice.backend.integration.mocks.SellerMocks.SELLER_EMAIL_FOR_SIGNUP;
-import static com.ticketoffice.backend.integration.mocks.SellerMocks.SELLER_PASSWORD_FOR_SIGNUP;
-import static com.ticketoffice.backend.integration.mocks.SellerMocks.SELLER_USERNAME_FOR_SIGNUP;
+import static com.ticketoffice.backend.integration.mocks.SellerCredentialMocks.SELLER_EMAIL_FOR_SIGNUP;
+import static com.ticketoffice.backend.integration.mocks.SellerCredentialMocks.SELLER_PASSWORD_FOR_SIGNUP;
+import static com.ticketoffice.backend.integration.mocks.SellerCredentialMocks.SELLER_USERNAME_FOR_SIGNUP;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.google.common.base.Strings;
