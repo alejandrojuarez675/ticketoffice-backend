@@ -1,4 +1,4 @@
-package com.ticketoffice.backend.integration;
+package com.ticketoffice.backend.integration.tests.auth;
 
 import static com.ticketoffice.backend.integration.mocks.SellerCredentialMocks.SELLER_EMAIL_FOR_LOGIN;
 import static com.ticketoffice.backend.integration.mocks.SellerCredentialMocks.SELLER_PASSWORD_FOR_LOGIN;

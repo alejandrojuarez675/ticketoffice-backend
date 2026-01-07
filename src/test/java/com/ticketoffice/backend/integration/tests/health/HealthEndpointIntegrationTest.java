@@ -1,4 +1,4 @@
-package com.ticketoffice.backend.integration;
+package com.ticketoffice.backend.integration.tests.health;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
