@@ -1,10 +1,19 @@
 package com.ticketoffice.backend.infra.adapters.in.dto.response.config;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CityDto {
     private final String code;
     private final String name;
+    
+    @JsonCreator
+    public CityDto(
+            @JsonProperty("code") String code,
+            @JsonProperty("name") String name) {
+        this.code = code;
+        this.name = name;
+    }
     
     private CityDto(Builder builder) {
         this.code = builder.code;
