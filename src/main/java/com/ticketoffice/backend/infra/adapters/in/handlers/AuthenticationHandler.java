@@ -43,9 +43,8 @@ public class AuthenticationHandler {
                 List.of(UserRole.USER, UserRole.SELLER),
                 null
         );
-        userRepository.save(user);
 
-        return userRepository.findByUsername(input.username())
+        return userRepository.save(user)
                 .map(x -> JwtTokenProvider.generateToken(x.getUsername()))
                 .map(x -> new LoginResponse(x, JwtTokenProvider.getExpirationTime()))
                 .orElseThrow();
