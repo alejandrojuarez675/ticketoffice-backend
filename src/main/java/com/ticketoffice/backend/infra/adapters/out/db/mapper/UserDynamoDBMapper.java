@@ -16,6 +16,7 @@ import com.ticketoffice.backend.domain.enums.UserRole;
 import com.ticketoffice.backend.domain.models.Image;
 import com.ticketoffice.backend.domain.models.Organizer;
 import com.ticketoffice.backend.domain.models.User;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
@@ -89,7 +90,7 @@ public class UserDynamoDBMapper {
                 map.get(PASSWORD).s(),
                 map.get(ROLES).ss().stream().map(UserRole::valueOf).toList(),
                 organizer,
-                map.get(CONFIRMED).bool()
+                Optional.ofNullable(map.get(CONFIRMED)).map(AttributeValue::bool).orElse(false)
         );
     }
 }
