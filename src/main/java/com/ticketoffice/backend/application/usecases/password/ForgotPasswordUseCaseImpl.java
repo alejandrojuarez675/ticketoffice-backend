@@ -3,7 +3,7 @@ package com.ticketoffice.backend.application.usecases.password;
 import com.ticketoffice.backend.domain.constants.EmailConstants;
 import com.ticketoffice.backend.domain.enums.MailTemplates;
 import com.ticketoffice.backend.domain.models.MailMessage;
-import com.ticketoffice.backend.domain.models.PasswordResetToken;
+import com.ticketoffice.backend.domain.models.UserToken;
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.MailSenderPort;
 import com.ticketoffice.backend.domain.usecases.password.ForgotPasswordUseCase;
@@ -28,17 +28,17 @@ public class ForgotPasswordUseCaseImpl implements ForgotPasswordUseCase {
 
     @Override
     public void accept(User user) {
-        PasswordResetToken passwordResetToken = generatePasswordResetTokenUseCase.apply(user);
-        sendEmail(passwordResetToken);
+        UserToken passwordResetUserToken = generatePasswordResetTokenUseCase.apply(user);
+        sendEmail(passwordResetUserToken);
     }
 
-    private void sendEmail(@NotNull PasswordResetToken passwordResetToken) {
+    private void sendEmail(@NotNull UserToken passwordResetUserToken) {
         MailMessage mailMessage = new MailMessage(
                 MailTemplates.FORGOT_PASSWORD,
-                passwordResetToken.email(),
+                passwordResetUserToken.email(),
                 Map.of(
-                        "username", passwordResetToken.username(),
-                        "reset-url", generateUrlToForgotPassword(passwordResetToken.tokenHash())
+                        "username", passwordResetUserToken.username(),
+                        "reset-url", generateUrlToForgotPassword(passwordResetUserToken.tokenHash())
                 ));
 
         mailSenderPort.sendEmail(mailMessage);

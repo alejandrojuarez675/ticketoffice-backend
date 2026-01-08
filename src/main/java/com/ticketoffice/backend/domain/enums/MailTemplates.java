@@ -6,7 +6,8 @@ public enum MailTemplates {
     WELCOME_USER("welcome-user"),
     FORGOT_PASSWORD("forgot-password"),
     PASSWORD_UPDATED("password-updated"),
-    NOTIFICATION_TO_ADMIN("notification-to-admin");
+    NOTIFICATION_TO_ADMIN("notification-to-admin"),
+    CONFIRMATION_USER_ACCOUNT_TEMPLATE("confirm-user-account-template");
 
     private final String template;
 

@@ -55,7 +55,7 @@ Content-Type: application/json
 **Respuesta Exitosa (200 OK)**
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "userToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
   "expiresIn": 3600
 }
 ```
@@ -81,7 +81,7 @@ Content-Type: application/json
 **Respuesta Exitosa (200 OK)**
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "userToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
   "expiresIn": 3600
 }
 ```
@@ -137,7 +137,7 @@ public record UserLoginRequest (
 ### LoginResponse
 ```java
 public class LoginResponse {
-    private String token;
+    private String userToken;
     private long expiresIn;
     // getters y setters
 }

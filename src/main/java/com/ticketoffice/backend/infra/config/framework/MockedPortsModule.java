@@ -4,13 +4,13 @@ import com.google.inject.AbstractModule;
 import com.ticketoffice.backend.domain.ports.CheckoutSessionCache;
 import com.ticketoffice.backend.domain.ports.EventRepository;
 import com.ticketoffice.backend.domain.ports.MailSenderPort;
-import com.ticketoffice.backend.domain.ports.PasswordResetTokenRepository;
+import com.ticketoffice.backend.domain.ports.UserTokenRepository;
 import com.ticketoffice.backend.domain.ports.RegionalizationRepository;
 import com.ticketoffice.backend.domain.ports.SaleRepository;
 import com.ticketoffice.backend.domain.ports.UserRepository;
 import com.ticketoffice.backend.infra.adapters.out.cache.CheckoutSessionInMemoryCache;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.event.EventInMemoryRepository;
-import com.ticketoffice.backend.infra.adapters.out.db.repository.password.PasswordResetTokenInMemoryRepository;
+import com.ticketoffice.backend.infra.adapters.out.db.repository.password.UserTokenInMemoryRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.sale.SaleInMemoryRepository;
 import com.ticketoffice.backend.infra.adapters.out.db.repository.user.UserInMemoryRepository;
 import com.ticketoffice.backend.infra.adapters.out.emails.LogMailSenderAdapter;
@@ -24,7 +24,7 @@ public class MockedPortsModule extends AbstractModule {
         bind(UserRepository.class).to(UserInMemoryRepository.class);
         bind(SaleRepository.class).to(SaleInMemoryRepository.class);
         bind(CheckoutSessionCache.class).to(CheckoutSessionInMemoryCache.class);
-        bind(PasswordResetTokenRepository.class).to(PasswordResetTokenInMemoryRepository.class);
+        bind(UserTokenRepository.class).to(UserTokenInMemoryRepository.class);
         bind(RegionalizationRepository.class).to(RegionalizationInMemoryRepository.class);
     }
 }
