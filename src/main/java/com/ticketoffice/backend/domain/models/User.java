@@ -14,6 +14,7 @@ public class User {
     private String password;
     private List<UserRole> role;
     private Organizer organizer;
+    private boolean confirmed;
 
     public User(String id, String username, String email, String password, List<UserRole> role, Organizer organizer) {
         this.id = id;
@@ -22,6 +23,17 @@ public class User {
         this.password = password;
         this.role = role;
         this.organizer = organizer;
+        this.confirmed = false;
+    }
+
+    public User(String id, String username, String email, String password, List<UserRole> role, Organizer organizer, Boolean confirmed) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.organizer = organizer;
+        this.confirmed = confirmed;
     }
 
     public String getId() {
@@ -75,5 +87,13 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
     }
 }

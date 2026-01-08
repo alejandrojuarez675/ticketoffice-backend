@@ -1,5 +1,8 @@
 package com.ticketoffice.backend.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.time.Instant;
+
 public record PasswordResetToken(
         String id,
         String username,
@@ -8,4 +11,10 @@ public record PasswordResetToken(
         long expiresAt,
         boolean used
 ) {
+
+    @JsonIgnore
+    public boolean isValidToken() {
+        boolean isExpired = Instant.now().getEpochSecond() > this.expiresAt();
+        return !this.used() && !isExpired;
+    }
 }

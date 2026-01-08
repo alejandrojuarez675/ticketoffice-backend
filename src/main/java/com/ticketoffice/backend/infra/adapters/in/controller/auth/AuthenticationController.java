@@ -2,12 +2,14 @@ package com.ticketoffice.backend.infra.adapters.in.controller.auth;
 
 import com.google.inject.Inject;
 import com.ticketoffice.backend.infra.adapters.in.controller.CustomController;
+import com.ticketoffice.backend.infra.adapters.in.dto.request.ConfirmAccountRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.ForgotPasswordRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.ResetPasswordWithTokenRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.UserLoginRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.request.UserSignupRequest;
 import com.ticketoffice.backend.infra.adapters.in.dto.response.LoginResponse;
 import com.ticketoffice.backend.infra.adapters.in.exception.BadRequestException;
+import com.ticketoffice.backend.infra.adapters.in.exception.NotFoundException;
 import com.ticketoffice.backend.infra.adapters.in.handlers.AuthenticationHandler;
 import com.ticketoffice.backend.infra.adapters.in.handlers.ForgotPasswordHandler;
 import io.javalin.Javalin;
@@ -35,6 +37,11 @@ public class AuthenticationController implements CustomController {
             register(body);
             ctx.json(Map.of("msg", "User registered successfully"));
         });
+        app.post(PATH + "/confirm-account", ctx -> {
+            var body = ctx.bodyAsClass(ConfirmAccountRequest.class);
+            confirmAccount(body);
+            ctx.json(Map.of("msg", "User confirmed successfully"));
+        });
         app.post(PATH + "/login", ctx -> {
             var body = ctx.bodyAsClass(UserLoginRequest.class);
             try {
@@ -57,6 +64,10 @@ public class AuthenticationController implements CustomController {
                 ctx.status(404).json(Map.of("msg", "The token is invalid or expired"));
             }
         });
+    }
+
+    private void confirmAccount(ConfirmAccountRequest body) throws NotFoundException {
+        authenticationHandler.confirmAccount(body);
     }
 
 

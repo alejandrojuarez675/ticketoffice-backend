@@ -1,5 +1,6 @@
 package com.ticketoffice.backend.infra.adapters.out.db.mapper;
 
+import static com.ticketoffice.backend.infra.adapters.out.db.mapper.UserDynamoDBMapper.DynamoKeys.CONFIRMED;
 import static com.ticketoffice.backend.infra.adapters.out.db.mapper.UserDynamoDBMapper.DynamoKeys.EMAIL;
 import static com.ticketoffice.backend.infra.adapters.out.db.mapper.UserDynamoDBMapper.DynamoKeys.ID;
 import static com.ticketoffice.backend.infra.adapters.out.db.mapper.UserDynamoDBMapper.DynamoKeys.ORGANIZER_ID;
@@ -35,6 +36,7 @@ public class UserDynamoDBMapper {
         public static final String ORGANIZER_LOGO_ID = "organizerLogoId";
         public static final String ORGANIZER_LOGO_URL = "organizerLogoUrl";
         public static final String ORGANIZER_LOGO_ALT = "organizerLogoAlt";
+        public static final String CONFIRMED = "confirmed";
     }
 
     private UserDynamoDBMapper() {}
@@ -45,7 +47,8 @@ public class UserDynamoDBMapper {
                 USERNAME, AttributeValue.builder().s(user.getUsername()).build(),
                 EMAIL, AttributeValue.builder().s(user.getEmail()).build(),
                 PASSWORD, AttributeValue.builder().s(user.getPassword()).build(),
-                ROLES, AttributeValue.builder().ss(user.getRole().stream().map(UserRole::name).toList()).build()
+                ROLES, AttributeValue.builder().ss(user.getRole().stream().map(UserRole::name).toList()).build(),
+                CONFIRMED, AttributeValue.builder().bool(user.isConfirmed()).build()
         ));
 
         if (user.getOrganizer().isPresent()) {
@@ -85,7 +88,8 @@ public class UserDynamoDBMapper {
                 map.get(EMAIL).s(),
                 map.get(PASSWORD).s(),
                 map.get(ROLES).ss().stream().map(UserRole::valueOf).toList(),
-                organizer
+                organizer,
+                map.get(CONFIRMED).bool()
         );
     }
 }

@@ -9,8 +9,8 @@ import com.ticketoffice.backend.domain.ports.PasswordResetTokenRepository;
 import com.ticketoffice.backend.domain.usecases.password.ResetPasswordWithTokenUseCase;
 import com.ticketoffice.backend.domain.usecases.password.UpdatePasswordUseCase;
 import jakarta.inject.Inject;
-import java.time.Instant;
 import java.util.Map;
+import java.util.Optional;
 
 public class ResetPasswordWithTokenUseCaseImpl implements ResetPasswordWithTokenUseCase {
 
@@ -32,10 +32,19 @@ public class ResetPasswordWithTokenUseCaseImpl implements ResetPasswordWithToken
     @Override
     public Boolean apply(String token, String newPassword) {
         return passwordResetTokenRepository.findByHashToken(token)
-                .filter(this::isValidToken)
-                .flatMap(x -> updatePasswordUseCase.apply(x.username(), newPassword))
+                .filter(PasswordResetToken::isValidToken)
+                .flatMap(x -> {
+                    Optional<User> user = updatePasswordUseCase.apply(x.username(), newPassword);
+                    markPasswordTokenAsUsed(x);
+                    return user;
+                })
                 .map(this::sendNotificationToUser)
                 .isPresent();
+    }
+
+    private void markPasswordTokenAsUsed(PasswordResetToken x) {
+        PasswordResetToken passToken = new PasswordResetToken(x.id(), x.username(), x.email(), x.tokenHash(), x.expiresAt(), true);
+        passwordResetTokenRepository.save(passToken);
     }
 
     private User sendNotificationToUser(User user) {
@@ -48,10 +57,5 @@ public class ResetPasswordWithTokenUseCaseImpl implements ResetPasswordWithToken
         );
         mailSenderPort.sendEmail(mail);
         return user;
-    }
-
-    private boolean isValidToken(PasswordResetToken x) {
-        boolean isExpired = Instant.now().getEpochSecond() > x.expiresAt();
-        return !x.used() && !isExpired;
     }
 }

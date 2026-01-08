@@ -1,6 +1,7 @@
 package com.ticketoffice.backend.infra.config.framework;
 
 import com.google.inject.AbstractModule;
+import com.ticketoffice.backend.application.usecases.auth.ConfirmUserAccountUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.checkout.CreateCheckoutSessionUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.checkout.DeleteCheckoutSessionUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.checkout.GetCheckoutSessionUseCaseImpl;
@@ -43,6 +44,7 @@ import com.ticketoffice.backend.application.usecases.users.GetAuthenticatedUserU
 import com.ticketoffice.backend.application.usecases.users.GetUserByIdUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.users.IsAnAdminUserUseCaseImpl;
 import com.ticketoffice.backend.application.usecases.users.UpdateOrganizerDataOnUserUseCaseImpl;
+import com.ticketoffice.backend.domain.usecases.auth.ConfirmUserAccountUseCase;
 import com.ticketoffice.backend.domain.usecases.checkout.CreateCheckoutSessionUseCase;
 import com.ticketoffice.backend.domain.usecases.checkout.DeleteCheckoutSessionUseCase;
 import com.ticketoffice.backend.domain.usecases.checkout.GetCheckoutSessionUseCase;
@@ -133,5 +135,6 @@ public class UseCaseModule extends AbstractModule {
         bind(NotificateToAdminUseCase.class).to(NotificateToAdminUseCaseImpl.class);
         bind(GetAuthenticatedUserUseCase.class).to(GetAuthenticatedUserUseCaseImpl.class);
         bind(SendConfirmAccountEmail.class).to(SendConfirmAccountEmailImpl.class);
+        bind(ConfirmUserAccountUseCase.class).to(ConfirmUserAccountUseCaseImpl.class);
     }
 }
