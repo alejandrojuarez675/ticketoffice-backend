@@ -11,13 +11,10 @@ import java.io.IOException;
 
 public class AuthCalls {
 
-    public static LoginResponse signUp(HttpClient client, UserSignupRequest bodyRequest) throws IOException {
+    public static void signUp(HttpClient client, UserSignupRequest bodyRequest) {
         var response = client.post("/auth/signup", bodyRequest);
         assertEquals(200, response.code());
         assertNotNull(response.body());
-
-        var body = response.body().string();
-        return new ObjectMapper().readValue(body, LoginResponse.class);
     }
 
     public static LoginResponse login(HttpClient client, UserLoginRequest bodyRequest) throws IOException {

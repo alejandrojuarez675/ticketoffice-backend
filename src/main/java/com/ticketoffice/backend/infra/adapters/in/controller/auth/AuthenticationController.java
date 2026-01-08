@@ -32,7 +32,8 @@ public class AuthenticationController implements CustomController {
     public void registeredRoutes(Javalin app) {
         app.post(PATH + "/signup", ctx -> {
             var body = ctx.bodyAsClass(UserSignupRequest.class);
-            ctx.json(register(body));
+            register(body);
+            ctx.json(Map.of("msg", "User registered successfully"));
         });
         app.post(PATH + "/login", ctx -> {
             var body = ctx.bodyAsClass(UserLoginRequest.class);
@@ -59,8 +60,8 @@ public class AuthenticationController implements CustomController {
     }
 
 
-    public LoginResponse register(UserSignupRequest registerUserDto) throws BadRequestException {
-        return authenticationHandler.signup(registerUserDto);
+    public void register(UserSignupRequest registerUserDto) throws BadRequestException {
+        authenticationHandler.signup(registerUserDto);
     }
 
 
