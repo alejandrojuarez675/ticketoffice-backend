@@ -139,11 +139,16 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "OK. Message: User created successfully and a confirmation email has been sent.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
+                  "type": "object",
+                  "properties": {
+                    "msg": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -181,6 +186,52 @@
           },
           "401": {
             "description": "Invalid credentials"
+          }
+        }
+      }
+    },
+    "/auth/confirm-account": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Confirm user account",
+        "description": "Confirms a user's account using a confirmation token sent to their email.",
+        "operationId": "confirmAccount",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "token"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Account confirmed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "msg": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid or expired token"
           }
         }
       }
