@@ -1,8 +1,8 @@
 package com.ticketoffice.backend.application.usecases.auth;
 
-import com.ticketoffice.backend.domain.models.PasswordResetToken;
+import com.ticketoffice.backend.domain.models.UserToken;
 import com.ticketoffice.backend.domain.models.User;
-import com.ticketoffice.backend.domain.ports.PasswordResetTokenRepository;
+import com.ticketoffice.backend.domain.ports.UserTokenRepository;
 import com.ticketoffice.backend.domain.ports.UserRepository;
 import com.ticketoffice.backend.domain.usecases.auth.ConfirmUserAccountUseCase;
 import jakarta.inject.Inject;
@@ -11,22 +11,22 @@ import org.jetbrains.annotations.NotNull;
 
 public class ConfirmUserAccountUseCaseImpl implements ConfirmUserAccountUseCase {
 
-    private final PasswordResetTokenRepository passwordResetTokenRepository;
+    private final UserTokenRepository userTokenRepository;
     private final UserRepository userRepository;
 
     @Inject
     public ConfirmUserAccountUseCaseImpl(
-            PasswordResetTokenRepository passwordResetTokenRepository,
+            UserTokenRepository userTokenRepository,
             UserRepository userRepository
     ) {
-        this.passwordResetTokenRepository = passwordResetTokenRepository;
+        this.userTokenRepository = userTokenRepository;
         this.userRepository = userRepository;
     }
 
     @Override
     public Optional<User> apply(String token) {
-        return passwordResetTokenRepository.findByHashToken(token)
-                .filter(PasswordResetToken::isValidToken)
+        return userTokenRepository.findByHashToken(token)
+                .filter(UserToken::isValidToken)
                 .flatMap(x -> {
                     Optional<User> userOptional = markUserAsConfirmed(x);
                     markPasswordTokenAsUsed(x);
@@ -35,7 +35,7 @@ public class ConfirmUserAccountUseCaseImpl implements ConfirmUserAccountUseCase 
     }
 
     @NotNull
-    private Optional<User> markUserAsConfirmed(PasswordResetToken x) {
+    private Optional<User> markUserAsConfirmed(UserToken x) {
         return userRepository.findByUsername(x.username())
                 .map(u -> {
                     u.setConfirmed(true);
@@ -44,8 +44,8 @@ public class ConfirmUserAccountUseCaseImpl implements ConfirmUserAccountUseCase 
                 .flatMap(userRepository::save);
     }
 
-    private void markPasswordTokenAsUsed(PasswordResetToken x) {
-        PasswordResetToken passToken = new PasswordResetToken(x.id(), x.username(), x.email(), x.tokenHash(), x.expiresAt(), true);
-        passwordResetTokenRepository.save(passToken);
+    private void markPasswordTokenAsUsed(UserToken x) {
+        UserToken passUserToken = new UserToken(x.id(), x.username(), x.email(), x.tokenHash(), x.expiresAt(), true);
+        userTokenRepository.save(passUserToken);
     }
 }

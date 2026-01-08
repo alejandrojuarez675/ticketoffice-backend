@@ -3,7 +3,7 @@ package com.ticketoffice.backend.domain.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.Instant;
 
-public record PasswordResetToken(
+public record UserToken(
         String id,
         String username,
         String email,

@@ -3,7 +3,7 @@ package com.ticketoffice.backend.application.usecases.emails;
 import com.ticketoffice.backend.domain.constants.EmailConstants;
 import com.ticketoffice.backend.domain.enums.MailTemplates;
 import com.ticketoffice.backend.domain.models.MailMessage;
-import com.ticketoffice.backend.domain.models.PasswordResetToken;
+import com.ticketoffice.backend.domain.models.UserToken;
 import com.ticketoffice.backend.domain.models.User;
 import com.ticketoffice.backend.domain.ports.MailSenderPort;
 import com.ticketoffice.backend.domain.usecases.emails.SendConfirmAccountEmail;
@@ -27,7 +27,7 @@ public class SendConfirmAccountEmailImpl implements SendConfirmAccountEmail {
 
     @Override
     public void accept(User user) {
-        PasswordResetToken passwordResetToken = generatePasswordResetTokenUseCase.apply(user);
+        UserToken passwordResetUserToken = generatePasswordResetTokenUseCase.apply(user);
 
         MailMessage mailMessage = new MailMessage(
                 MailTemplates.CONFIRMATION_USER_ACCOUNT_TEMPLATE,
@@ -35,7 +35,7 @@ public class SendConfirmAccountEmailImpl implements SendConfirmAccountEmail {
                 Map.of(
                         "username", user.getUsername(),
                         "validation-url", EmailConstants.FRONTEND_URL +
-                                String.format(EmailConstants.PATH_TO_CONFIRM_ACCOUNT, passwordResetToken.tokenHash())
+                                String.format(EmailConstants.PATH_TO_CONFIRM_ACCOUNT, passwordResetUserToken.tokenHash())
                 )
         );
         mailSender.sendEmail(mailMessage);

@@ -1,12 +1,12 @@
 package com.ticketoffice.backend.infra.adapters.out.db.mapper;
 
-import com.ticketoffice.backend.domain.models.PasswordResetToken;
+import com.ticketoffice.backend.domain.models.UserToken;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class PasswordResetTokenDynamoDBMapper {
+public class UserTokenDynamoDBMapper {
 
     public static class DynamoKeys {
         public static final String ID = "id";
@@ -17,25 +17,25 @@ public class PasswordResetTokenDynamoDBMapper {
         public static final String USED = "used";
     }
 
-    private PasswordResetTokenDynamoDBMapper() {}
+    private UserTokenDynamoDBMapper() {}
 
-    public static Map<String, AttributeValue> toMap(PasswordResetToken token) {
+    public static Map<String, AttributeValue> toMap(UserToken userToken) {
         Map<String, AttributeValue> attributeValueMap = new HashMap<>();
-        attributeValueMap.put(DynamoKeys.ID, AttributeValue.builder().s(token.id()).build());
-        attributeValueMap.put(DynamoKeys.USERNAME, AttributeValue.builder().s(token.username()).build());
-        attributeValueMap.put(DynamoKeys.EMAIL, AttributeValue.builder().s(token.email()).build());
-        attributeValueMap.put(DynamoKeys.TOKEN_HASH, AttributeValue.builder().s(token.tokenHash()).build());
-        attributeValueMap.put(DynamoKeys.EXPIRES_AT, AttributeValue.builder().n(String.valueOf(token.expiresAt())).build());
-        attributeValueMap.put(DynamoKeys.USED, AttributeValue.builder().bool(token.used()).build());
+        attributeValueMap.put(DynamoKeys.ID, AttributeValue.builder().s(userToken.id()).build());
+        attributeValueMap.put(DynamoKeys.USERNAME, AttributeValue.builder().s(userToken.username()).build());
+        attributeValueMap.put(DynamoKeys.EMAIL, AttributeValue.builder().s(userToken.email()).build());
+        attributeValueMap.put(DynamoKeys.TOKEN_HASH, AttributeValue.builder().s(userToken.tokenHash()).build());
+        attributeValueMap.put(DynamoKeys.EXPIRES_AT, AttributeValue.builder().n(String.valueOf(userToken.expiresAt())).build());
+        attributeValueMap.put(DynamoKeys.USED, AttributeValue.builder().bool(userToken.used()).build());
         return attributeValueMap;
     }
 
-    public static PasswordResetToken fromMap(Map<String, AttributeValue> item) {
+    public static UserToken fromMap(Map<String, AttributeValue> item) {
         if (item == null || item.isEmpty()) {
             return null;
         }
         
-        return new PasswordResetToken(
+        return new UserToken(
             item.get(DynamoKeys.ID).s(),
             item.get(DynamoKeys.USERNAME).s(),
             item.get(DynamoKeys.EMAIL).s(),
